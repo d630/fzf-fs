@@ -86,8 +86,8 @@ __fzffs_quit ()
 
 __fzffs_select ()
 {
-    __fzffs_ls "$pwd" | \
-    __fzffs_fzf "[${pwd}]" | \
+    __fzffs_ls "$1" | \
+    __fzffs_fzf "[${1}]" | \
     command sed 's/^[_ ]*//' ;
 }
 
@@ -95,7 +95,7 @@ __fzffs_browse ()
 while [[ $pwd ]]
 do
     builtin cd -- "$pwd"
-    child_ls=$(__fzffs_select)
+    child_ls=$(__fzffs_select "$pwd")
     case $child_ls in
         \[..\]*|*..)
             pwd=${pwd%/*}
