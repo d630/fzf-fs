@@ -191,7 +191,7 @@ __fzffs_select ()
 __fzffs_version ()
 {
     builtin declare md5sum=
-    builtin read -r md5sum _ < <(command md5sum "$BASH_SOURCE")
+    builtin read -r md5sum _ < <(command md5sum "${BASH_SOURCE:-$0}")
 
     builtin printf '%s (%s)\n'  "vx.x.x.x" "$md5sum"
 }
