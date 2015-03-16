@@ -1,10 +1,15 @@
 Requiered:
 
-- find
-- sort
 - file
+- find
+- fzf
+- less
+- ls
+- sed
+- tput
 - w3m + patch w3m-img
-- less via lesspipe
+
+Usage:
 
 ```sh
 % source fsfzf.sh
