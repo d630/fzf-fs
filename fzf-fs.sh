@@ -91,6 +91,11 @@ __fzffs_select ()
     command sed 's/^[_ ]*//' ;
 }
 
+__fzffs_file ()
+{
+    command file --mime-type -bL "$1"
+}
+
 __fzffs_browse ()
 while [[ $pwd ]]
 do
@@ -122,8 +127,7 @@ do
             elif [[ -f ${pwd}/${child_basename} || \
                 -p ${pwd}/${child_basename} ]]
             then
-                case $(command file --mime-type -bL "${pwd}/${child_basename}")
-                in
+                case $( __fzffs_file "${pwd}/${child_basename}") in
                     image*)
                         command w3m \
                             -o 'ext_image_viewer=off' \
