@@ -68,11 +68,13 @@ __fzffs_quit ()
 {
     builtin unset -f \
         __fzffs_browse \
+        __fzffs_file \
         __fzffs_find \
         __fzffs_fzf \
         __fzffs_ls \
         __fzffs_main \
-        __fzffs_quit ;
+        __fzffs_quit \
+        __fzffs_select ;
 
     #trap - EXIT TERM
     #eval "$_fzffs_traps_old"
