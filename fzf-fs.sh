@@ -100,8 +100,8 @@ __fzffs_browse ()
 while [[ $pwd ]]
 do
     builtin cd -- "$pwd"
-    child_ls=$(__fzffs_select "$pwd")
-    case $child_ls in
+    selection=$(__fzffs_select "$pwd")
+    case $selection in
         \[..\]*|*..)
             pwd=${pwd%/*}
             pwd=${pwd:-$root}
@@ -119,23 +119,22 @@ do
             pwd=
             ;;
         *)
-            child_basename=$(__fzffs_find "$pwd" "${child_ls%% *}")
-            if [[ -d ${pwd}/${child_basename} ]]
+            child=${pwd}/$(__fzffs_find "$pwd" "${selection%% *}")
+            if [[ -d $child ]]
             then
-                pwd=${pwd}/${child_basename}
+                pwd=$child
                 pwd=${pwd//\/\//\/}
-            elif [[ -f ${pwd}/${child_basename} || \
-                -p ${pwd}/${child_basename} ]]
+            elif [[ -f $child || -p $child ]]
             then
-                case $( __fzffs_file "${pwd}/${child_basename}") in
+                case $( __fzffs_file "$child") in
                     image*)
                         command w3m \
                             -o 'ext_image_viewer=off' \
                             -o 'imgdisplay=w3mimgdisplay' \
-                            "${pwd}/${child_basename}" ;
+                            "$child" ;
                         ;;
                     *)
-                        command less -R "${pwd}/${child_basename}"
+                        command less -R "$child"
                 esac
             else
                 pwd=
@@ -146,10 +145,10 @@ done
 __fzffs_main ()
 {
     builtin declare \
-        child_ls= \
-        child_basename= \
+        child= \
         pwd=$1 \
-        root=/ ;
+        root=/ \
+        selection= ;
 
     builtin declare -gx \
         _fzffs_LC_COLLATE_old=$LC_COLLATE \
