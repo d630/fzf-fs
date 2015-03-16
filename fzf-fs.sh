@@ -24,7 +24,7 @@
 __fzffs_fzf ()
 {
     declare \
-        prompt=${1:->}
+        prompt=${1:->} \
         FZF_DEFAULT_COMMAND= \
         FZF_DEFAULT_OPTS= ;
 
