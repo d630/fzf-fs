@@ -28,7 +28,7 @@ __fzffs_fzf ()
         FZF_DEFAULT_COMMAND= \
         FZF_DEFAULT_OPTS= ;
 
-    fzf -x -i --prompt="${prompt} "
+    fzf -x -i --with-nth=2.. --prompt="${prompt} "
 }
 
 __fzffs_find ()
@@ -38,7 +38,7 @@ __fzffs_find ()
 
 __fzffs_ls ()
 {
-    printf '[%s] %s\n[%s] %s\n[%s] %s\n[%s] %s\n[%s] %s\n' \
+    printf '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
         "." "pwd" \
         ".." "up" \
         "/" "root" \
@@ -73,7 +73,7 @@ __fzffs_browse ()
 while [[ $pwd ]]
 do
     builtin cd -- "$pwd"
-    child_ls=$(__fzffs_ls "$pwd" | __fzffs_fzf "[${pwd}]")
+    child_ls=$(__fzffs_ls "$pwd" | __fzffs_fzf "[${pwd}]" | sed 's/^[_ ]*//')
     case $child_ls in
         \[..\]*|*..)
             pwd=${pwd%/*}
