@@ -41,7 +41,13 @@ __fzffs_fzf ()
 
 __fzffs_find ()
 {
-    find -H "${1}/." ! -name . -prune -inum "$2" -exec basename '{}' \; 2>/dev/null
+    find \
+        -H "${1}/." \
+        ! -name . \
+        -prune \
+        -inum "$2" \
+        -exec basename '{}' \; \
+        2>/dev/null ;
 }
 
 __fzffs_ls ()
