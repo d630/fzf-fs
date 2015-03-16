@@ -29,75 +29,6 @@
 
 # -- FUNCTIONS.
 
-__fzffs_fzf ()
-{
-    builtin declare \
-        prompt="${1:->}" \
-        FZF_DEFAULT_COMMAND= \
-        FZF_DEFAULT_OPTS= ;
-
-    command fzf -x -i --with-nth=2.. --prompt="${prompt} "
-}
-
-__fzffs_find ()
-{
-    command find \
-        -H "${1}/." \
-        ! -name . \
-        -prune \
-        -inum "$2" \
-        -exec basename '{}' \; \
-        2>/dev/null ;
-}
-
-__fzffs_ls ()
-{
-    builtin printf \
-        '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
-        "." "pwd" \
-        ".." "up" \
-        "/" "root" \
-        "q" "quit" \
-        "~" "cd" ;
-
-    # Do not use tac/tail -r and tail -n +2 or ls -A (POSIX)
-    command ls -laHi | command sed -n '2!G;h;$p'
-}
-
-__fzffs_quit ()
-{
-    builtin unset -f \
-        __fzffs_browse \
-        __fzffs_file \
-        __fzffs_find \
-        __fzffs_fzf \
-        __fzffs_ls \
-        __fzffs_main \
-        __fzffs_quit \
-        __fzffs_select ;
-
-    #trap - EXIT TERM
-    #eval "$_fzffs_traps_old"
-
-    builtin declare -xg LC_COLLATE=$_fzffs_LC_COLLATE_old
-
-    builtin unset -v \
-        _fzffs_LC_COLLATE_old \
-        _fzffs_traps_old ;
-}
-
-__fzffs_select ()
-{
-    __fzffs_ls "$1" | \
-    __fzffs_fzf "[${1}]" | \
-    command sed 's/^[_ ]*//' ;
-}
-
-__fzffs_file ()
-{
-    command file --mime-type -bL "$1"
-}
-
 __fzffs_browse ()
 while [[ $pwd ]]
 do
@@ -144,6 +75,43 @@ do
     esac
 done
 
+__fzffs_file () { command file --mime-type -bL "$1" ;}
+
+__fzffs_find ()
+{
+    command find \
+        -H "${1}/." \
+        ! -name . \
+        -prune \
+        -inum "$2" \
+        -exec basename '{}' \; \
+        2>/dev/null ;
+}
+
+__fzffs_fzf ()
+{
+    builtin declare \
+        prompt="${1:->}" \
+        FZF_DEFAULT_COMMAND= \
+        FZF_DEFAULT_OPTS= ;
+
+    command fzf -x -i --with-nth=2.. --prompt="${prompt} "
+}
+
+__fzffs_ls ()
+{
+    builtin printf \
+        '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
+        "." "pwd" \
+        ".." "up" \
+        "/" "root" \
+        "q" "quit" \
+        "~" "cd" ;
+
+    # Do not use tac/tail -r and tail -n +2 or ls -A (POSIX)
+    command ls -laHi | command sed -n '2!G;h;$p'
+}
+
 __fzffs_main ()
 {
     builtin declare \
@@ -189,6 +157,35 @@ __fzffs_main ()
     __fzffs_browse
 
     __fzffs_quit
+}
+
+__fzffs_quit ()
+{
+    builtin unset -f \
+        __fzffs_browse \
+        __fzffs_file \
+        __fzffs_find \
+        __fzffs_fzf \
+        __fzffs_ls \
+        __fzffs_main \
+        __fzffs_quit \
+        __fzffs_select ;
+
+    #trap - EXIT TERM
+    #eval "$_fzffs_traps_old"
+
+    builtin declare -xg LC_COLLATE=$_fzffs_LC_COLLATE_old
+
+    builtin unset -v \
+        _fzffs_LC_COLLATE_old \
+        _fzffs_traps_old ;
+}
+
+__fzffs_select ()
+{
+    __fzffs_ls "$1" | \
+    __fzffs_fzf "[${1}]" | \
+    command sed 's/^[_ ]*//' ;
 }
 
 # -- MAIN.
