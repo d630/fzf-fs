@@ -1,8 +1,9 @@
 Requiered:
 
+- bash or zsh
 - file
 - find
-- fzf
+- fzf >= v0.8.6
 - less
 - ls
 - sed
