@@ -17,7 +17,7 @@
 
 # -- SETTINGS.
 
-#declare vars_base=$(set -o posix ; set)
+#typeset vars_base=$(set -o posix ; set)
 #fgrep -v -e "$vars_base" < <(set -o posix ; set) | \
 #egrep -v -e "^BASH_REMATCH=" \
 #         -e "^OPTIND=" \
@@ -79,7 +79,7 @@ __fzffs_file () { command file --mime-type -bL "$1" ;}
 
 __fzffs_help ()
 {
-    { builtin declare help="$(</dev/fd/0)" ; } <<-HELP
+    { builtin typeset help="$(</dev/fd/0)" ; } <<-HELP
 fzf-fs.sh $(__fzffs_version)
 
 Usage:
@@ -102,7 +102,7 @@ __fzffs_find ()
 
 __fzffs_fzf ()
 {
-    builtin declare \
+    builtin typeset \
         prompt="${1:->}" \
         FZF_DEFAULT_COMMAND= \
         FZF_DEFAULT_OPTS= ;
@@ -126,18 +126,32 @@ __fzffs_ls ()
 
 __fzffs_main ()
 {
-    builtin declare \
+    builtin typeset \
         child= \
         pwd=$1 \
         root=/ \
+        source= \
         selection= ;
 
-    builtin declare -gx \
+    builtin typeset -x \
         _fzffs_LC_COLLATE_old=$LC_COLLATE \
         LC_COLLATE=C ;
         #_fzffs_traps_old=$(trap) ;
 
     #trap -- 'echo quit ; __fzffs_quit' EXIT TERM
+
+    if [[ $BASH_VERSION ]]
+    then
+        source=${BASH_SOURCE[0]}
+    elif [[ $ZSH_VERSION ]]
+    then
+        source=${(%):-%x}
+    #elif [[ $KSH_VERSION ]]
+    #then
+    #    source=${.sh.file:1}
+    else
+        source=$0
+    fi
 
     if [[ $pwd == .. ]]
     then
@@ -157,7 +171,7 @@ __fzffs_main ()
         fi
     else
         builtin printf '%s\n\n' \
-            "${BASH_SOURCE:-$0}:Error:79: Not a directory: '${pwd}'" 1>&2
+            "${source}:Error:79: Not a directory: '${pwd}'" 1>&2
         __fzffs_help
         __fzffs_quit
         return 79
@@ -186,7 +200,7 @@ __fzffs_quit ()
     #trap - EXIT TERM
     #eval "$_fzffs_traps_old"
 
-    builtin declare -xg LC_COLLATE=$_fzffs_LC_COLLATE_old
+    builtin typeset -x LC_COLLATE=$_fzffs_LC_COLLATE_old
 
     builtin unset -v \
         _fzffs_LC_COLLATE_old \
@@ -202,10 +216,14 @@ __fzffs_select ()
 
 __fzffs_version ()
 {
-    builtin declare md5sum=
-    builtin read -r md5sum _ < <(command md5sum "${BASH_SOURCE:-$0}")
+    # Do not use process substitution because of mksh
+    builtin typeset md5sum=
 
-    builtin printf '%s (%s)\n'  "vx.x.x.x" "$md5sum"
+    command md5sum "$source" | \
+    while read -r md5sum _
+    do
+        builtin printf '%s (%s)\n'  "vx.x.x.x" "$md5sum"
+    done
 }
 
 # -- MAIN.
