@@ -18,6 +18,14 @@
 # -- SETTINGS.
 
 #declare vars_base=$(set -o posix ; set)
+#fgrep -v -e "$vars_base" < <(set -o posix ; set) | \
+#egrep -v -e "^BASH_REMATCH=" \
+#         -e "^OPTIND=" \
+#         -e "^REPLY=" \
+#         -e "^BASH_LINENO=" \
+#         -e "^BASH_SOURCE=" \
+#         -e "^FUNCNAME=" | \
+#less
 
 # -- FUNCTIONS.
 
