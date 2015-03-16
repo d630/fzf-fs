@@ -31,17 +31,17 @@
 
 __fzffs_fzf ()
 {
-    declare \
-        prompt=${1:->} \
+    builtin declare \
+        prompt="${1:->}" \
         FZF_DEFAULT_COMMAND= \
         FZF_DEFAULT_OPTS= ;
 
-    fzf -x -i --with-nth=2.. --prompt="${prompt} "
+    command fzf -x -i --with-nth=2.. --prompt="${prompt} "
 }
 
 __fzffs_find ()
 {
-    find \
+    command find \
         -H "${1}/." \
         ! -name . \
         -prune \
@@ -52,7 +52,8 @@ __fzffs_find ()
 
 __fzffs_ls ()
 {
-    printf '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
+    builtin printf \
+        '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
         "." "pwd" \
         ".." "up" \
         "/" "root" \
@@ -60,12 +61,12 @@ __fzffs_ls ()
         "~" "cd" ;
 
     # Do not use tac/tail -r and tail -n +2 or ls -A (POSIX)
-    ls -laHi | sed -n '2!G;h;$p'
+    command ls -laHi | command sed -n '2!G;h;$p'
 }
 
 __fzffs_quit ()
 {
-    unset -f \
+    builtin unset -f \
         __fzffs_browse \
         __fzffs_find \
         __fzffs_fzf \
@@ -76,9 +77,9 @@ __fzffs_quit ()
     #trap - EXIT TERM
     #eval "$_fzffs_traps_old"
 
-    declare -xg LC_COLLATE=$_fzffs_LC_COLLATE_old
+    builtin declare -xg LC_COLLATE=$_fzffs_LC_COLLATE_old
 
-    unset -v \
+    builtin unset -v \
         _fzffs_LC_COLLATE_old \
         _fzffs_traps_old ;
 }
@@ -87,7 +88,7 @@ __fzffs_browse ()
 while [[ $pwd ]]
 do
     builtin cd -- "$pwd"
-    child_ls=$(__fzffs_ls "$pwd" | __fzffs_fzf "[${pwd}]" | sed 's/^[_ ]*//')
+    child_ls=$(__fzffs_ls "$pwd" | __fzffs_fzf "[${pwd}]" | command sed 's/^[_ ]*//')
     case $child_ls in
         \[..\]*|*..)
             pwd=${pwd%/*}
@@ -114,15 +115,16 @@ do
             elif [[ -f ${pwd}/${child_basename} || \
                 -p ${pwd}/${child_basename} ]]
             then
-                case $(file --mime-type -bL "${pwd}/${child_basename}")
+                case $(command file --mime-type -bL "${pwd}/${child_basename}")
                 in
                     image*)
-                        w3m -o 'ext_image_viewer=off' \
+                        command w3m \
+                            -o 'ext_image_viewer=off' \
                             -o 'imgdisplay=w3mimgdisplay' \
                             "${pwd}/${child_basename}" ;
                         ;;
                     *)
-                        less -R "${pwd}/${child_basename}"
+                        command less -R "${pwd}/${child_basename}"
                 esac
             else
                 pwd=
@@ -132,13 +134,13 @@ done
 
 __fzffs_main ()
 {
-    declare \
+    builtin declare \
         child_ls= \
         child_basename= \
         pwd=$1 \
         root=/ ;
 
-    declare -gx \
+    builtin declare -gx \
         _fzffs_LC_COLLATE_old=$LC_COLLATE \
         LC_COLLATE=C ;
         #_fzffs_traps_old=$(trap) ;
@@ -164,13 +166,13 @@ __fzffs_main ()
     else
         __fzffs_quit
         {
-            printf '%s\n' \
+            builtin printf '%s\n' \
             "${BASH_SOURCE:-$0}:Error:79: Not a directory: '${pwd}'" 1>&2
             return 79
         }
     fi
 
-    { tput smcup || tput ti ; } 2>/dev/null
+    { command tput smcup || command tput ti ; } 2>/dev/null
 
     __fzffs_browse
 
