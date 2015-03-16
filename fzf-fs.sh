@@ -188,6 +188,14 @@ __fzffs_select ()
     command sed 's/^[_ ]*//' ;
 }
 
+__fzffs_version ()
+{
+    declare md5sum=
+    read -r md5sum _ < <(command md5sum "$BASH_SOURCE")
+
+    builtin printf '%s (%s)\n'  "vx.x.x.x" "$md5sum"
+}
+
 # -- MAIN.
 
 __fzffs_main "$1"
