@@ -195,7 +195,8 @@ __fzffs_quit ()
         __fzffs_ls \
         __fzffs_main \
         __fzffs_quit \
-        __fzffs_select ;
+        __fzffs_select \
+        __fzffs_version ;
 
     #trap - EXIT TERM
     #eval "$_fzffs_traps_old"
@@ -220,7 +221,7 @@ __fzffs_version ()
     builtin typeset md5sum=
 
     command md5sum "$source" | \
-    while read -r md5sum _
+    while builtin read -r md5sum _
     do
         builtin printf '%s (%s)\n'  "vx.x.x.x" "$md5sum"
     done
