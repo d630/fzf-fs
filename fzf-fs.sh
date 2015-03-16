@@ -77,6 +77,18 @@ done
 
 __fzffs_file () { command file --mime-type -bL "$1" ;}
 
+__fzffs_help ()
+{
+    { builtin declare help="$(</dev/fd/0)" ; } <<-HELP
+fzf-fs.sh $(__fzffs_version)
+
+Usage:
+    fzf-fs.sh [<argument>]
+HELP
+
+    builtin printf '%s\n' "$help"
+}
+
 __fzffs_find ()
 {
     command find \
@@ -144,12 +156,11 @@ __fzffs_main ()
             pwd=$pwd
         fi
     else
-        __fzffs_quit
-        {
-            builtin printf '%s\n' \
+        builtin printf '%s\n\n' \
             "${BASH_SOURCE:-$0}:Error:79: Not a directory: '${pwd}'" 1>&2
-            return 79
-        }
+        __fzffs_help
+        __fzffs_quit
+        return 79
     fi
 
     { command tput smcup || command tput ti ; } 2>/dev/null
@@ -166,6 +177,7 @@ __fzffs_quit ()
         __fzffs_file \
         __fzffs_find \
         __fzffs_fzf \
+        __fzffs_help \
         __fzffs_ls \
         __fzffs_main \
         __fzffs_quit \
