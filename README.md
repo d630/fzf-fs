@@ -1,5 +1,6 @@
 Requiered:
 
+- basename
 - bash or zsh
 - file
 - find
@@ -13,11 +14,11 @@ Requiered:
 Usage:
 
 ```sh
-% source fsfzf.sh
-% source fsfzf.sh <DIR>
-% source fsfzf.sh <DIR>/
-% source fsfzf.sh .
-% source fsfzf.sh ..
-$ source fsfzf.sh ~
-$ source fsfzf.sh ~/
+% source fzf-fs.sh
+% source fzf-fs.sh <DIR>
+% source fzf-fs.sh <DIR>/
+% source fzf-fs.sh .
+% source fzf-fs.sh ..
+% source fzf-fs.sh ~
+% source fzf-fs.sh ~/
 ```
