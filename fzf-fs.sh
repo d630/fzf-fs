@@ -67,7 +67,7 @@ do
                             "$child" ;
                         ;;
                     *)
-                        command less -R "$child"
+                        less -R "$child"
                 esac
             else
                 pwd=
@@ -103,11 +103,59 @@ __fzffs_find ()
 __fzffs_fzf ()
 {
     builtin typeset \
-        prompt="${1:->}" \
+        prompt=${1/${HOME}/\~} \
         FZF_DEFAULT_COMMAND= \
         FZF_DEFAULT_OPTS= ;
 
-    command fzf -x -i --with-nth=2.. --prompt="${prompt} "
+    __fzffs_prompt
+    command fzf -x -i --with-nth=2.. --prompt="[$prompt] "
+}
+
+__fzffs_prompt ()
+{
+    # Modified _lp_shorten_path() from liquidprompt
+    # <https://github.com/nojhan/liquidprompt/blob/master/liquidprompt>
+
+    builtin typeset \
+        base= \
+        left= \
+        mask=" ... " \
+        name= \
+        ret= \
+        tmp= ;
+
+    builtin typeset -i \
+        delims= \
+        dir= \
+        len_left= \
+        max_len=$((${COLUMNS:-80} * 35 / 100)) ;
+
+    ((${#prompt} > max_len)) && {
+        tmp=${prompt//\//}
+        delims=$((${#prompt} - ${#tmp}))
+
+        for ((dir=0 ; dir < 2 ; dir++))
+        do
+            ((dir == delims)) && builtin break
+            left=${prompt#*/}
+            name=${prompt:0:${#prompt}-${#left}}
+            prompt=$left
+            ret=${ret}${name%/}/
+        done
+
+        if ((delims <= 2))
+        then
+            ret=${ret}${prompt##*/}
+        else
+            base=${prompt##*/}
+            prompt=${prompt:0:${#prompt}-${#base}}
+            [[ $ret == / ]] || ret=${ret%/}
+            len_left=$((max_len - ${#ret} - ${#base} - ${#mask}))
+            ret=${ret}${mask}${prompt:${#prompt}-${len_left}}${base}
+        fi
+
+        prompt=$ret
+    }
 }
 
 __fzffs_ls ()
@@ -194,6 +242,7 @@ __fzffs_quit ()
         __fzffs_help \
         __fzffs_ls \
         __fzffs_main \
+        __fzffs_prompt \
         __fzffs_quit \
         __fzffs_select \
         __fzffs_version ;
@@ -211,7 +260,7 @@ __fzffs_quit ()
 __fzffs_select ()
 {
     __fzffs_ls "$1" | \
-    __fzffs_fzf "[${1}]" | \
+    __fzffs_fzf "$1" | \
     command sed 's/^[_ ]*//' ;
 }
 
