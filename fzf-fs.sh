@@ -266,14 +266,8 @@ __fzffs_select ()
 
 __fzffs_version ()
 {
-    # Do not use process substitution because of mksh
-    builtin typeset md5sum=
-
-    command md5sum "$source" | \
-    while builtin read -r md5sum _
-    do
-        builtin printf '%s (%s)\n'  "vx.x.x.x" "$md5sum"
-    done
+    builtin typeset md5sum="$(command md5sum "$source")"
+    builtin printf '%s (%s)\n'  "vx.x.x.x" "${md5sum%  *}"
 }
 
 # -- MAIN.
