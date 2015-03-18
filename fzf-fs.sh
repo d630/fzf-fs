@@ -146,8 +146,7 @@ __fzffs_main ()
     if [[ $pwd == .. ]]
     then
         pwd=${PWD%/*}
-        pwd=${pwd:-$root}
-    elif [[ -z $pwd || $pwd == . ]]
+    elif [[ ${pwd:-.} == . ]]
     then
         pwd=$PWD
     elif [[ -d $pwd ]]
@@ -155,7 +154,6 @@ __fzffs_main ()
         if [[ ${pwd:${#pwd}-1} == / ]]
         then
             pwd=${pwd%/*}
-            pwd=${pwd:-$root}
         else
             pwd=$pwd
         fi
@@ -166,6 +164,8 @@ __fzffs_main ()
         __fzffs_quit
         builtin return 79
     fi
+
+    pwd=${pwd:-$root}
 
     { command tput smcup || command tput ti ; } 2>/dev/null
 
@@ -256,7 +256,7 @@ __fzffs_select ()
 __fzffs_version ()
 {
     builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "v0.1.1" "${md5sum%  *}"
+    builtin printf '%s (%s)\n'  "v0.1.2" "${md5sum%  *}"
 }
 
 # -- MAIN.
