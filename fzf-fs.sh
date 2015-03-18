@@ -35,28 +35,17 @@ do
     builtin cd -- "$pwd"
     selection=$(__fzffs_select "$pwd")
     case $selection in
-        \[..\]*|*..)
-            pwd=${pwd%/*}
-            pwd=${pwd:-$root}
-            ;;
-        \[.\]*|*.)
-            :
-            ;;
-        \[~\]*)
-            pwd=$HOME
-            ;;
-        \[/\]*)
-            pwd=$root
-            ;;
-        \[q\]*)
-            pwd=
-            ;;
+        \[..\]*|*..)    pwd=${pwd%/*} ; pwd=${pwd:-$root}   ;;
+        \[.\]*|*.)      builtin :                           ;;
+        \[~\]*)         pwd=$HOME                           ;;
+        \[/\]*)         pwd=$root                           ;;
+        \[q\]*)         pwd=                                ;;
         *)
-            child=${pwd}/$(__fzffs_find "$pwd" "${selection%% *}")
+            child="${pwd}/$(__fzffs_find "$pwd" "${selection%% *}")"
+            child=${child//\/\//\/}
             if [[ -d $child ]]
             then
                 pwd=$child
-                pwd=${pwd//\/\//\/}
             elif [[ -f $child || -p $child ]]
             then
                 case $(__fzffs_file "$child") in
@@ -75,7 +64,7 @@ do
     esac
 done
 
-__fzffs_file () { command file --mime-type -bL "$1" ;}
+__fzffs_file () { command file --mime-type -bL "$1" ; }
 
 __fzffs_help ()
 {
@@ -175,7 +164,7 @@ __fzffs_main ()
             "${source}:Error:79: Not a directory: '${pwd}'" 1>&2
         __fzffs_help
         __fzffs_quit
-        return 79
+        builtin return 79
     fi
 
     { command tput smcup || command tput ti ; } 2>/dev/null
@@ -214,7 +203,7 @@ __fzffs_prompt ()
             left=${prompt#*/}
             name=${prompt:0:${#prompt}-${#left}}
             prompt=$left
-            ret=${ret}${name%/}/
+            ret="${ret}${name%/}/"
         done
 
         if ((delims <= 2))
@@ -225,7 +214,7 @@ __fzffs_prompt ()
             prompt=${prompt:0:${#prompt}-${#base}}
             [[ $ret == / ]] || ret=${ret%/}
             len_left=$((max_len - ${#ret} - ${#base} - ${#mask}))
-            ret=${ret}${mask}${prompt:${#prompt}-${len_left}}${base}
+            ret="${ret}${mask}${prompt:${#prompt}-${len_left}}${base}"
         fi
 
         prompt=$ret
@@ -267,7 +256,7 @@ __fzffs_select ()
 __fzffs_version ()
 {
     builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "v0.1.0" "${md5sum%  *}"
+    builtin printf '%s (%s)\n'  "v0.1.1" "${md5sum%  *}"
 }
 
 # -- MAIN.
