@@ -14,9 +14,6 @@
 #set -o nounset
 #set -o pipefail
 #trap '(read -p "[$BASH_SOURCE:$LINENO] $BASH_COMMAND?")' DEBUG
-
-# -- SETTINGS.
-
 #typeset vars_base=$(set -o posix ; set)
 #fgrep -v -e "$vars_base" < <(set -o posix ; set) | \
 #egrep -v -e "^BASH_REMATCH=" \
@@ -27,6 +24,13 @@
 #         -e "^FUNCNAME=" | \
 #less
 
+# -- SETTINGS.
+
+builtin typeset -x \
+VIEWER=${VIEWER:-w3m -o 'ext_image_viewer=off' -o 'imgdisplay=w3mimgdisplay'}
+
+builtin typeset -x PAGER=${PAGER:-less -R}
+
 # -- FUNCTIONS.
 
 __fzffs_browse ()
@@ -36,10 +40,11 @@ do
     selection=$(__fzffs_select "$pwd")
     case $selection in
         \[..\]*|*..)    pwd=${pwd%/*} ; pwd=${pwd:-$root}   ;;
+        \[!]*)          command "${SHELL:-sh}"              ;;
         \[.\]*|*.)      builtin :                           ;;
-        \[~\]*)         pwd=$HOME                           ;;
         \[/\]*)         pwd=$root                           ;;
         \[q\]*)         pwd=                                ;;
+        \[~\]*)         pwd=$HOME                           ;;
         *)
             child="${pwd}/$(__fzffs_find "$pwd" "${selection%% *}")"
             child=${child//\/\//\/}
@@ -48,16 +53,7 @@ do
                 pwd=$child
             elif [[ -f $child || -p $child ]]
             then
-                case $(__fzffs_file "$child") in
-                    image*)
-                        command w3m \
-                            -o 'ext_image_viewer=off' \
-                            -o 'imgdisplay=w3mimgdisplay' \
-                            "$child" ;
-                        ;;
-                    *)
-                        command less -R "$child"
-                esac
+                __fzffs_open "$child"
             else
                 pwd=
             fi
@@ -103,7 +99,8 @@ __fzffs_fzf ()
 __fzffs_ls ()
 {
     builtin printf \
-        '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
+        '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
+        "!" "sh" \
         "." "pwd" \
         ".." "up" \
         "/" "root" \
@@ -172,6 +169,17 @@ __fzffs_main ()
     __fzffs_browse
 
     __fzffs_quit
+}
+
+__fzffs_open ()
+{
+    case $(__fzffs_file "$1") in
+        image*)
+            command $VIEWER "$1"
+            ;;
+        *)
+            command $PAGER "$1"
+    esac
 }
 
 __fzffs_prompt ()
@@ -256,7 +264,7 @@ __fzffs_select ()
 __fzffs_version ()
 {
     builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "v0.1.2" "${md5sum%  *}"
+    builtin printf '%s (%s)\n'  "v0.1.3" "${md5sum%  *}"
 }
 
 # -- MAIN.
