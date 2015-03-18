@@ -59,7 +59,7 @@ do
                 pwd=${pwd//\/\//\/}
             elif [[ -f $child || -p $child ]]
             then
-                case $( __fzffs_file "$child") in
+                case $(__fzffs_file "$child") in
                     image*)
                         command w3m \
                             -o 'ext_image_viewer=off' \
@@ -267,7 +267,7 @@ __fzffs_select ()
 __fzffs_version ()
 {
     builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "vx.x.x.x" "${md5sum%  *}"
+    builtin printf '%s (%s)\n'  "v0.1.0" "${md5sum%  *}"
 }
 
 # -- MAIN.
