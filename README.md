@@ -2,7 +2,7 @@
 
 `fzf-fs`(1) acts like a very simple file browser/navigator for the command line by taking advantage of the general-purpose fuzzy finder [fzf](https://github.com/junegunn/fzf).
 
-`fzf-fs`(1) is written in `GNU bash`(1), but it should also work out in `zsh`(1). It has been tested on `Debian GNU/Linux 8 (jessie)` with these programs/packages:
+`fzf-fs`(1) is written in `GNU bash`(1), but it should also work out in `zsh`(1). It follows the Utilities portion of the POSIX specification and has been tested on `Debian GNU/Linux 8 (jessie)` with these programs/packages:
 
 - BSD file 5.22
 - GNU bash 4.3.30
@@ -39,7 +39,7 @@ git checkout $(git describe --abbrev=0 --tags)
 
 #### Usage
 
-Just execute or source it and then select one line in `fzf`(1):
+Just execute or source the `fzf-fs.sh` and then select one line in `fzf`(1):
 
 ```sh
 % source fzf-fs.sh
