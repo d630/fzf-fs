@@ -38,9 +38,11 @@ do
         \[!]*)          __fzffs_shell                       ;;
         \[.\]*|*.)      builtin :                           ;;
         \[/\]*)         pwd=$root                           ;;
+        \[:\]*)         __fzffs_console                     ;;
+        \[e\]*)         FZF_FS_OPENER=$EDITOR               ;;
+        \[p\]*)         FZF_FS_OPENER=$PAGER                ;;
         \[q\]*)         pwd=                                ;;
         \[~\]*)         pwd=$HOME                           ;;
-        \[:\]*)         __fzffs_console                     ;;
         *)
             child="${pwd}/$(__fzffs_find "$pwd" "${selection%% *}")"
             child=${child//\/\//\/}
@@ -63,20 +65,23 @@ __fzffs_console ()
         FZF_DEFAULT_OPTS= ;
 
     builtin typeset command="$(command fzf -i --tac --prompt=: <<-COMMANDS
+set_deference FZF_FS_SYMLINK=L
+set_deference_commandline FZF_FS_SYMLINK=H
 set_lc_collate_c LC_COLLATE=C
 set_lc_collate_lang LC_COLLATE=$LANG
+set_opener FZF_FS_OPENER=interactive
 set_sort FZF_FS_SORT=interactive
-show_atime FZF_FS_LS=-laHiu
-show_ctime FZF_FS_LS=-lacHi
-show_mtime FZF_FS_LS=-laHi
-sort_atime FZF_FS_LS=-laHiut
-sort_basename FZF_FS_LS=-laHi
-sort_ctime FZF_FS_LS=-lacHit
-sort_mtime FZF_FS_LS=-laHit
-sort_natural
+show_atime FZF_FS_LS=-liu
+show_ctime FZF_FS_LS=-lci
+show_hidden FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
+show_mtime FZF_FS_LS=-li
+sort_atime FZF_FS_LS=-liut
+sort_basename FZF_FS_LS=-li
+sort_ctime FZF_FS_LS=-lcit
+sort_mtime FZF_FS_LS=-lit
 sort_reverse FZF_FS_LS_REVERSE=$((FZF_FS_LS_REVERSE ? 0 : 1))
-sort_size
-sort_type FZF_FS_LS_TYPE=$((FZF_FS_LS_TYPE ? 0 : 1))
+sort_size FZF_FS_SORT=-k6,6n
+sort_type FZF_FS_SORT=-k2
 COMMANDS
 )"
 
@@ -84,14 +89,10 @@ COMMANDS
 
     if [[ $FZF_FS_SORT == interactive ]]
     then
-        FZF_FS_SORT=$(command fzf --prompt="sort " --print-query <<< "")
-    else
-        if ((FZF_FS_LS_TYPE == 0))
-        then
-            FZF_FS_SORT=
-        else
-            FZF_FS_SORT=-k2
-        fi
+        FZF_FS_SORT=$(command fzf --prompt="sort " --print-query <&-)
+    elif [[ $FZF_FS_OPENER == interactive ]]
+    then
+        FZF_FS_OPENER=$(command fzf --prompt="FZF_FS_OPENER " --print-query <&-)
     fi
 }
 
@@ -135,20 +136,14 @@ __fzffs_ls ()
 {
     function __fzffs_ls_do
     {
-        command ls ${FZF_FS_LS}${ls_reverse} | command tail -n +2
+        command ls \
+            ${FZF_FS_LS}${FZF_FS_SYMLINK}${ls_hidden}${ls_reverse} | \
+        command tail -n +2
     }
 
-    builtin typeset ls_reverse=
-
-    #~ builtin printf \
-        #~ '_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n_ [%s] %s\n' \
-        #~ "!" "sh" \
-        #~ "." "pwd" \
-        #~ ".." "up" \
-        #~ "/" "root" \
-        #~ ":" "console" \
-        #~ "q" "quit" \
-        #~ "~" "cd" ;
+    builtin typeset \
+        ls_hidden= \
+        ls_reverse= ;
 
     { builtin typeset commands="$(</dev/fd/0)" ; } <<-COMMANDS
 _ [!] sh
@@ -156,6 +151,8 @@ _ [.] pwd
 _ [..] up
 _ [/] root
 _ [:] console
+_ [e] editor
+_ [p] pager
 _ [q] quit
 _ [~] cd
 COMMANDS
@@ -169,10 +166,17 @@ COMMANDS
         ls_reverse=r
     fi
 
+    if ((FZF_FS_LS_HIDDEN == 0))
+    then
+        ls_hidden=
+    else
+        ls_hidden=a
+    fi
+
     # Do not use tac/tail -r or ls -A (POSIX)
     if [[ $FZF_FS_SORT ]]
     then
-        __fzffs_ls_do | command sort $FZF_FS_SORT ;
+        __fzffs_ls_do | command sort $FZF_FS_SORT
     else
         __fzffs_ls_do
     fi
@@ -181,8 +185,10 @@ COMMANDS
 __fzffs_main ()
 {
     builtin typeset \
-        FZF_FS_LS=${FZF_FS_LS:--laHi} \
-        FZF_FS_SORT= \
+        EDITOR=${EDITOR:-vi} \
+        FZF_FS_LS=${FZF_FS_LS:--li} \
+        FZF_FS_SORT=$FZF_FS_SORT \
+        FZF_FS_SYMLINK=$FZF_FS_SYMLINK \
         PAGER=${PAGER:-less -R} \
         child= \
         pwd=$1 \
@@ -191,8 +197,8 @@ __fzffs_main ()
         source= ;
 
     builtin typeset -i \
-        FZF_FS_LS_REVERSE=1 \
-        FZF_FS_LS_TYPE= ;
+        FZF_FS_LS_HIDDEN=${FZF_FS_LS_HIDDEN:-1} \
+        FZF_FS_LS_REVERSE=${FZF_FS_LS_REVERSE:-1} ;
 
     builtin typeset FZF_FS_OPENER=${FZF_FS_OPENER:-$PAGER}
 
@@ -336,7 +342,7 @@ __fzffs_shell () { command "${SHELL:-sh}" ; }
 __fzffs_version ()
 {
     builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "v0.1.5" "${md5sum%  *}"
+    builtin printf '%s (%s)\n'  "v0.1.6" "${md5sum%  *}"
 }
 
 # -- MAIN.
