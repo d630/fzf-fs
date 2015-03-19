@@ -26,11 +26,6 @@
 
 # -- SETTINGS.
 
-builtin typeset -x \
-VIEWER=${VIEWER:-w3m -o 'ext_image_viewer=off' -o 'imgdisplay=w3mimgdisplay'}
-
-builtin typeset -x PAGER=${PAGER:-less -R}
-
 # -- FUNCTIONS.
 
 __fzffs_browse ()
@@ -40,7 +35,7 @@ do
     selection=$(__fzffs_select "$pwd")
     case $selection in
         \[..\]*|*..)    pwd=${pwd%/*} ; pwd=${pwd:-$root}   ;;
-        \[!]*)          command "${SHELL:-sh}"              ;;
+        \[!]*)          __fzffs_shell                       ;;
         \[.\]*|*.)      builtin :                           ;;
         \[/\]*)         pwd=$root                           ;;
         \[q\]*)         pwd=                                ;;
@@ -114,11 +109,14 @@ __fzffs_ls ()
 __fzffs_main ()
 {
     builtin typeset \
+        PAGER=${PAGER:-less -R} \
         child= \
         pwd=$1 \
         root=/ \
-        source= \
-        selection= ;
+        selection= \
+        source= ;
+
+    builtin typeset FZFFS_OPENER=${FZFFS_OPENER:-$PAGER}
 
     builtin typeset -x \
         _fzffs_LC_COLLATE_old=$LC_COLLATE \
@@ -171,16 +169,7 @@ __fzffs_main ()
     __fzffs_quit
 }
 
-__fzffs_open ()
-{
-    case $(__fzffs_file "$1") in
-        image*)
-            command $VIEWER "$1"
-            ;;
-        *)
-            command $PAGER "$1"
-    esac
-}
+__fzffs_open () { command $FZFFS_OPENER "$1" ; }
 
 __fzffs_prompt ()
 {
@@ -239,9 +228,11 @@ __fzffs_quit ()
         __fzffs_help \
         __fzffs_ls \
         __fzffs_main \
+        __fzffs_open \
         __fzffs_prompt \
         __fzffs_quit \
         __fzffs_select \
+        __fzffs_shell \
         __fzffs_version ;
 
     #trap - EXIT TERM
@@ -261,10 +252,12 @@ __fzffs_select ()
     command sed 's/^[_ ]*//' ;
 }
 
+__fzffs_shell () { command "${SHELL:-sh}" ; }
+
 __fzffs_version ()
 {
     builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "v0.1.3" "${md5sum%  *}"
+    builtin printf '%s (%s)\n'  "v0.1.4" "${md5sum%  *}"
 }
 
 # -- MAIN.
