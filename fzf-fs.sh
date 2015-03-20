@@ -335,13 +335,14 @@ __fzffs_prompt ()
         tmp=${prompt//\//}
         delims=$((${#prompt} - ${#tmp}))
 
-        for ((dir=0 ; dir < 2 ; dir++))
+        while ((dir < 2))
         do
             ((dir == delims)) && builtin break
             left=${prompt#*/}
             name=${prompt:0:${#prompt}-${#left}}
             prompt=$left
             ret="${ret}${name%/}/"
+            ((dir++))
         done
 
         if ((delims <= 2))
