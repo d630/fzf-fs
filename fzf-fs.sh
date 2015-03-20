@@ -134,7 +134,15 @@ FUNCTIONS
         done
 
         args=${args%% }
-        builtin printf -v args '%q' "$args"
+
+        # COM Command substitution means subshell, and it removes trailing
+        # newlines before substituting the string, printf -v not
+        if [[ $KSH_VERSION ]]
+        then
+            args=$(__fzffs_echoE "${args@Q}")
+        else
+            builtin printf -v args '%q' "$args"
+        fi
     }
 
     ${func} ${args}
@@ -170,7 +178,8 @@ Usage:
     fzf-fs.sh [<argument>]
 HELP
 
-    builtin printf '%s\n' "$help"
+    __fzffs_echon "$help"
+    __fzffs_echoE
 }
 
 # COM Output ls and commands into fzf.
@@ -200,7 +209,8 @@ _ [q] quit
 _ [~] cd
 COMMANDS
 
-    builtin printf '%s\n' "$commands"
+    __fzffs_echon "$commands"
+    __fzffs_echoE
 
     if ((FZF_FS_LS_REVERSE == 0))
     then
@@ -260,14 +270,17 @@ __fzffs_main ()
     if [[ $BASH_VERSION ]]
     then
         source=${BASH_SOURCE[0]}
+        __fzffs_prepare_bash
     elif [[ $ZSH_VERSION ]]
     then
         source=${(%):-%x}
-    #elif [[ $KSH_VERSION ]]
-    #then
-    #    source=${.sh.file:1}
-    else
+        __fzffs_prepare_zsh
+    elif [[ $KSH_VERSION ]]
+    then
+        # FIXME
+        #source=${.sh.file:1}
         source=$0
+        __fzffs_prepare_mksh
     fi
 
     # COM Determine, in which directory we will start.
@@ -286,8 +299,8 @@ __fzffs_main ()
             pwd=$pwd
         fi
     else
-        builtin printf '%s\n\n' \
-            "${source}:Error:79: Not a directory: '${pwd}'" 1>&2
+        __fzffs_echon "${source}:Error:79: Not a directory: '${pwd}'" 1>&2
+        __fzffs_echoE
         __fzffs_help
         __fzffs_quit
         builtin return 79
@@ -310,6 +323,30 @@ __fzffs_open_with () { command $(builtin eval builtin echo "$@") ; }
 
 # COM page console command.
 __fzffs_page () { builtin eval ${PAGER} "$@" ; }
+
+# COM create custom bash functions to emulate builtins and stay portable.
+__fzffs_prepare_bash ()
+{
+    __fzffs_echo () { builtin printf '%b\n' "$*" ; }
+    __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
+    __fzffs_echon () { builtin printf '%s' "$*" ; }
+}
+
+# COM create custom mksh functions to emulate builtins and stay portable.
+__fzffs_prepare_mksh ()
+{
+    __fzffs_echo () { builtin print -- "$*" ; }
+    __fzffs_echoE () { builtin print -r -- "$*" ; }
+    __fzffs_echon () { builtin print -nr -- "$*" ; }
+}
+
+# COM create custom zsh functions to emulate builtins and stay portable.
+__fzffs_prepare_zsh ()
+{
+    __fzffs_echo () { builtin printf '%b\n' "$*" ; }
+    __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
+    __fzffs_echon () { builtin printf '%s' "$*" ; }
+}
 
 # COM Shorten the path displayed as fzf prompt.
 __fzffs_prompt ()
@@ -366,6 +403,9 @@ __fzffs_quit ()
     builtin unset -f \
         __fzffs_browse \
         __fzffs_console \
+        __fzffs_echo \
+        __fzffs_echoE \
+        __fzffs_echon \
         __fzffs_edit \
         __fzffs_find \
         __fzffs_fzf \
@@ -374,6 +414,9 @@ __fzffs_quit ()
         __fzffs_main \
         __fzffs_open \
         __fzffs_page \
+        __fzffs_prepare_bash \
+        __fzffs_prepare_mksh \
+        __fzffs_prepare_zsh \
         __fzffs_prompt \
         __fzffs_quit \
         __fzffs_select \
@@ -494,8 +537,17 @@ __fzffs_terminal () (command ${SHELL:-sh} -c ${TERMINAL} &)
 # COM Output version of fzf-fs.
 __fzffs_version ()
 {
-    builtin typeset md5sum="$(command md5sum "$source")"
-    builtin printf '%s (%s)\n'  "v0.1.8" "${md5sum%  *}"
+    builtin typeset version=v0.1.8
+
+    if [[ $KSH_VERSION ]]
+    then
+        __fzffs_echon "$version"
+        __fzffs_echoE
+    else
+        builtin typeset md5sum="$(command md5sum "$source")"
+        __fzffs_echon "${version} (${md5sum%  *})"
+        __fzffs_echoE
+    fi
 }
 
 # -- MAIN.
