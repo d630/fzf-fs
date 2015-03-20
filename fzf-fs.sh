@@ -103,8 +103,13 @@ FUNCTIONS
         pr=$3
         builtin shift 3 2>/dev/null
         [[ ${pr/_/} ]] && {
-            command tput cup 99999 0
-            builtin read -re -p "$pr " tmp
+            if [[ $KSH_VERSION ]]
+            then
+                tmp=$(command fzf --prompt="$pr " --print-query <<< "")
+            else
+                command tput cup 99999 0
+                builtin read -re -p "$pr " tmp
+            fi
             builtin set -- ${tmp}
         }
     }
@@ -527,7 +532,7 @@ else
     then
         (builtin eval ${SHELL:-sh} "${@:+-c $@}" \&)
     else
-        builtin eval ${SHELL:-sh} "${@:+-c $@}" ${keep:+\; builtin read -p \'Press ENTER to continue\'}
+        builtin eval ${SHELL:-sh} "${@:+-c $@}" ${keep:+\; command printf '%s\\n' \'Press ENTER to continue\' ; builtin read}
     fi
 fi
 

@@ -32,7 +32,7 @@ git checkout $(git describe --abbrev=0 --tags)
 `fzf-fs`(1) is written in `GNU bash`(1) and follows the Utilities portion of the POSIX specification. It has been tested on `Debian GNU/Linux 8 (jessie)` with these programs/packages:
 
 - GNU bash 4.3.30
-- GNU coreutils 8.23: basename, echo, ls, md5sum, sort, tail
+- GNU coreutils 8.23: basename, echo, ls, md5sum, printf, sort, tail
 - GNU findutils 4.4.2: find
 - GNU nano version 2.2.6
 - GNU sed 4.2.2
