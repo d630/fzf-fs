@@ -1,30 +1,20 @@
-### fzf-fs v0.1.0 [MIT]
+.TH "fzf-fs" "1" "Fri Mar 20 04:08:58 CET 2015" "0.1.8" "README"
 
-`fzf-fs`(1) acts like a very simple file browser/navigator for the command line by taking advantage of the general-purpose fuzzy finder [fzf](https://github.com/junegunn/fzf).
+##### README
 
-`fzf-fs`(1) is written in `GNU bash`(1), but it should also work out in `zsh`(1). It follows the Utilities portion of the POSIX specification and has been tested on `Debian GNU/Linux 8 (jessie)` with these programs/packages:
+fzf-fs(1) acts like a very simple file browser/navigator for the command line by taking advantage of the general-purpose fuzzy finder [fzf](https://github.com/junegunn/fzf). Although coming without Miller columns, fzf-fs(1) is inspired by tools like [lscd](https://github.com/hut/lscd) and [deer](https://github.com/vifon/deer), which both follow the example set by [ranger](https://github.com/hut/ranger).
 
-- BSD file 5.22
-- GNU bash 4.3.30
-- GNU coreutils 8.23: basename, ls, md5sum
-- GNU findutils 4.4.2: find
-- GNU sed 4.2.2
-- XTerm(312)
-- fzf 0.9.4 (Go version)
-- less 458 (GNU regular expressions)
-- ncurses 5.9.20140913: tput
-- w3m 0.5.3 + patch/option w3m-img
-- zsh 5.0.7
+Get in touch with fzf-fs(1) by reading the [USAGE](../master/doc/USAGE.md) text file. Have also a look at the [TODO](../master/doc/TODO.md) document.
 
-Notice that `fzf-fs`(1) contains a (modified) function, that is part of [liquidprompt](https://github.com/nojhan/liquidprompt/blob/master/liquidprompt).
+fzf-fs(1) uses the same [license](https://github.com/junegunn/fzf#license) like fzf(1). Notice that fzf-fs(1) contains a (modified) function, that is part of [liquidprompt](https://github.com/nojhan/liquidprompt/blob/master/liquidprompt).
 
-#### Bugs & Requests
+##### BUGS & REQUESTS
 
-Report it on https://github.com/D630/fzf-fs/issues
+Feel free to open an issue or put in a pull request on https://github.com/D630/fzf-fs
 
-#### Git
+##### GIT
 
-To dowload the very latest source:
+To download the very latest source:
 
 ```
 git clone https://github.com/D630/fzf-fs
@@ -37,16 +27,16 @@ cd ./fzf-fs
 git checkout $(git describe --abbrev=0 --tags)
 ```
 
-#### Usage
+##### NOTICE
 
-Just execute or source the `fzf-fs.sh` and then select one line in `fzf`(1):
+`fzf-fs`(1) is written in `GNU bash`(1) and follows the Utilities portion of the POSIX specification. It has been tested on `Debian GNU/Linux 8 (jessie)` with these programs/packages:
 
-```sh
-% source fzf-fs.sh
-% source fzf-fs.sh <DIR>
-% source fzf-fs.sh <DIR>/
-% source fzf-fs.sh .
-% source fzf-fs.sh ..
-% source fzf-fs.sh ~
-% source fzf-fs.sh ~/
-```
+- GNU bash 4.3.30
+- GNU coreutils 8.23: basename, echo, ls, md5sum, sort, tail
+- GNU findutils 4.4.2: find
+- GNU nano version 2.2.6
+- GNU sed 4.2.2
+- XTerm(312)
+- fzf 0.9.4 (Go version)
+- less 458 (GNU regular expressions)
+- ncurses 5.9.20140913: tput
