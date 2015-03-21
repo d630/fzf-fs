@@ -106,6 +106,10 @@ FUNCTIONS
             if [[ $KSH_VERSION ]]
             then
                 tmp=$(command fzf --prompt="$pr " --print-query <<< "")
+            elif [[ $ZSH_VERSION ]]
+            then
+                command tput cup 99999 0
+                builtin vared -p "$pr " tmp
             else
                 command tput cup 99999 0
                 builtin read -re -p "$pr " tmp
