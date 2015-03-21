@@ -190,7 +190,7 @@ HELP
 # COM Output ls and commands into fzf.
 __fzffs_ls ()
 {
-    function __fzffs_ls_do
+    function __fzffs_ls_do ()
     {
         command ls \
             ${FZF_FS_LS}${FZF_FS_SYMLINK}${ls_hidden}${ls_reverse} | \
