@@ -416,8 +416,9 @@ __fzffs_quit ()
         __fzffs_fzf \
         __fzffs_help \
         __fzffs_ls \
+        __fzffs_ls_do \
         __fzffs_main \
-        __fzffs_open \
+        __fzffs_open_with \
         __fzffs_page \
         __fzffs_prepare_bash \
         __fzffs_prepare_mksh \
