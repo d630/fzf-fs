@@ -133,8 +133,8 @@ FUNCTIONS
         # COM Handle macros.
         for p in "$@"
         do
-            p=${p//\%d/${pwd}}
-            p=${p//\%s/${child}}
+            p=${p//[%][d]/${pwd}}
+            p=${p//[%][s]/${child}}
             args="${args}${p} "
         done
 
