@@ -468,7 +468,7 @@ __fzffs_set ()
 {
     if [[ $1 ]]
     then
-        case $1 in
+        case ${1//\'/} in
             set_deference)             FZF_FS_SYMLINK=L                                       ;;
             set_deference_commandline) FZF_FS_SYMLINK=H                                       ;;
             set_lc_collate_c)          LC_COLLATE=C                                           ;;
