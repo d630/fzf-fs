@@ -453,7 +453,7 @@ __fzffs_quit ()
         _fzffs_LC_COLLATE_old \
         _fzffs_traps_old \
         o ;
-}
+} 2>/dev/null
 
 # COM Pick up a line with fzf.
 __fzffs_select ()
