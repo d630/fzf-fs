@@ -340,6 +340,8 @@ __fzffs_prepare_mksh ()
 # COM create custom zsh functions to emulate builtins and stay portable.
 __fzffs_prepare_zsh ()
 {
+    builtin set -A _fzf_opts_old $(builtin setopt)
+    builtin setopt shwordsplit
     __fzffs_echo () { builtin printf '%b\n' "$*" ; }
     __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
     __fzffs_echon () { builtin printf '%s' "$*" ; }
@@ -426,6 +428,14 @@ __fzffs_quit ()
     #trap - EXIT TERM
     #eval "$_fzffs_traps_old"
 
+    [[ $ZSH_VERSION ]] && {
+        builtin setopt +o shwordsplit
+        for o in "${_fzf_opts_old[@]}"
+        do
+            builtin setopt "$o"
+        done
+    }
+
     builtin typeset -x \
         FZF_DEFAULT_COMMAND=$_fzffs_FZF_DEFAULT_COMMAND_old \
         FZF_DEFAULT_OPTS=$_fzffs_FZF_DEFAULT_OPTS_old \
@@ -433,10 +443,12 @@ __fzffs_quit ()
         LC_COLLATE=C ;
 
     builtin unset -v \
+        _fzf_opts_old \
         _fzffs_FZF_DEFAULT_COMMAND_old \
         _fzffs_FZF_DEFAULT_OPTS_old \
         _fzffs_LC_COLLATE_old \
-        _fzffs_traps_old ;
+        _fzffs_traps_old \
+        o ;
 }
 
 # COM Pick up a line with fzf.
