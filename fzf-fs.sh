@@ -139,15 +139,7 @@ FUNCTIONS
         done
 
         args=${args%% }
-
-        # COM Command substitution means subshell, and it removes trailing
-        # newlines before substituting the string, printf -v not
-        if [[ $KSH_VERSION ]]
-        then
-            args=$(__fzffs_echoE "${args@Q}")
-        else
-            builtin printf -v args '%q' "$args"
-        fi
+        args=\'${args}\'
     }
 
     ${func} ${args}
