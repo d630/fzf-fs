@@ -357,7 +357,7 @@ __fzffs_prepare_zsh ()
 __fzffs_prompt ()
 {
     # COM Modified _lp_shorten_path() from liquidprompt
-    # COM <https://github.com/nojhan/liquidprompt/blob/master/liquidprompt>
+    # <https://github.com/nojhan/liquidprompt/blob/master/liquidprompt>
 
     builtin typeset \
         base= \
