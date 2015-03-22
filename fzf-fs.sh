@@ -558,7 +558,7 @@ __fzffs_terminal () (command ${SHELL:-sh} -c ${TERMINAL} &)
 # COM Output version of fzf-fs.
 __fzffs_version ()
 {
-    builtin typeset version=v0.1.8
+    builtin typeset version=v0.2.0
 
     if [[ $KSH_VERSION ]]
     then
