@@ -104,7 +104,7 @@ Each occurrence of a macro will be replaced.
 console                     internal command to show console command listing
 edit <file>                 Edit file in EDITOR
 page <file>                 Open file in PAGER
-open_with <list>            FIXME
+open_with <list>            Execute command list in the current shell
 shell [-flags] <list>       Execute SHELL
 terminal                    Execute TERMINAL in the background. Open its shell
                             in the current directory
@@ -139,7 +139,7 @@ sort_type                   FZF_FS_SORT=-k2
 Interactively:
 
 ```
-set_opener                  FIXME
+set_opener                  Set FZF_FS_OPENER
 set_sort                    Note that the first column of ls in the browser is
                             internally the second column; the first column
                             shows the inode number like in ls -li

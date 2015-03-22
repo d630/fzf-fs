@@ -326,8 +326,8 @@ __fzffs_main ()
     __fzffs_quit
 }
 
-# FIXME COM open_with console command.
-__fzffs_open_with () { command $(builtin eval builtin echo "$@") ; }
+# COM open_with console command.
+__fzffs_open_with () { builtin eval $(__fzffs_echon builtin eval "$@") ; }
 
 # COM page console command.
 __fzffs_page () { builtin eval ${PAGER} "$@" ; }
