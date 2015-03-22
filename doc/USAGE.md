@@ -4,7 +4,13 @@
 
 `[source] fzf-fs.sh [<directory>]`
 
-Starting fzf-fs is very easy. Just execute or source `fzf-fs.sh` with one or without dir argument. I am using it with `alias f='. fzf-fs.sh` in bash. After starting up, you are confronted with a list of file and command entries in a cursed-based fullscreen session of fzf. I call it the main browser pane; it runs in a while loop and is the starting as well as the endpoint of each session:
+Starting fzf-fs is very easy. Just execute or source `fzf-fs.sh` with one or without dir argument. I am using it in bash with
+
+```sh
+alias f='. fzf-fs.sh`
+```
+
+After starting up, you are confronted with a list of file and command entries in a cursed-based fullscreen session of fzf. I call it the main browser pane; it runs in a while loop and is the starting as well as the endpoint of each session:
 
 ```sh
   drwxr-xr-x  4 user1 user1  4096 Mar 22 01:09 .
@@ -27,10 +33,38 @@ Starting fzf-fs is very easy. Just execute or source `fzf-fs.sh` with one or wit
 [~/var/code/projects/fzf-fs] ::
 ```
 
-Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is ultra fast and has all fuzzy matching and extended-searching qualities of fzf. If a list entry points to a regular file or named pipe, your configured environment variables come into play; entries, which begin with a bracket, are internal commands and have the form `[<shortcut>] <tag> ... <tag>n`:
+Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is ultra fast and has all fuzzy matching and extended-searching qualities of fzf. If a list entry points to a regular file or named pipe, your configured environment variables come into play; you should set the environment variable FZF_FS_OPENER at least. Entries, which begin with a bracket, are internal pointers and have the form `[<shortcut>] <tag> ... <tag>n`:
 
-asdas
-asd
+```
+[!]     Fork SHELL in the current directory
+[..]    Move to parent directory
+[.]     Reload current directory
+[/]     Move to /
+[:]     Open the console
+[e]     Set FZF_FS_OPENER to EDITOR
+[o]     Reset FZF_FS_OPENER to the default
+[p]     Set FZF_FS_OPENER to PAGER
+[q]     Quit
+[~]     Move to HOME
+```
+
+The file type indicators in the first column are (as either of us knows):
+
+```
+-        regular file
+?        some other file type
+C        high performance ('contiguous data') file
+D        door (Solaris 2.5 and up)
+M        off-line ('migrated') file (Cray DMF)
+P        port (Solaris 10 and up)
+b        block special file
+c        character special file
+d        directory
+l        symbolic link
+n        network special file (HP-UX)
+p        FIFO (named pipe)
+s        socket
+```
 
 ##### OPTIONS
 
@@ -57,7 +91,7 @@ Macros are placeholder strings and used in internal commands to point to interna
 
 Each occurrence of a macro will be replaced.
 
-##### COMMANDS
+##### CONSOLE COMMANDS
 
 ```
 console
@@ -83,7 +117,7 @@ set <option>
 
 ##### SETTINGS
 
-With internal set command these internal settings may be set:
+With the internal set command these internal settings may be set:
 
 ```
 set_deference
@@ -98,8 +132,6 @@ set_lc_collate_c
 set_lc_collate_lang
     LC_COLLATE=$LANG
 
-set_opener FZF_FS_OPENER=interactive
-
 set_opener_pager
     FZF_FS_OPENER=$PAGER
 
@@ -108,8 +140,6 @@ set_opener_editor
 
 set_opener_default
     FZF_FS_OPENER=$FZF_FS_OPENER_DEFAULT
-
-set_sort FZF_FS_SORT=interactive
 
 show_atime
     FZF_FS_LS=-liu
@@ -145,6 +175,18 @@ sort_type
     FZF_FS_SORT=-k2
 ```
 
+Interactively:
+
+```
+set_opener
+
+set_sort
+    Note that the first column of ls in the browser is internally the second
+    column; the first column shows the inode number:
+    6291945 -rwx------ 1 user1 user1 15778 Mar 22 02:35 fzf-fs.sh
+```
+
+
 ##### ENVIRONMENT
 
 Currently, there is no configuration file in fzf-fs. But you can set the following environment variables:
@@ -176,8 +218,8 @@ FZF_FS_OPENER
     Fallback: PAGER
 
 FZF_FS_SORT
+    See set_sort setting in setting section
     Fallback: NULL
-
 
 FZF_FS_SYMLINK
     Fallback: NULL
