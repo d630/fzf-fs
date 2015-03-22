@@ -70,6 +70,8 @@ s        socket
 
 ##### OPTIONS
 
+FIXME
+
 ##### FLAGS
 
 Some internal commands may be used with own options to determine their process:
@@ -99,8 +101,8 @@ Each occurrence of a macro will be replaced.
 console                     internal command to show console command listing
 edit <file>                 Edit file in EDITOR
 page <file>                 Open file in PAGER
-open_with <list>
-shell [-flags] <list>      Execute SHELL
+open_with <list>            FIXME
+shell [-flags] <list>       Execute SHELL
 terminal                    Execute TERMINAL in the background. Open its shell
                             in the current directory
 set <option>                Set/Toggle an option
@@ -114,10 +116,10 @@ With the internal set command these internal settings may be set:
 set_deference               FZF_FS_SYMLINK=L
 set_deference_commandline   FZF_FS_SYMLINK=H
 set_lc_collate_c            LC_COLLATE=C
-set_lc_collate_lang         LC_COLLATE=$LANG
-set_opener_default          FZF_FS_OPENER=$FZF_FS_OPENER_DEFAULT
-set_opener_editor           FZF_FS_OPENER=$EDITOR
-set_opener_pager            FZF_FS_OPENER=$PAGER
+set_lc_collate_lang         LC_COLLATE=LANG
+set_opener_default          FZF_FS_OPENER=FZF_FS_OPENER_DEFAULT
+set_opener_editor           FZF_FS_OPENER=EDITOR
+set_opener_pager            FZF_FS_OPENER=PAGER
 show_atime                  FZF_FS_LS=-liu
 show_ctime                  FZF_FS_LS=-lci
 show_hidden                 FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
@@ -134,7 +136,7 @@ sort_type                   FZF_FS_SORT=-k2
 Interactively:
 
 ```
-set_opener
+set_opener                  FIXME
 set_sort                    Note that the first column of ls in the browser is
                             internally the second column; the first column
                             shows the inode number like in ls -li
@@ -149,13 +151,13 @@ EDITOR                      Fallback: nano
 FZF_DEFAULT_COMMAND         Internallly set to: command echo uups
 FZF_DEFAULT_OPTS            Internallly unset
 FZF_FS_DEFAULT_OPTS         Addional fzf options in the main loop. --prompt and
-                            --with-nth cannot be used. Fallback: --x -i
+                            --with-nth cannot be used. Fallback: -x -i
 FZF_FS_LS                   Needs to have the options -l and -i. Fallback: -li
 FZF_FS_LS_HIDDEN            0/1. Fallback: 1
 FZF_FS_LS_REVERSE           0/1. Fallback: 1
 FZF_FS_OPENER               Fallback: PAGER
-FZF_FS_SORT                 See set_sort setting in setting section. Fallback:
-                            NULL
+FZF_FS_SORT                 See set_sort setting in setting section.
+                            Fallback: NULL
 FZF_FS_SYMLINK              Fallback: NULL
 LC_COLLATE                  Internallly set to: C
 PAGER                       Fallback: less -R
