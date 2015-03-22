@@ -70,7 +70,10 @@ s        socket
 
 ##### OPTIONS
 
-FIXME
+```
+-h, --help      Show this instruction
+-v, --version   Print version
+```
 
 ##### FLAGS
 
