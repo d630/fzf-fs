@@ -173,10 +173,12 @@ __fzffs_fzf ()
 __fzffs_help ()
 {
     { builtin typeset help="$(</dev/fd/0)" ; } <<-HELP
-fzf-fs.sh $(__fzffs_version)
-
 Usage:
-    fzf-fs.sh [<argument>]
+    [source] fzf-fs.sh [ -h | -v | <directory> ]
+
+Options:
+    -h                      Show this instruction
+    -v                      Print version
 HELP
 
     __fzffs_echon "$help"
@@ -283,6 +285,11 @@ __fzffs_main ()
         source=$0
         __fzffs_prepare_mksh
     fi
+
+    case $1 in
+        -h|--help)      __fzffs_help ; __fzffs_quit ; return 0     ;;
+        -v|--version)   __fzffs_version ; __fzffs_quit; return 0
+    esac
 
     # COM Determine, in which directory we will start.
     if [[ $pwd == .. ]]
