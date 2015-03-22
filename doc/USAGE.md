@@ -159,7 +159,7 @@ FZF_FS_LS                   Needs to have the options -l and -i. Fallback: -li
 FZF_FS_LS_HIDDEN            0/1. Fallback: 1
 FZF_FS_LS_REVERSE           0/1. Fallback: 1
 FZF_FS_OPENER               Fallback: PAGER
-FZF_FS_SORT                 See set_sort setting in setting section.
+FZF_FS_SORT                 See set_sort setting in the setting section.
                             Fallback: NULL
 FZF_FS_SYMLINK              Fallback: NULL
 LC_COLLATE                  Internallly set to: C
