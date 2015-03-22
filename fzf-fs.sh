@@ -177,8 +177,8 @@ Usage:
     [source] fzf-fs.sh [ -h | -v | <directory> ]
 
 Options:
-    -h                      Show this instruction
-    -v                      Print version
+    -h, --help      Show this instruction
+    -v, --version   Print version
 HELP
 
     __fzffs_echon "$help"
