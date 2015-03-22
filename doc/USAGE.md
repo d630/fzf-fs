@@ -12,7 +12,7 @@ alias f='. fzf-fs.sh'
 
 After starting up, you are confronted with a list of file and command entries in a cursed-based fullscreen session of fzf. I call it "the main browser pane"; it runs in a while loop and is the starting as well as the endpoint of each session:
 
-```sh
+```
   drwxr-xr-x  4 user1 user1  4096 Mar 22 01:09 .
   drwxr-xr-x 23 user1 user1  4096 Mar 11 01:00 ..
   drwx------  8 user1 user1  4096 Mar 21 09:26 .git
@@ -33,7 +33,7 @@ After starting up, you are confronted with a list of file and command entries in
 [~/var/code/projects/fzf-fs] ::
 ```
 
-Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is ultra fast and has all fuzzy matching and extended-searching qualities of fzf. If a list entry points to a regular file or named pipe, your configured environment variables come into play; you should set the environment variable FZF_FS_OPENER at least. Entries, which begin with a bracket, are internal pointers and have the form `[<shortcut>] <tag> ... <tag>n`:
+Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is ultra fast and has all fuzzy matching and extended-searching qualities of fzf. If a list entry points to a regular file or named pipe, your configured environment variables come into play; you should set the environment variable FZF_FS_OPENER at least. If you are in the dark, what opener to use, have a look at [this](https://wiki.archlinux.org/index.php/xdg-open). Entries, which begin with a bracket, are internal pointers and have the form `[<shortcut>] <tag> ... <tag>n`:
 
 ```
 [!]     Fork SHELL in the current directory
@@ -66,7 +66,7 @@ p        FIFO (named pipe)
 s        socket
 ```
 
-(Have you ever seen a real Solaris system? Me neither...)
+(Obligatory question: Have you ever seen a real Solaris system? Me neither...)
 
 ##### OPTIONS
 
