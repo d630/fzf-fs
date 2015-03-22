@@ -335,17 +335,17 @@ __fzffs_page () { builtin eval ${PAGER} "$@" ; }
 # COM create custom bash functions to emulate builtins and stay portable.
 __fzffs_prepare_bash ()
 {
-    __fzffs_echo () { builtin printf '%b\n' "$*" ; }
-    __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
-    __fzffs_echon () { builtin printf '%s' "$*" ; }
+    function __fzffs_echo () { builtin printf '%b\n' "$*" ; }
+    function __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
+    function __fzffs_echon () { builtin printf '%s' "$*" ; }
 }
 
 # COM create custom mksh functions to emulate builtins and stay portable.
 __fzffs_prepare_mksh ()
 {
-    __fzffs_echo () { builtin print -- "$*" ; }
-    __fzffs_echoE () { builtin print -r -- "$*" ; }
-    __fzffs_echon () { builtin print -nr -- "$*" ; }
+    function __fzffs_echo () { builtin print -- "$*" ; }
+    function __fzffs_echoE () { builtin print -r -- "$*" ; }
+    function __fzffs_echon () { builtin print -nr -- "$*" ; }
 }
 
 # COM create custom zsh functions to emulate builtins and stay portable.
@@ -353,9 +353,9 @@ __fzffs_prepare_zsh ()
 {
     builtin set -A _fzf_opts_old $(builtin setopt)
     builtin setopt shwordsplit
-    __fzffs_echo () { builtin printf '%b\n' "$*" ; }
-    __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
-    __fzffs_echon () { builtin printf '%s' "$*" ; }
+    function __fzffs_echo () { builtin printf '%b\n' "$*" ; }
+    function __fzffs_echoE () { builtin printf '%s\n' "$*" ; }
+    function __fzffs_echon () { builtin printf '%s' "$*" ; }
 }
 
 # COM Shorten the path displayed as fzf prompt.
