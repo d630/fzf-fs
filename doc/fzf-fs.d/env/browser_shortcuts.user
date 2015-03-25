@@ -1,0 +1,6 @@
+[!] console/shell
+[/] console/cd $browser_root
+[:] console
+[q] quit
+[~] console/cd $HOME
+[-] console/cd $OLDPWD

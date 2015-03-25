@@ -4,12 +4,9 @@
 
 - "VIEW MODE" with multi handling to cut, paste etc. and create more macros
 - "buffer" handling and interaction
-- don't use the console command console per default
-- colors => waiting for shiny fzf --ansi
-- more settings
+- colors => implement fzf --ansi
 - history via shell builtins
 - more console commands and integration of tools like z
-- config file with custom command aliases
 - check all against mksh and zsh
 - take OS X into consideration
 - rewrite code from liquidprompt

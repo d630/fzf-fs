@@ -1,0 +1,4 @@
+console_func () 
+{ 
+    ( command ${SHELL:-sh} -c ${TERMINAL} & )
+}
