@@ -62,7 +62,7 @@ __fzffs_init ()
 /console/set/deference|console="FZF_FS_SYMLINK=L"
 /console/set/lc_collate_c|console="LC_COLLATE=C"
 /console/set/lc_collate_lang|console="LC_COLLATE=$LANG"
-/console/set/opener_console_default|console="FZF_FS_OPENER_CONSOLE="|d
+/console/set/opener_console_default|console="FZF_FS_OPENER_CONSOLE=$FZF_FS_OPENER_CONSOLE_DEFAULT"|d
 /console/set/opener_console_editor|console="FZF_FS_OPENER_CONSOLE=$EDITOR"|e
 /console/set/opener_console_pager|console="FZF_FS_OPENER_CONSOLE=$PAGER"|p
 /console/set/opener_default|console="FZF_FS_OPENER=$FZF_FS_OPENER_DEFAULT"|d
@@ -107,8 +107,9 @@ builtin typeset -x FZF_DEFAULT_COMMAND_OLD="${FZF_DEFAULT_COMMAND:+${FZF_DEFAULT
 builtin typeset -x FZF_FS_DEFAULT_OPTS_OLD="${FZF_DEFAULT_OPTS:+${FZF_DEFAULT_OPTS}}"
 builtin typeset -x LC_COLLATE_OLD="$LC_COLLATE"
 builtin typeset FZF_FS_OPENER_CONSOLE="$FZF_FS_OPENER_CONSOLE"
-builtin typeset FZF_FS_OPENER_DEFAULT="$FZF_FS_OPENER"
+builtin typeset FZF_FS_OPENER_CONSOLE_DEFAULT="$FZF_FS_OPENER_CONSOLE"
 builtin typeset FZF_FS_OPENER="${FZF_FS_OPENER:-${PAGER}}"
+builtin typeset FZF_FS_OPENER_DEFAULT="$FZF_FS_OPENER"
 builtin typeset -x FZF_DEFAULT_COMMAND="command echo uups"
 builtin typeset -x FZF_DEFAULT_OPTS=
 builtin typeset -x LC_COLLATE=C
@@ -237,6 +238,7 @@ CODE
     s=;
     while IFS='|' builtin read -r f v s; do
         __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}${f}" 1>&2;
+        __fzffs_util_echoE "#!/usr/bin/env bash" > "${FZF_FS_CONFIG_DIR}${f}";
         __fzffs_util_rename_function "$v" console_func;
         if [[ "$v" == *"open_with" ]]; then
             builtin typeset -f console_func | command sed 's/builtin eval ${EDITOR} "$console_args"/builtin eval "$(__fzffs_util_echon builtin eval "$console_args")"/' >> "${FZF_FS_CONFIG_DIR}${f}";
@@ -268,7 +270,11 @@ CODE
 /console/terminal|__fzffs_console_terminal|t
 COMMANDS
 
-    builtin unset -f __fzffs_console_edit __fzffs_console_shell __fzffs_console_terminal __fzffs_util_rename_function;
+    builtin unset -f \
+        __fzffs_console_edit \
+        __fzffs_console_shell \
+        __fzffs_console_terminal \
+        __fzffs_util_rename_function;
 
     __fzffs_util_echoE "${source}:Info: Initialized empty fzf-fs config directory in ${FZF_FS_CONFIG_DIR}" 1>&2;
 

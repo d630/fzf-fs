@@ -280,7 +280,7 @@ __fzffs_console ()
             builtin shift 1;
             builtin unset -v console;
             builtin typeset console=;
-            builtin unset -f console_func;
+            builtin unset -f console_func 2> /dev/null;
             builtin . "$console_file";
             [[ -n $console ]] && builtin eval "$console";
             if builtin typeset -f console_func > /dev/null; then

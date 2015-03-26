@@ -1,10 +1,1 @@
-flags_func ()
-{
-    case $REPLY in
-        #r)  Run application with root privilege (requires sudo)
-        f)  console_fork_background=console_fork_background     ;;
-        k)  console_keep=console_keep                           ;;
-        t)  console_terminal=console_terminal                   ;;
-        *)  builtin :
-    esac
-}
+builtin . "${FZF_FS_CONFIG_DIR}/env/flags.default"

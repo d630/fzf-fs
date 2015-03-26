@@ -1,1 +1,1 @@
-console=LC_COLLATE=$LANG
+console="LC_COLLATE=$LANG"

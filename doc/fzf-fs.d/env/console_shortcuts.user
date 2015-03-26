@@ -5,7 +5,6 @@
 [ ] set/deference
 [ ] set/lc_collate_c
 [ ] set/lc_collate_lang
-[-] set/oldpwd
 [d] set/opener_console_default
 [e] set/opener_console_editor
 [p] set/opener_console_pager
