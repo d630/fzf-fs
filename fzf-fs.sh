@@ -28,281 +28,267 @@
 
 # -- FUNCTIONS.
 
-# COM Main selection loop.
 __fzffs_browser ()
 {
-    # COM Determine, in which directory we will start.
-    builtin unset -v browser_oldpwd browser_pwd browser_root
+    builtin unset -v \
+        browser_pwd \
+        browser_root;
     builtin typeset \
         browser_pwd=$1 \
-        browser_root=/ ;
+        browser_root=/;
 
-    if [[ $browser_pwd == .. ]]
-    then
-        browser_pwd=${PWD%/*}
-    elif [[ ${browser_pwd:-.} == . ]]
-    then
-        browser_pwd=$PWD
-    elif [[ -d $browser_pwd ]]
-    then
-        if [[ ${browser_pwd:${#browser_pwd}-1} == / ]]
-        then
-            browser_pwd=${browser_pwd%/*}
-        else
-            browser_pwd=$browser_pwd
-        fi
+    if [[ $browser_pwd == ".." ]]; then
+        browser_pwd="${PWD%/*}";
     else
-        __fzffs_util_echoE "${source}:Error:79: Not a directory: '${browser_pwd}'" 1>&2
-        __fzffs_help
-        __fzffs_quit
-        builtin return 79
-    fi
-    browser_pwd=${browser_pwd:-$browser_root}
+        if [[ "${browser_pwd:-.}" == \. ]]; then
+            browser_pwd="$PWD";
+        else
+            if [[ -d "$browser_pwd" ]]; then
+                if [[ "${browser_pwd:${#browser_pwd}-1}" == "/" ]]; then
+                    browser_pwd="${browser_pwd%/*}";
+                else
+                    browser_pwd="$browser_pwd";
+                fi;
+            else
+                __fzffs_util_echoE "${source}:Error:79: Not a directory: '${browser_pwd}'" 1>&2;
+                __fzffs_help;
+                builtin return 79;
+            fi;
+        fi;
+    fi;
+    browser_pwd="${browser_pwd:-$browser_root}";
 
-    builtin unset -v browser_file browser_selection
+    builtin unset -v \
+        browser_file \
+        browser_selection;
     builtin typeset \
         browser_file= \
-        browser_selection= ;
+        browser_selection=;
 
-    while [[ -n $browser_pwd ]]
-    do
+    while [[ -n "$browser_pwd" ]]; do
         builtin cd "$browser_pwd";
-        browser_selection=$(__fzffs_browser_select "$browser_pwd");
-        case $browser_selection in
-            \[q\]*)
+        browser_selection="$(__fzffs_browser_select "$browser_pwd")";
+        case "$browser_selection" in
+            "[q]"*)
                 browser_pwd=
             ;;
-            \[*)
-                builtin unset -v c
-                builtin typeset c=
-                browser_selection=${browser_selection##*\] }
-                builtin eval __fzffs_console ${browser_selection}
+            "["*)
+                browser_selection="${browser_selection##*\] }";
+                builtin eval __fzffs_console "${browser_selection}"
             ;;
             *)
-                if [[ ${browser_selection##* } == .. ]]
-                then
-                    browser_pwd=${browser_pwd%/*}
-                    browser_pwd=${browser_pwd:-$browser_root}
-                    builtin continue
-                elif [[ ${browser_selection##* } == . ]]
-                then
-                    browser_pwd=$browser_pwd
-                    builtin continue
-                fi
-                browser_file="${browser_pwd}/$(__fzffs_browser_find "$browser_pwd" "${browser_selection%% *}")"
-                browser_file=${browser_file//\/\//\/}
-                if [[ -d $browser_file ]]; then
-                    browser_pwd=$browser_file;
+                if [[ "${browser_selection##* }" == ".." ]]; then
+                    browser_pwd="${browser_pwd%/*}";
+                    browser_pwd="${browser_pwd:-$browser_root}";
+                    builtin continue;
                 else
-                    if [[ -e $browser_file ]]; then
+                    if [[ "${browser_selection##* }" == "." ]]; then
+                        browser_pwd="$browser_pwd";
+                        builtin continue;
+                    fi;
+                fi;
+                browser_file="${browser_pwd}/$(__fzffs_browser_find "$browser_pwd" "${browser_selection%% *}")";
+                browser_file="${browser_file//\/\//\/}";
+                if [[ -d "$browser_file" ]]; then
+                    browser_pwd="$browser_file";
+                else
+                    if [[ -e "$browser_file" ]]; then
                         __fzffs_console console/open_with "$FZF_FS_OPENER" "$browser_file";
                     else
                         browser_pwd=;
                     fi;
                 fi
+            ;;
         esac;
     done
 }
 
 __fzffs_browser_find ()
 {
-    command find \
-        -H "${1}/." \
-        ! -name . \
-        -prune \
-        -inum "$2" \
-        -exec basename '{}' \; \
-        2>/dev/null ;
+    command find -H "${1}/." ! -name . -prune -inum "$2" -exec basename '{}' \; 2> /dev/null
 }
 
 __fzffs_browser_fzf ()
 {
-    builtin unset -v prompt
-    builtin typeset prompt=${1/${HOME}/\~}
-    __fzffs_browser_prompt
-    command fzf $FZF_FS_DEFAULT_OPTS --prompt="[$prompt] "
+    builtin unset -v prompt;
+    builtin typeset prompt="${1/${HOME}/~}";
+    __fzffs_browser_prompt;
+    command fzf ${FZF_FS_DEFAULT_OPTS} --prompt="[$prompt] "
 }
-
-# COM Output ls and commands into fzf.
 __fzffs_browser_ls ()
 {
     function __fzffs_browser_ls_do ()
     {
-        command ls \
-            ${FZF_FS_LS}${FZF_FS_SYMLINK}${ls_hidden}${ls_reverse} | \
-        command tail -n +2
-    }
+        command ls ${FZF_FS_LS}${FZF_FS_SYMLINK}${ls_hidden}${ls_reverse} | command tail -n +2
+    };
 
-    builtin unset -v ls_hidden ls_reverse ls_color
+    builtin unset -v \
+        ls_hidden \
+        ls_reverse \
+        ls_color;
     builtin typeset \
         ls_hidden= \
         ls_color= \
-        ls_reverse= ;
+        ls_reverse=;
 
-    command sed 's/^/_ /' "${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user"
+    command sed 's/^/_ /' "${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user";
 
-    if ((FZF_FS_LS_REVERSE == 0))
-    then
-        ls_reverse=
+    if ((FZF_FS_LS_REVERSE == 0)); then
+        ls_reverse=;
     else
-        ls_reverse=r
-    fi
-
-    if ((FZF_FS_LS_HIDDEN == 0))
-    then
-        ls_hidden=
+        ls_reverse=r;
+    fi;
+    if ((FZF_FS_LS_HIDDEN == 0)); then
+        ls_hidden=;
     else
-        ls_hidden=a
-    fi
-
-    if ((FZF_FS_LS_CLICOLOR == 0))
-    then
-        ls_color=
+        ls_hidden=a;
+    fi;
+    if ((FZF_FS_LS_CLICOLOR == 0)); then
+        ls_color=;
     else
-        ls_color=
-    fi
+        ls_color=;
+    fi;
 
-    # COM Do not use tac/tail -r or ls -A (POSIX).
-    if [[ $FZF_FS_SORT ]]
-    then
-        __fzffs_browser_ls_do | command sort $FZF_FS_SORT
+    if [[ -n "$FZF_FS_SORT" ]]; then
+        __fzffs_browser_ls_do | command sort ${FZF_FS_SORT};
     else
-        __fzffs_browser_ls_do
+        __fzffs_browser_ls_do;
     fi
 }
-
-# COM Shorten the path displayed as fzf prompt.
 __fzffs_browser_prompt ()
 {
-    # COM Modified _lp_shorten_path() from liquidprompt
-    # <https://github.com/nojhan/liquidprompt/blob/master/liquidprompt>
-
-    builtin unset -v base left mask name ret tmp
+    builtin unset -v \
+        base \
+        left \
+        mask \
+        name \
+        ret \
+        tmp;
     builtin typeset \
         base= \
         left= \
         mask=" ... " \
         name= \
         ret= \
-        tmp= ;
-
-    builtin unset -v delims dir len_left max_len
+        tmp=;
+    builtin unset -v \
+        delims \
+        dir \
+        len_left \
+        max_len;
     builtin typeset -i \
         delims= \
         dir= \
         len_left= \
-        max_len=$((${COLUMNS:-80} * 35 / 100)) ;
+        max_len="$((${COLUMNS:-80} * 35 / 100))";
 
     ((${#prompt} > max_len)) && {
-        tmp=${prompt//\//}
-        delims=$((${#prompt} - ${#tmp}))
+        tmp="${prompt//\//}";
+        delims="$((${#prompt} - ${#tmp}))";
 
-        while ((dir < 2))
-        do
-            ((dir == delims)) && builtin break
-            left=${prompt#*/}
-            name=${prompt:0:${#prompt}-${#left}}
-            prompt=$left
-            ret="${ret}${name%/}/"
-            ((dir++))
-        done
+        while ((dir < 2)); do
+            ((dir == delims)) && builtin break;
+            left="${prompt#*/}";
+            name="${prompt:0:${#prompt}-${#left}}";
+            prompt="$left";
+            ret="${ret}${name%/}/";
+            ((dir++));
+        done;
 
-        if ((delims <= 2))
-        then
-            ret=${ret}${prompt##*/}
+        if ((delims <= 2)); then
+            ret="${ret}${prompt##*/}";
         else
-            base=${prompt##*/}
-            prompt=${prompt:0:${#prompt}-${#base}}
-            [[ $ret == / ]] || ret=${ret%/}
-            len_left=$((max_len - ${#ret} - ${#base} - ${#mask}))
-            ret="${ret}${mask}${prompt:${#prompt}-${len_left}}${base}"
-        fi
+            base="${prompt##*/}";
+            prompt="${prompt:0:${#prompt}-${#base}}";
+            [[ "$ret" == "/" ]] || ret="${ret%/}";
+            len_left="$((max_len - ${#ret} - ${#base} - ${#mask}))";
+            ret="${ret}${mask}${prompt:${#prompt}-${len_left}}${base}";
+        fi;
 
-        prompt=$ret
+        prompt="$ret"
     }
 }
-
-# COM Pick up a line with fzf.
 __fzffs_browser_select ()
 {
-    __fzffs_browser_ls "$1" | \
-    __fzffs_browser_fzf "$1" | \
-    command sed 's/^[_ ]*//' ;
+    __fzffs_browser_ls "$1" | __fzffs_browser_fzf "$1" | command sed 's/^[_ ]*//'
 }
-
-# COM Backend to process console commands coming from the main loop.
 __fzffs_console ()
 {
-    if (($# == 0))
-    then
-        builtin return 1
-    elif [[ $1 == console ]]
-    then
-        builtin shift 1
-    fi
+    if (($# == 0)); then
+        builtin return 1;
+    else
+        if [[ "$1" == "console" ]]; then
+            builtin shift 1;
+        fi;
+    fi;
 
-    builtin unset -v console_args console_file console_interactive console_selection console_fork_background console_keep console_terminal
+    builtin unset -v \
+        console_args \
+        console_file \
+        console_fork_background \
+        console_interactive \
+        console_keep \
+        console_selection \
+        console_terminal;
     builtin typeset \
         console_args= \
         console_file= \
-        console_selection= \
         console_fork_background= \
         console_keep= \
-        console_terminal= ;
-    builtin typeset -i console_interactive=
+        console_selection= \
+        console_terminal=;
+    builtin typeset -i console_interactive=;
 
-    if (($# == 0))
-    then
-        console_interactive+=1
-        while builtin :
-        do
-            console_selection=$(__fzffs_console_select "$FZF_FS_OPENER_CONSOLE")
-            case $console_selection in
-                \[q\]*)
-                    builtin return 0 ;;
+    if (($# == 0)); then
+        console_interactive+=1;
+        while builtin :; do
+            console_selection="$(__fzffs_console_select "$FZF_FS_OPENER_CONSOLE")";
+            case "$console_selection" in
+                "[q]"*)
+                    builtin return 0
+                ;;
                 *)
-                    console_file=${FZF_FS_CONFIG_DIR}/console/${console_selection##* }
-                    if [[ -f $console_file ]]
-                    then
-                        builtin unset -v console
-                        builtin typeset console=
-                        if [[ $console_selection == \[*\]\ set/opener_console_default ]]
-                        then
-                            builtin . "$console_file"
-                            [[ $console ]] && builtin eval "$console"
-                        elif [[ $FZF_FS_OPENER_CONSOLE ]]
-                        then
-                            command ${FZF_FS_OPENER_CONSOLE} "$console_file"
+                    console_file="${FZF_FS_CONFIG_DIR}/console/${console_selection##* }";
+                    if [[ -f "$console_file" ]]; then
+                        builtin unset -v console;
+                        builtin typeset console=;
+                        if [[ "$console_selection" == \[*\]\ set/opener_console_default ]]; then
+                            builtin . "$console_file";
+                            [[ -n "$console" ]] && builtin eval "$console";
                         else
-                            builtin unset -f console_func
-                            builtin . "$console_file"
-                            [[ $console ]] && builtin eval "$console"
-                            if builtin typeset -f console_func >/dev/null
-                            then
-                                console_func
-                            fi
-                        fi
-                        console_file=
+                            if [[ -n "$FZF_FS_OPENER_CONSOLE" ]]; then
+                                command ${FZF_FS_OPENER_CONSOLE} "$console_file";
+                            else
+                                builtin unset -f console_func;
+                                builtin . "$console_file";
+                                [[ -n "$console" ]] && builtin eval "$console";
+                                if builtin typeset -f console_func > /dev/null; then
+                                    console_func;
+                                fi;
+                            fi;
+                        fi;
+                        console_file=;
                     else
-                        FZF_FS_OPENER_CONSOLE=
+                        FZF_FS_OPENER_CONSOLE=;
                     fi
-            esac
-        done
+                ;;
+            esac;
+        done;
     else
-        console_file=${FZF_FS_CONFIG_DIR}/${1}
-        if [[ -f $console_file ]]
-        then
-            builtin shift 1
-            builtin unset -v console
-            builtin typeset console=
-            builtin unset -f console_func
-            builtin . "$console_file"
-            [[ $console ]] && builtin eval "$console"
-            if builtin typeset -f console_func >/dev/null
-            then
-                console_func "$*"
-            fi
-        fi
+        console_file="${FZF_FS_CONFIG_DIR}/${1}";
+        if [[ -f "$console_file" ]]; then
+            builtin shift 1;
+            builtin unset -v console;
+            builtin typeset console=;
+            builtin unset -f console_func;
+            builtin . "$console_file";
+            [[ -n $console ]] && builtin eval "$console";
+            if builtin typeset -f console_func > /dev/null; then
+                console_func "$*";
+            fi;
+        else
+            console_file=;
+        fi;
     fi
 }
 
@@ -313,10 +299,9 @@ __fzffs_console_fzf ()
 
 __fzffs_console_ls ()
 {
-    builtin unset -v shortcuts
-    builtin typeset shortcuts="$(< "${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user")"
-    __fzffs_util_echoE "$shortcuts"
-
+    builtin unset -v shortcuts;
+    builtin typeset shortcuts="$(< "${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user")";
+    __fzffs_util_echoE "$shortcuts";
     __fzffs_util_echoE "[q] quit"
 }
 
@@ -327,8 +312,10 @@ __fzffs_console_select ()
 
 __fzffs_help ()
 {
-    builtin unset -v help
-    { builtin typeset help="$(</dev/fd/0)" ; } <<-HELP
+    builtin unset -v help;
+    {
+        builtin typeset help="$(</dev/fd/0)"
+    }  <<-'HELP'
 Usage
     [source] fzf-fs.sh [ -h | -i | -v | <directory> ]
 
@@ -339,121 +326,136 @@ Options
 
 Environment variables
     FZF_FS_CONFIG_DIR
-            \${XDG_CONFIG_HOME:-\${HOME}/.config}/fzf-fs.d
+            ${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d
 HELP
 
-    __fzffs_util_echon "$help"
-    __fzffs_util_echoE
+    __fzffs_util_echoE "$help"
 }
 
 __fzffs_main ()
 {
-    # COM Get the filename of the script, used in version().
-    builtin unset -v source
-    builtin typeset source=
-    if [[ $BASH_VERSION ]]
-    then
-        source=${BASH_SOURCE[0]}
-        __fzffs_prepare_bash
-    elif [[ $ZSH_VERSION ]]
-    then
-        source=${(%):-%x}
-        __fzffs_prepare_zsh
-    elif [[ $KSH_VERSION ]]
-    then
-        # FIXME
-        #source=${.sh.file:1}
-        source=$0
-        __fzffs_prepare_mksh
-    fi
+    builtin unset -v source;
+    builtin typeset source=;
 
-    builtin typeset \
-    FZF_FS_CONFIG_DIR="${FZF_FS_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}"
+    if [[ -n "$BASH_VERSION" ]]; then
+        source="${BASH_SOURCE[0]}";
+        __fzffs_prepare_bash;
+    else
+        if [[ -n "$ZSH_VERSION" ]]; then
+            source="${(%):-%x}";
+            __fzffs_prepare_zsh;
+        else
+            if [[ -n "$KSH_VERSION" ]]; then
+                source="$0";
+                __fzffs_prepare_mksh;
+            fi;
+        fi;
+    fi;
+
+    builtin typeset FZF_FS_CONFIG_DIR="${FZF_FS_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}";
 
     case $1 in
-        -h|--help)
-            __fzffs_help
-            __fzffs_quit
+        "-h" | "--help")
+            __fzffs_help;
+            __fzffs_quit;
             return 0
         ;;
-        -i|--init)
-            builtin . fzf-fs-init
-            __fzffs_quit
+        "-i" | "--init")
+            builtin . fzf-fs-init;
+            __fzffs_quit;
             return $?
         ;;
-        -v|--version)
-            __fzffs_version
-            __fzffs_quit
+        "-v" | "--version")
+            __fzffs_version;
+            __fzffs_quit;
             return 0
-    esac
+        ;;
+    esac;
 
-    # COM OS detection, default to Linux
-    #~ builtin typeset -i uname=
-    #~ case $(command uname) in
-        #~ FreeBSD|DragonFly)  uname=1     ;; # FreeBSD
-        #~ OpenBSD)            uname=1     ;; # OpenBSD
-        #~ Darwin)             uname=1     ;; # Darwin
-        #~ SunOS)              uname=2     ;; # Sun0S
-        #~ *)                  uname=0
-    #~ esac
+    builtin . "${FZF_FS_CONFIG_DIR}"/env/env.user || __fzffs_util_echoE "${source}:Error:81: Environment file missing" 1>&2;
 
-    builtin . "${FZF_FS_CONFIG_DIR}"/env/env.user || \
-    __fzffs_util_echoE "${source}:Error:81: Environment file missing" 1>&2
+    __fzffs_browser "$1";
 
-    # COM Go to alternate screen.
-    { command tput smcup || command tput ti ; } 2>/dev/null
-
-    # COM Start main loop to select lines.
-    __fzffs_browser "$1"
-
-    # COM Clean up in the end.
     __fzffs_quit
 }
-
-# COM create custom bash functions to emulate builtins and stay portable.
 __fzffs_prepare_bash ()
 {
-    function __fzffs_quit_sh    () { builtin : ; }
-    function __fzffs_util_echo  () { IFS=" " builtin printf '%b\n' "$*" ; }
-    function __fzffs_util_echoE () { IFS=" " builtin printf '%s\n' "$*" ; }
-    function __fzffs_util_echon () { IFS=" " builtin printf '%s' "$*" ; }
-}
+    function __fzffs_quit_sh ()
+    {
+        builtin :
+    };
 
-# COM create custom mksh functions to emulate builtins and stay portable.
+    function __fzffs_util_echo ()
+    {
+        IFS=" " builtin printf '%b\n' "$*"
+    };
+
+    function __fzffs_util_echoE ()
+    {
+        IFS=" " builtin printf '%s\n' "$*"
+    };
+
+    function __fzffs_util_echon ()
+    {
+        IFS=" " builtin printf '%s' "$*"
+    }
+}
 __fzffs_prepare_mksh ()
 {
-    function __fzffs_quit_sh    () { builtin : ; }
-    function __fzffs_util_echo  () { IFS=" " builtin print -- "$*" ; }
-    function __fzffs_util_echoE () { IFS=" " builtin print -r -- "$*" ; }
-    function __fzffs_util_echon () { IFS=" " builtin print -nr -- "$*" ; }
-}
+    function __fzffs_quit_sh ()
+    {
+        builtin :
+    };
 
-# COM create custom zsh functions to emulate builtins and stay portable.
+    function __fzffs_util_echo ()
+    {
+        IFS=" " builtin print -- "$*"
+    };
+
+    function __fzffs_util_echoE ()
+    {
+        IFS=" " builtin print -r -- "$*"
+    };
+
+    function __fzffs_util_echon ()
+    {
+        IFS=" " builtin print -nr -- "$*"
+    }
+}
 __fzffs_prepare_zsh ()
 {
-    builtin unset -v FZF_FS_ZSH_OPTS_OLD
-    builtin set -A FZF_FS_ZSH_OPTS_OLD $(builtin setopt)
-    builtin setopt shwordsplit
+    builtin unset -v FZF_FS_ZSH_OPTS_OLD;
+    builtin set -A FZF_FS_ZSH_OPTS_OLD "$(builtin setopt)";
+    builtin setopt shwordsplit;
 
     function __fzffs_quit_sh ()
     {
-        builtin setopt +o shwordsplit
-        builtin unset -v o
-        for o in "${FZF_FS_ZSH_OPTS_OLD[@]}"
+        builtin setopt +o shwordsplit;
+        builtin unset -v o;
+        for o in "${FZF_FS_ZSH_OPTS_OLD[@]}";
         do
-            builtin setopt "$o"
+            builtin setopt "$o";
         done
+    };
+
+    function __fzffs_util_echo ()
+    {
+        IFS=" " builtin printf '%b\n' "$*"
+    };
+
+    function __fzffs_util_echoE ()
+    {
+        IFS=" " builtin printf '%s\n' "$*"
+    };
+
+    function __fzffs_util_echon ()
+    {
+        IFS=" " builtin printf '%s' "$*"
     }
-
-    function __fzffs_util_echo  () { IFS=" " builtin printf '%b\n' "$*" ; }
-    function __fzffs_util_echoE () { IFS=" " builtin printf '%s\n' "$*" ; }
-    function __fzffs_util_echon () { IFS=" " builtin printf '%s' "$*" ; }
 }
-
-# COM Cleanup before exit.
 __fzffs_quit ()
 {
-    __fzffs_quit_sh
+    __fzffs_quit_sh;
 
     builtin unset -f \
         __fzffs_browser \
@@ -482,69 +484,62 @@ __fzffs_quit ()
         __fzffs_util_parse_flags \
         __fzffs_util_parse_macros \
         __fzffs_version \
-        console_func ;
+        console_func \
+        flags_func;
 
     builtin typeset -x \
         FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND_OLD \
         FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS_OLD \
         LC_COLLATE=$LC_COLLATE_OLD \
-        LC_COLLATE=C ;
+        LC_COLLATE=C;
 
     builtin unset -v \
         FZF_FS_ZSH_OPTS_OLD \
         FZF_DEFAULT_COMMAND_OLD \
         FZF_DEFAULT_OPTS_OLD \
-        LC_COLLATE_OLD \
-        o ;
-} 2>/dev/null
+        LC_COLLATE_OLD o
+} 2> /dev/null
 
-# COM Handle flags.
 __fzffs_util_parse_flags ()
 {
-    builtin unset -v REPLY
-    builtin typeset REPLY=
+    builtin unset -v REPLY;
+    builtin typeset REPLY=;
 
-    [[ $1 == -?* ]] && {
-        if builtin . "${FZF_FS_CONFIG_DIR}/env/flags.user"
-        then
-            while builtin read -r -n 1
-            do
-                flags_func
-            done <<< "$1"
-            builtin return 0
+    [[ "$1" == \-?* ]] && {
+        if builtin . "${FZF_FS_CONFIG_DIR}/env/flags.user"; then
+            while builtin read -r -n 1; do
+                flags_func;
+            done <<< "$1";
+            builtin return 0;
         else
-            builtin return 1
+            builtin return 1;
         fi
     }
 }
 
-# COM Handle macros.
 __fzffs_util_parse_macros ()
 {
-    console_args="$*"
-    builtin . "${FZF_FS_CONFIG_DIR}/env/macros.user" 2>/dev/null
-    console_args=${console_args%% }
-    console_args=${console_args## }
-    console_args=\'${console_args}\'
+    console_args="$*";
+    builtin . "${FZF_FS_CONFIG_DIR}/env/macros.user" 2> /dev/null;
+    console_args="${console_args%% }";
+    console_args="${console_args## }";
+    console_args="'${console_args}'"
 }
 
-# COM Print version of fzf-fs.
 __fzffs_version ()
 {
-    builtin unset -v version
-    builtin typeset version=v0.2.0
+    builtin unset -v version;
+    builtin typeset version=v0.2.0;
 
-    if [[ $KSH_VERSION ]]
-    then
-        __fzffs_util_echoE "$version"
+    if [[ -n "$KSH_VERSION" ]]; then
+        __fzffs_util_echoE "$version";
     else
-        builtin unset -v md5sum
-        builtin typeset md5sum="$(command md5sum "$source")"
-        __fzffs_util_echoE "${version} (${md5sum%  *})"
+        builtin unset -v md5sum;
+        builtin typeset md5sum="$(command md5sum "$source")";
+        __fzffs_util_echoE "${version} (${md5sum%  *})";
     fi
 }
 
 # -- MAIN.
 
 __fzffs_main "$1"
-
