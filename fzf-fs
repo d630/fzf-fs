@@ -73,8 +73,7 @@ __fzffs_browser ()
                 browser_pwd=
             ;;
             "["*)
-                browser_selection="${browser_selection##*\] }";
-                builtin eval __fzffs_console "${browser_selection}"
+                builtin eval __fzffs_console "${browser_selection##*\] }"
             ;;
             *)
                 if [[ "${browser_selection##* }" == ".." ]]; then
@@ -111,7 +110,7 @@ __fzffs_browser_find ()
 __fzffs_browser_fzf ()
 {
     builtin unset -v prompt;
-    builtin typeset prompt="${1/${HOME}/~}";
+    builtin typeset prompt="${1/${HOME}/\~}";
     __fzffs_browser_prompt;
     command fzf ${FZF_FS_DEFAULT_OPTS} --prompt="[$prompt] "
 }
@@ -317,7 +316,7 @@ __fzffs_help ()
         builtin typeset help="$(</dev/fd/0)"
     }  <<-'HELP'
 Usage
-    [source] fzf-fs.sh [ -h | -i | -v | <directory> ]
+    [source] fzf-fs [ -h | -i | -v | <directory> ]
 
 Options
     -h, --help      Show this instruction
@@ -529,7 +528,7 @@ __fzffs_util_parse_macros ()
 __fzffs_version ()
 {
     builtin unset -v version;
-    builtin typeset version=v0.2.0;
+    builtin typeset version=v0.2.1;
 
     if [[ -n "$KSH_VERSION" ]]; then
         __fzffs_util_echoE "$version";

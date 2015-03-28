@@ -2,15 +2,33 @@
 
 ##### USAGE
 
-`[source] fzf-fs.sh [<directory>]`
-
-Starting fzf-fs is very easy. Just execute or source `fzf-fs.sh` with one or without dir argument. I am using it in bash with
-
 ```sh
-alias f='. fzf-fs.sh'
+Usage
+    [source] fzf-fs [ -h | -i | -v | <directory> ]
+
+Options
+    -h, --help      Show this instruction
+    -i, --init      Initialize configuration directory
+    -v, --version   Print version
+
+Environment variables
+    FZF_FS_CONFIG_DIR
+            ${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d
 ```
 
-After starting up, you are confronted with a list of file and command entries in a cursed-based fullscreen session of fzf. I call it "the main browser pane"; it runs in a while loop and is the starting as well as the endpoint of each session:
+At first, put `fzf-fs` and `fzf-fs-init` files on your PATH and initialize the config and working directory with
+
+```sh
+fzf-fs --init
+```
+
+To execute or source `fzf-fs` with one or without dir argument, you may use a shell alias like
+
+```sh
+alias f='. fzf-fs'
+```
+
+After starting up, you are confronted with a list of file and command entries in a cursed-based fullscreen session of fzf. I call it the "browser pane"; it runs in a while loop and is the starting as well as the endpoint of each session:
 
 ```
   drwxr-xr-x  4 user1 user1  4096 Mar 22 01:09 .
@@ -19,135 +37,29 @@ After starting up, you are confronted with a list of file and command entries in
   -rwx------  1 user1 user1  2149 Mar 22 00:45 README.md
   drwx------  2 user1 user1  4096 Mar 22 01:07 doc
   -rwx------  1 user1 user1 15781 Mar 22 01:09 fzf-fs.sh
-  [~] cd
+  [-] console/cd $OLDPWD
+  [~] console/cd $HOME
   [q] quit
-  [o] opener default
-  [p] opener pager
-  [e] opener editor
   [:] console
-  [/] root
-  [..] up
-  [.] pwd
-> [!] sh
-  16/16
+  [/] console/cd $browser_root
+> [!] console/shell
+  12/12
 [~/var/code/projects/fzf-fs] ::
 ```
 
-Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is ultra fast and has all fuzzy matching and extended-searching qualities of fzf. If a list entry points to a regular file or named pipe, your configured environment variables come into play; you should set the environment variable FZF_FS_OPENER at least. If you are in the dark, what opener to use, have a look at [this](https://wiki.archlinux.org/index.php/xdg-open). Entries, which begin with a bracket, are internal pointers and have the form `[<shortcut>] <tag> ... <tag>n`:
-
-```
-[!]     Fork SHELL in the current directory
-[..]    Move to parent directory
-[.]     Reload current directory
-[/]     Move to /
-[:]     Open the console
-[e]     Set FZF_FS_OPENER to EDITOR
-[o]     Reset FZF_FS_OPENER to the default
-[p]     Set FZF_FS_OPENER to PAGER
-[q]     Quit
-[~]     Move to HOME
-```
-
-The file type indicators in the first column are (as either of us knows):
-
-```
--        regular file
-?        some other file type
-C        high performance ('contiguous data') file
-D        door (Solaris 2.5 and up)
-M        off-line ('migrated') file (Cray DMF)
-P        port (Solaris 10 and up)
-b        block special file
-c        character special file
-d        directory
-l        symbolic link
-n        network special file (HP-UX)
-p        FIFO (named pipe)
-s        socket
-```
-
-(Obligatory question: Have you ever seen a real Solaris system? Me neither...)
+Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is very fast and has all fuzzy matching and extended-searching qualities of fzf. You should set the environment variable FZF_FS_OPENER at least to open files. If you are in the dark, what opener to use, have a look at [this](https://wiki.archlinux.org/index.php/xdg-open). Entries, which begin with a bracket, refer to configureable console commands. See also section [SHORTCUTS](#shortcuts).
 
 ##### OPTIONS
 
 ```
 -h, --help      Show this instruction
+-i, --init      Initialize configuration directory
 -v, --version   Print version
-```
-
-##### FLAGS
-
-Some internal commands may be used with own options to determine their process:
-
-```
-f   Execute process in background
-k   Keep the process. Wait for a key press or spawn a new shell instance
-t   Run process in a new terminal emulator window
-```
-
-Flags are always placed as first argument to the command and will be parsed before macro pattern substitution.
-
-##### MACROS
-
-Macros are placeholder strings and used in internal commands to point to internal variables:
-
-```
-%d  The path of the current working directory
-%s  The last directly selected file (or directory) entry
-```
-
-Each occurrence of a macro will be replaced.
-
-##### CONSOLE COMMANDS
-
-```
-console                     internal command to show console command listing
-edit <file>                 Edit file in EDITOR
-page <file>                 Open file in PAGER
-open_with <list>            Execute command list in the current shell
-shell [-flags] <list>       Execute SHELL
-terminal                    Execute TERMINAL in the background. Open its shell
-                            in the current directory
-set <option>                Set/Toggle an option
-```
-
-##### SETTINGS
-
-With the internal set command these internal settings may be set:
-
-```
-set_deference               FZF_FS_SYMLINK=L
-set_deference_commandline   FZF_FS_SYMLINK=H
-set_lc_collate_c            LC_COLLATE=C
-set_lc_collate_lang         LC_COLLATE=LANG
-set_opener_default          FZF_FS_OPENER=FZF_FS_OPENER_DEFAULT
-set_opener_editor           FZF_FS_OPENER=EDITOR
-set_opener_pager            FZF_FS_OPENER=PAGER
-show_atime                  FZF_FS_LS=-liu
-show_ctime                  FZF_FS_LS=-lci
-show_hidden                 FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
-show_mtime                  FZF_FS_LS=-li
-sort_atime                  FZF_FS_LS=-liut
-sort_basename               FZF_FS_LS=-li
-sort_ctime                  FZF_FS_LS=-lcit
-sort_mtime                  FZF_FS_LS=-lit
-sort_reverse                FZF_FS_LS_REVERSE=$((FZF_FS_LS_REVERSE ? 0 : 1))
-sort_size                   FZF_FS_SORT=-k6,6n
-sort_type                   FZF_FS_SORT=-k2
-```
-
-Interactively:
-
-```
-set_opener                  Set FZF_FS_OPENER
-set_sort                    Note that the first column of ls in the browser is
-                            internally the second column; the first column
-                            shows the inode number like in ls -li
 ```
 
 ##### ENVIRONMENT
 
-Currently, there is no configuration file in fzf-fs. But you can set the following environment variables:
+You can set the following environment variables on the command line or modify them in `env/env.user`:
 
 ```
 EDITOR                      Fallback: nano
@@ -159,10 +71,151 @@ FZF_FS_LS                   Needs to have the options -l and -i. Fallback: -li
 FZF_FS_LS_HIDDEN            0/1. Fallback: 1
 FZF_FS_LS_REVERSE           0/1. Fallback: 1
 FZF_FS_OPENER               Fallback: PAGER
-FZF_FS_SORT                 See set_sort setting in the setting section.
+FZF_FS_OPENER_CONSOLE       Fallback: NULL
+FZF_FS_SORT                 See sort_interactive in the setting section.
                             Fallback: NULL
 FZF_FS_SYMLINK              Fallback: NULL
 LC_COLLATE                  Internallly set to: C
 PAGER                       Fallback: less -R
 TERMINAL                    Fallback: xterm
 ```
+
+`FZF_FS_CONFIG_DIR` needs to be set on the command line.
+
+##### CONSOLE COMMANDS
+
+```
+cd <file>                   Change the working directory in the browser pane
+console                     Show the console pane
+edit <file>                 Edit file in EDITOR
+open_with <list>            Execute command list in the current shell
+page <file>                 Open file in PAGER
+shell [-flags] <list>       Execute SHELL
+terminal                    Execute TERMINAL in the background. Open its shell
+                            in the current directory of the browser pane
+set <option>                Set/Toggle an option
+```
+
+You can modify these default commands or create your own. Commands need to be placed in the directory `console/`. See section [SCRIPTING](#scripting).
+
+##### SETTINGS
+
+With the internal `set` command, placed in `console/set/`, these default settings may be used:
+
+```
+deference                   FZF_FS_SYMLINK=L
+deference_commandline       FZF_FS_SYMLINK=H
+lc_collate_c                LC_COLLATE=C
+lc_collate_lang             LC_COLLATE=LANG
+opener_console_default      FZF_FS_OPENER_CONSOLE=FZF_FS_OPENER_CONSOLE_DEFAULT
+opener_console_editor       FZF_FS_OPENER_CONSOLE=EDITOR
+opener_console_pager        FZF_FS_OPENER_CONSOLE=PAGER
+opener_default              FZF_FS_OPENER=FZF_FS_OPENER_DEFAULT
+opener_editor               FZF_FS_OPENER=EDITOR
+opener_interactive          FZF_FS_OPENER=$(command fzf \
+                            --prompt="FZF_FS_OPENER " --print-query <<< "")
+opener_pager                FZF_FS_OPENER=PAGER
+show_atime                  FZF_FS_LS=-liu
+show_ctime                  FZF_FS_LS=-lci
+show_hidden_false           FZF_FS_LS_HIDDEN=0
+show_hidden_toggle          FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
+show_hidden_true            FZF_FS_LS_HIDDEN=1
+show_mtime                  FZF_FS_LS=-li
+sort_atime                  FZF_FS_LS=-liut
+sort_basename               FZF_FS_LS=-li
+sort_ctime                  FZF_FS_LS=-lcit
+sort_interactive            FZF_FS_SORT=$(command fzf \
+                            --prompt="sort " --print-query <<< "")
+                            Note that the first column of ls in the browser is
+                            internally the second column; the first column shows
+                            the inode number like in ls -li
+sort_mtime                  FZF_FS_LS=-lit
+sort_reverse_false          FZF_FS_LS_REVERSE=0
+sort_reverse_toggle         FZF_FS_LS_REVERSE=$((FZF_FS_LS_REVERSE ? 0 : 1))
+sort_reverse_true           FZF_FS_LS_REVERSE=1
+sort_size                   FZF_FS_SORT=-k6,6n
+sort_type                   FZF_FS_SORT=-k2
+```
+
+See also section [SCRIPTING](#scripting).
+
+##### FLAGS
+
+Some internal console commands can be used with own options to determine their process. Flags are always placed as first argument to the command and will be parsed before macro pattern substitution.
+
+```
+f               Execute process in background
+k               Keep the process. Wait for a key press or spawn a new shell
+                instance
+t               Run process in a new terminal emulator window
+```
+
+You may configure your own flags in the file `env/flags.user`; use them in a function called `flags_func`.
+
+##### MACROS
+
+Macros are placeholder strings and used in internal commands to point to internal variables. Each occurrence of a macro will be replaced.
+
+```
+%b              ${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user
+%c              ${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user
+%d              The path of the current working directory
+%e              ${FZF_FS_CONFIG_DIR}/env/env.user
+%f              ${FZF_FS_CONFIG_DIR}/env/flags.user
+%m              ${FZF_FS_CONFIG_DIR}/env/macros.user
+%s              The last directly selected file (or directory) entry
+```
+
+You may configure your own macros in the file `env/macros.user`.
+
+##### SHORTCUTS
+
+The browser pane lists files, and optionally shortcuts to have access to the console commands (configured in `env/browser_shortcuts.user`). When you run the console commands without additional specification, you can browse all configured console commands in a second browser pane ("console pane"). The console pane contains only shortcuts, which have been set in `env/console_shortcuts.user`.
+
+A shortcut has the following syntax:
+
+```
+[<shortcut>] <console_file_name> <arg> ... <arg>n
+```
+
+##### SCRIPTING
+
+Console commands are stored in `console/` and will be sourced into fzf-fs; execution takes only place, when they are declared in a function called `console_func` or as value of the normal scalar variable `console`. For example:
+
+```sh
+% cat console/set/show_hidden_toggle
+console="FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))"
+
+% cat console/set/lc_collate_c
+console="LC_COLLATE=C"
+```
+
+or
+
+```sh
+% cat console/terminal
+console_func ()
+{
+    ( command ${SHELL:-sh} -c ${TERMINAL} & )
+}
+```
+
+In the global scope of `console_func` the following variables are available:
+
+```
+browser_file        The absolute path of the last selected directory or file in
+                    the browser pane
+browser_pwd         The absolute path of the current working directory in the
+                    browser pane
+browser_root        Root of the file system. Usually `/`
+browser_selection   The selected list entry in the browser pane
+                    (ls or shortcut entry)
+```
+
+If `console_func` has been executed via the "console pane", it is interactive. In that case, the integer variable `console_interactive` is not `0` and there are no positional parameters to the function available. `console_selection` points to the selected shortcut in the console pane; `console_file` is the absolute path of the console file in `console/`.
+
+When the execution is not interactive, `console_file` is set, but `console_selection` is NULL. The postional parameters are the value of `${browser_selection##*\] }` (shortcut entry without name and brackets).
+
+To write portable scripts, use the functions `__fzffs_util_echo`, `__fzffs_util_echoE` and `__fzffs_util_echon` from `fzf-fs`.
+
+To work with flags and macros in your console command, use `__fzffs_util_parse_flags` and `__fzffs_util_parse_macros` (see `console/edit` for example). After `__fzffs_util_parse_flags` has been executed, you can use the variables `console_fork_background`, `console_keep` and `console_terminal` (see `console/shell` for example); after `__fzffs_util_parse_macros` `console_args`.
