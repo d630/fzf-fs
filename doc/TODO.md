@@ -1,4 +1,4 @@
-"fzf-fs" "1" "Sun Mar 22 05:56:18 CET 2015" "0.2.0" "TODO"
+"fzf-fs" "1" "Sat Mar 28 17:41:55 UTC 2015" "0.2.1" "TODO"
 
 ##### TO DO
 

@@ -1,4 +1,4 @@
-"fzf-fs" "1" "Sun Mar 22 05:56:18 CET 2015" "0.2.0" "USAGE"
+"fzf-fs" "1" "Sat Mar 28 17:41:55 UTC 2015" "0.2.1" "USAGE"
 
 ##### USAGE
 
@@ -48,14 +48,6 @@ After starting up, you are confronted with a list of file and command entries in
 ```
 
 Since there is no way in fzf to configure own keybindings, you may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but it is very fast and has all fuzzy matching and extended-searching qualities of fzf. You should set the environment variable FZF_FS_OPENER at least to open files. If you are in the dark, what opener to use, have a look at [this](https://wiki.archlinux.org/index.php/xdg-open). Entries, which begin with a bracket, refer to configureable console commands. See also section [SHORTCUTS](#shortcuts).
-
-##### OPTIONS
-
-```
--h, --help      Show this instruction
--i, --init      Initialize configuration directory
--v, --version   Print version
-```
 
 ##### ENVIRONMENT
 
@@ -218,4 +210,4 @@ When the execution is not interactive, `console_file` is set, but `console_selec
 
 To write portable scripts, use the functions `__fzffs_util_echo`, `__fzffs_util_echoE` and `__fzffs_util_echon` from `fzf-fs`.
 
-To work with flags and macros in your console command, use `__fzffs_util_parse_flags` and `__fzffs_util_parse_macros` (see `console/edit` for example). After `__fzffs_util_parse_flags` has been executed, you can use the variables `console_fork_background`, `console_keep` and `console_terminal` (see `console/shell` for example); after `__fzffs_util_parse_macros` `console_args`.
+To work with flags and macros in your console command, use `__fzffs_util_parse_flags` and `__fzffs_util_parse_macros` (see `console/edit` for example). After `__fzffs_util_parse_flags` has been executed, you can use the variables `console_fork_background`, `console_keep` and `console_terminal` (see `console/shell` for example); after `__fzffs_util_parse_macros` the variable `console_args` is available.
