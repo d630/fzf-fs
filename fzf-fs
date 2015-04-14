@@ -114,6 +114,7 @@ __fzffs_browser_fzf ()
     __fzffs_browser_prompt;
     command fzf ${FZF_FS_DEFAULT_OPTS} --prompt="[$prompt] "
 }
+
 __fzffs_browser_ls ()
 {
     function __fzffs_browser_ls_do ()
@@ -154,6 +155,7 @@ __fzffs_browser_ls ()
         __fzffs_browser_ls_do;
     fi
 }
+
 __fzffs_browser_prompt ()
 {
     builtin unset -v \
@@ -207,10 +209,12 @@ __fzffs_browser_prompt ()
         prompt="$ret"
     }
 }
+
 __fzffs_browser_select ()
 {
     __fzffs_browser_ls "$1" | __fzffs_browser_fzf "$1" | command sed 's/^[_ ]*//'
 }
+
 __fzffs_console ()
 {
     if (($# == 0)); then
@@ -335,7 +339,6 @@ __fzffs_main ()
 {
     builtin unset -v source;
     builtin typeset source=;
-
     if [[ -n "$BASH_VERSION" ]]; then
         source="${BASH_SOURCE[0]}";
         __fzffs_prepare_bash;
@@ -344,39 +347,40 @@ __fzffs_main ()
             source="${(%):-%x}";
             __fzffs_prepare_zsh;
         else
-            if [[ -n "$KSH_VERSION" ]]; then
-                source="$0";
-                __fzffs_prepare_mksh;
-            fi;
+            source="$0";
+            [[ -n "$KSH_VERSION" ]] && __fzffs_prepare_mksh;
         fi;
     fi;
-
     builtin typeset FZF_FS_CONFIG_DIR="${FZF_FS_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}";
-
-    case $1 in
+    builtin unset -v ret;
+    builtin typeset -i ret=;
+    case "$1" in
         "-h" | "--help")
             __fzffs_help;
-            __fzffs_quit;
-            return 0
+            ret=$?
         ;;
         "-i" | "--init")
             builtin . fzf-fs-init;
-            __fzffs_quit;
-            return $?
+            ret=$?
         ;;
         "-v" | "--version")
             __fzffs_version;
-            __fzffs_quit;
-            return 0
+            ret=$?
+        ;;
+        *)
+            if builtin . "${FZF_FS_CONFIG_DIR}"/env/env.user; then
+                __fzffs_browser "$1";
+                ret=$?;
+            else
+                __fzffs_util_echoE "${source}:Error:81: Environment file missing" 1>&2;
+                ret=81;
+            fi
         ;;
     esac;
-
-    builtin . "${FZF_FS_CONFIG_DIR}"/env/env.user || __fzffs_util_echoE "${source}:Error:81: Environment file missing" 1>&2;
-
-    __fzffs_browser "$1";
-
-    __fzffs_quit
+    __fzffs_quit;
+    builtin return "$ret"
 }
+
 __fzffs_prepare_bash ()
 {
     function __fzffs_quit_sh ()
@@ -399,6 +403,7 @@ __fzffs_prepare_bash ()
         IFS=" " builtin printf '%s' "$*"
     }
 }
+
 __fzffs_prepare_mksh ()
 {
     function __fzffs_quit_sh ()
@@ -421,6 +426,7 @@ __fzffs_prepare_mksh ()
         IFS=" " builtin print -nr -- "$*"
     }
 }
+
 __fzffs_prepare_zsh ()
 {
     builtin unset -v FZF_FS_ZSH_OPTS_OLD;
@@ -431,6 +437,7 @@ __fzffs_prepare_zsh ()
     {
         builtin setopt +o shwordsplit;
         builtin unset -v o;
+        builtin typeset o=;
         for o in "${FZF_FS_ZSH_OPTS_OLD[@]}";
         do
             builtin setopt "$o";
@@ -452,6 +459,7 @@ __fzffs_prepare_zsh ()
         IFS=" " builtin printf '%s' "$*"
     }
 }
+
 __fzffs_quit ()
 {
     __fzffs_quit_sh;
@@ -487,16 +495,15 @@ __fzffs_quit ()
         flags_func;
 
     builtin typeset -x \
-        FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND_OLD \
-        FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS_OLD \
-        LC_COLLATE=$LC_COLLATE_OLD \
-        LC_COLLATE=C;
+        FZF_DEFAULT_COMMAND="$FZF_DEFAULT_COMMAND_OLD" \
+        FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS_OLD" \
+        LC_COLLATE="$LC_COLLATE_OLD";
 
     builtin unset -v \
         FZF_FS_ZSH_OPTS_OLD \
         FZF_DEFAULT_COMMAND_OLD \
         FZF_DEFAULT_OPTS_OLD \
-        LC_COLLATE_OLD o
+        LC_COLLATE_OLD
 } 2> /dev/null
 
 __fzffs_util_parse_flags ()

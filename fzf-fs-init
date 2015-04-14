@@ -36,7 +36,7 @@ __fzffs_init ()
     __fzffs_util_echoE "${source}:Info: FZF_FS_CONFIG_DIR is ${FZF_FS_CONFIG_DIR}" 1>&2;
     if [[ -e "$FZF_FS_CONFIG_DIR" ]]; then
         __fzffs_util_echoE "${source}:Error:80: Directory existing: '${FZF_FS_CONFIG_DIR}'" 1>&2;
-        builtin return 1;
+        builtin return 80;
     else
         command mkdir -p -m 755 "${FZF_FS_CONFIG_DIR}"/{console/set,env};
         __fzffs_util_echoE "${source}:Info: Initialize empty fzf-fs config directory in ${FZF_FS_CONFIG_DIR}" 1>&2;
