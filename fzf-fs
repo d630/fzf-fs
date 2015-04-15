@@ -34,40 +34,58 @@ __fzffs_browser ()
         browser_pwd \
         browser_root;
     builtin typeset \
-        browser_pwd=$1 \
+        browser_pwd="$1" \
         browser_root=/;
 
-    if [[ $browser_pwd == ".." ]]; then
+    if [[ "$browser_pwd" == ".." ]]; then
         browser_pwd="${PWD%/*}";
     else
         if [[ "${browser_pwd:-.}" == \. ]]; then
             browser_pwd="$PWD";
         else
-            if [[ -d "$browser_pwd" ]]; then
-                if [[ "${browser_pwd:${#browser_pwd}-1}" == "/" ]]; then
-                    browser_pwd="${browser_pwd%/*}";
-                else
-                    browser_pwd="$browser_pwd";
-                fi;
+            if [[ "$browser_pwd" == \- ]]; then
+                browser_pwd="$OLDPWD";
             else
-                __fzffs_util_echoE "${source}:Error:79: Not a directory: '${browser_pwd}'" 1>&2;
-                __fzffs_help;
-                builtin return 79;
+                if [[ -d "$browser_pwd" ]]; then
+                    if [[ "${browser_pwd:${#browser_pwd}-1}" == \/ ]]; then
+                        browser_pwd="${browser_pwd%/*}";
+                    else
+                        browser_pwd="$browser_pwd";
+                    fi;
+                else
+                    __fzffs_util_echoE "${source}:Error:79: Not a directory: '${browser_pwd}'" 1>&2;
+                    __fzffs_help;
+                    builtin return 79;
+                fi;
             fi;
         fi;
     fi;
-    browser_pwd="${browser_pwd:-$browser_root}";
+    browser_pwd="${browser_pwd:-${browser_root}}";
 
     builtin unset -v \
         browser_file \
-        browser_selection;
+        browser_pwd_inode \
+        browser_pwd_inode_parent \
+        browser_selection \
+        browser_selection_inode;
     builtin typeset \
         browser_file= \
-        browser_selection=;
+        browser_pwd_inode= \
+        browser_pwd_inode_parent= \
+        browser_selection= \
+        browser_selection_inode=;
 
     while [[ -n "$browser_pwd" ]]; do
         builtin cd "$browser_pwd";
+        browser_pwd_inode="$(command ls -id .)";
+        browser_pwd_inode="${browser_pwd_inode%% *}";
+        browser_pwd_inode_parent="$(command ls -id ..)";
+        browser_pwd_inode_parent="${browser_pwd_inode_parent%% *}";
         browser_selection="$(__fzffs_browser_select "$browser_pwd")";
+        while [[ "${browser_selection:0:1}" == _ || "${browser_selection:0:1}" == " " ]]; do
+            browser_selection="${browser_selection#_}";
+            browser_selection="${browser_selection#* }";
+        done;
         case "$browser_selection" in
             "[q]"*)
                 browser_pwd=
@@ -76,26 +94,21 @@ __fzffs_browser ()
                 builtin eval __fzffs_console "${browser_selection##*\] }"
             ;;
             *)
-                if [[ "${browser_selection##* }" == ".." ]]; then
+                browser_selection_inode="${browser_selection%% *}";
+                [[ "$browser_selection_inode" == "$browser_pwd_inode" ]] && builtin continue;
+                if [[ "$browser_selection_inode" == "$browser_pwd_inode_parent" ]]; then
                     browser_pwd="${browser_pwd%/*}";
-                    browser_pwd="${browser_pwd:-$browser_root}";
-                    builtin continue;
+                    browser_pwd="${browser_pwd:-${browser_root}}";
                 else
-                    if [[ "${browser_selection##* }" == "." ]]; then
-                        browser_pwd="$browser_pwd";
-                        builtin continue;
-                    fi;
-                fi;
-                browser_file="${browser_pwd}/$(__fzffs_browser_find "$browser_pwd" "${browser_selection%% *}")";
-                browser_file="${browser_file//\/\//\/}";
-                if [[ -d "$browser_file" ]]; then
-                    browser_pwd="$browser_file";
-                else
-                    if [[ -e "$browser_file" ]]; then
-                        __fzffs_console console/open_with "$FZF_FS_OPENER" "$browser_file";
-                    else
-                        browser_pwd=;
-                    fi;
+                    browser_file="${browser_pwd}/$(__fzffs_browser_find "$browser_pwd" "$browser_selection_inode")";
+                    browser_file="${browser_file//\/\//\/}";
+                    [[ -e "$browser_file" ]] && {
+                        if [[ -d "$browser_file" ]]; then
+                            browser_pwd="$browser_file";
+                        else
+                            __fzffs_console console/open_with "$FZF_FS_OPENER" "$browser_file";
+                        fi
+                    };
                 fi
             ;;
         esac;
@@ -110,49 +123,64 @@ __fzffs_browser_find ()
 __fzffs_browser_fzf ()
 {
     builtin unset -v prompt;
-    builtin typeset prompt="${1/${HOME}/\~}";
+    builtin typeset prompt="${1/${HOME}/"~"}";
     __fzffs_browser_prompt;
-    command fzf ${FZF_FS_DEFAULT_OPTS} --prompt="[$prompt] "
+    if ((FZF_FS_LS_CLICOLOR == 0)); then
+        command fzf ${FZF_FS_DEFAULT_OPTS} --prompt="[$prompt] ";
+    else
+        command fzf ${FZF_FS_DEFAULT_OPTS} --ansi --prompt="[$prompt] ";
+    fi
 }
 
 __fzffs_browser_ls ()
 {
     function __fzffs_browser_ls_do ()
     {
-        command ls ${FZF_FS_LS}${FZF_FS_SYMLINK}${ls_hidden}${ls_reverse} | command tail -n +2
+        ${1} -${ls_internal}${ls_symlink}${ls_hidden}${ls_reverse}${ls_default} | \
+        command sed ${ls_sed:+-e 's/^\([0-9 ]\{1,\}\) .*/\1/'} -ne '2,$p'
     };
 
+    builtin unset -v shortcuts;
+    builtin typeset shortcuts="$(<"${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user")";
+    __fzffs_util_echoE "$shortcuts";
+
     builtin unset -v \
+        ls_color \
+        ls_default \
         ls_hidden \
+        ls_internal \
         ls_reverse \
-        ls_color;
+        ls_sed \
+        ls_symlink;
     builtin typeset \
-        ls_hidden= \
         ls_color= \
-        ls_reverse=;
+        ls_default="${FZF_FS_LS_OPTS#-}" \
+        ls_hidden= \
+        ls_internal=li \
+        ls_reverse= \
+        ls_sed= \
+        ls_symlink="${FZF_FS_LS_SYMLINK//-/}";
 
-    command sed 's/^/_ /' "${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user";
+    ((FZF_FS_LS_REVERSE == 0)) || ls_reverse=r;
+    ((FZF_FS_LS_HIDDEN == 0)) || ls_hidden=a;
 
-    if ((FZF_FS_LS_REVERSE == 0)); then
-        ls_reverse=;
-    else
-        ls_reverse=r;
-    fi;
-    if ((FZF_FS_LS_HIDDEN == 0)); then
-        ls_hidden=;
-    else
-        ls_hidden=a;
-    fi;
     if ((FZF_FS_LS_CLICOLOR == 0)); then
-        ls_color=;
+        if [[ -n "$FZF_FS_SORT" ]]; then
+            __fzffs_browser_ls_do "__fzffs_ls" | command sort -${FZF_FS_SORT#-};
+        else
+            __fzffs_browser_ls_do "__fzffs_ls";
+        fi;
     else
-        ls_color=;
-    fi;
-
-    if [[ -n "$FZF_FS_SORT" ]]; then
-        __fzffs_browser_ls_do | command sort ${FZF_FS_SORT};
-    else
-        __fzffs_browser_ls_do;
+        [[ -p "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo" ]] || command mkfifo "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo";
+        if [[ -n "$FZF_FS_SORT" ]]; then
+            ls_internal=l __fzffs_browser_ls_do "__fzffs_ls_color" | \
+                command sort -${FZF_FS_SORT#-} > "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo" &
+            ls_sed=1 __fzffs_browser_ls_do "__fzffs_ls" | command sort -${FZF_FS_SORT#-} | \
+                command paste -d ' ' - "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo";
+        else
+            ls_internal=l __fzffs_browser_ls_do "__fzffs_ls_color" > "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo" &
+            ls_sed=1 __fzffs_browser_ls_do "__fzffs_ls" | command paste -d ' ' - "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo";
+        fi;
     fi
 }
 
@@ -212,7 +240,7 @@ __fzffs_browser_prompt ()
 
 __fzffs_browser_select ()
 {
-    __fzffs_browser_ls "$1" | __fzffs_browser_fzf "$1" | command sed 's/^[_ ]*//'
+    __fzffs_browser_ls "$1" | __fzffs_browser_fzf "$1"
 }
 
 __fzffs_console ()
@@ -320,7 +348,7 @@ __fzffs_help ()
         builtin typeset help="$(</dev/fd/0)"
     }  <<-'HELP'
 Usage
-    [source] fzf-fs [ -h | -i | -v | <directory> ]
+    [ . ] fzf-fs [ -h | -i | -v | <directory> ]
 
 Options
     -h, --help      Show this instruction
@@ -351,7 +379,9 @@ __fzffs_main ()
             [[ -n "$KSH_VERSION" ]] && __fzffs_prepare_mksh;
         fi;
     fi;
+
     builtin typeset FZF_FS_CONFIG_DIR="${FZF_FS_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}";
+
     builtin unset -v ret;
     builtin typeset -i ret=;
     case "$1" in
@@ -369,6 +399,14 @@ __fzffs_main ()
         ;;
         *)
             if builtin . "${FZF_FS_CONFIG_DIR}"/env/env.user; then
+                function __fzffs_ls ()
+                {
+                    IFS=" " ${FZF_FS_LS_COMMAND} $*
+                };
+                function __fzffs_ls_color ()
+                {
+                    IFS=" " ${FZF_FS_LS_COMMAND_COLOR} $*
+                };
                 __fzffs_browser "$1";
                 ret=$?;
             else
@@ -377,7 +415,9 @@ __fzffs_main ()
             fi
         ;;
     esac;
+
     __fzffs_quit;
+
     builtin return "$ret"
 }
 
@@ -464,6 +504,8 @@ __fzffs_quit ()
 {
     __fzffs_quit_sh;
 
+    command rm "${FZF_FS_CONFIG_DIR}/fzf-fs.fifo" > /dev/null;
+
     builtin unset -f \
         __fzffs_browser \
         __fzffs_browser_find \
@@ -479,6 +521,8 @@ __fzffs_quit ()
         __fzffs_console_set \
         __fzffs_help \
         __fzffs_init \
+        __fzffs_ls \
+        __fzffs_ls_color \
         __fzffs_main \
         __fzffs_prepare_bash \
         __fzffs_prepare_mksh \

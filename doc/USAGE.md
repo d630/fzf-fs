@@ -4,7 +4,7 @@
 
 ```sh
 Usage
-    [source] fzf-fs [ -h | -i | -v | <directory> ]
+    [ . ] fzf-fs [ -h | -i | -v | <directory> ]
 
 Options
     -h, --help      Show this instruction
@@ -16,7 +16,7 @@ Environment variables
             ${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d
 ```
 
-At first, put `fzf-fs` and `fzf-fs-init` files on your PATH and initialize the config and working directory with
+At first, put `fzf-fs` and `fzf-fs-init` on your PATH and initialize the config and working directory with
 
 ```sh
 fzf-fs --init
@@ -59,14 +59,15 @@ FZF_DEFAULT_COMMAND         Internallly set to: command echo uups
 FZF_DEFAULT_OPTS            Internallly unset
 FZF_FS_DEFAULT_OPTS         Addional fzf options in the main loop. --prompt and
                             --with-nth cannot be used. Fallback: -x -i
-FZF_FS_LS                   Needs to have the options -l and -i. Fallback: -li
+FZF_FS_LS                   Needs to have the options l and i. Fallback: li
 FZF_FS_LS_HIDDEN            0/1. Fallback: 1
 FZF_FS_LS_REVERSE           0/1. Fallback: 1
 FZF_FS_OPENER               Fallback: PAGER
 FZF_FS_OPENER_CONSOLE       Fallback: NULL
+FZF_FS_OS                   Fallback: NULL
 FZF_FS_SORT                 See sort_interactive in the setting section.
                             Fallback: NULL
-FZF_FS_SYMLINK              Fallback: NULL
+FZF_FS_LS_SYMLINK           Fallback: NULL
 LC_COLLATE                  Internallly set to: C
 PAGER                       Fallback: less -R
 TERMINAL                    Fallback: xterm
@@ -95,8 +96,8 @@ You can modify these default commands or create your own. Commands need to be pl
 With the internal `set` command, placed in `console/set/`, these default settings may be used:
 
 ```
-deference                   FZF_FS_SYMLINK=L
-deference_commandline       FZF_FS_SYMLINK=H
+deference                   FZF_FS_LS_SYMLINK=L
+deference_commandline       FZF_FS_LS_SYMLINK=H
 lc_collate_c                LC_COLLATE=C
 lc_collate_lang             LC_COLLATE=LANG
 opener_console_default      FZF_FS_OPENER_CONSOLE=FZF_FS_OPENER_CONSOLE_DEFAULT
@@ -107,21 +108,22 @@ opener_editor               FZF_FS_OPENER=EDITOR
 opener_interactive          FZF_FS_OPENER=$(command fzf \
                             --prompt="FZF_FS_OPENER " --print-query <<< "")
 opener_pager                FZF_FS_OPENER=PAGER
-show_atime                  FZF_FS_LS=-liu
-show_ctime                  FZF_FS_LS=-lci
+os_interactive
+show_atime                  FZF_FS_LS=liu
+show_ctime                  FZF_FS_LS=lci
 show_hidden_false           FZF_FS_LS_HIDDEN=0
 show_hidden_toggle          FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
 show_hidden_true            FZF_FS_LS_HIDDEN=1
-show_mtime                  FZF_FS_LS=-li
-sort_atime                  FZF_FS_LS=-liut
-sort_basename               FZF_FS_LS=-li
-sort_ctime                  FZF_FS_LS=-lcit
+show_mtime                  FZF_FS_LS=li
+sort_atime                  FZF_FS_LS=liut
+sort_basename               FZF_FS_LS=li
+sort_ctime                  FZF_FS_LS=lcit
 sort_interactive            FZF_FS_SORT=$(command fzf \
                             --prompt="sort " --print-query <<< "")
                             Note that the first column of ls in the browser is
                             internally the second column; the first column shows
                             the inode number like in ls -li
-sort_mtime                  FZF_FS_LS=-lit
+sort_mtime                  FZF_FS_LS=lit
 sort_reverse_false          FZF_FS_LS_REVERSE=0
 sort_reverse_toggle         FZF_FS_LS_REVERSE=$((FZF_FS_LS_REVERSE ? 0 : 1))
 sort_reverse_true           FZF_FS_LS_REVERSE=1
@@ -164,10 +166,16 @@ You may configure your own macros in the file `env/macros.user`.
 
 The browser pane lists files, and optionally shortcuts to have access to the console commands (configured in `env/browser_shortcuts.user`). When you run the console commands without additional specification, you can browse all configured console commands in a second browser pane ("console pane"). The console pane contains only shortcuts, which have been set in `env/console_shortcuts.user`.
 
-A shortcut has the following syntax:
+A console shortcut has the following syntax:
 
 ```
 [<shortcut>] <console_file_name> <arg> ... <arg>n
+```
+
+And a browser shortcut:
+
+```
+_ _ [<shortcut>] <console_file_name> <arg> ... <arg>n
 ```
 
 ##### SCRIPTING
@@ -202,6 +210,9 @@ browser_pwd         The absolute path of the current working directory in the
 browser_root        Root of the file system. Usually `/`
 browser_selection   The selected list entry in the browser pane
                     (ls or shortcut entry)
+browser_selection_inode
+browser_pwd_inode
+browser_pwd_inode_parent
 ```
 
 If `console_func` has been executed via the "console pane", it is interactive. In that case, the integer variable `console_interactive` is not `0` and there are no positional parameters to the function available. `console_selection` points to the selected shortcut in the console pane; `console_file` is the absolute path of the console file in `console/`.

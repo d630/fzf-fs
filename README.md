@@ -27,14 +27,14 @@ git checkout $(git describe --abbrev=0 --tags)
 
 fzf-fs follows the [Utilities portion of the POSIX specification](http://pubs.opengroup.org/stage7tc1/utilities/V3_chap04.html#tag_20) and has been written in [GNU bash](http://www.gnu.org/software/bash/) on [Debian GNU/Linux 8 (jessie)](https://www.debian.org) with these programs/packages:
 
-- GNU bash 4.3.30
-- GNU coreutils 8.23: basename, echo, ls, md5sum, mkdir, printf, sort, tail
+- GNU bash 4.3.30(1)-release
+- GNU coreutils 8.23: basename, echo, ls, md5sum, mkdir, mkfifo, paste, printf, rm, sort, uname
 - GNU findutils 4.4.2: find
 - GNU nano version 2.2.6
 - GNU sed 4.2.2
-- MIRBSD KSH R50 2014/10/19
+- MIRBSD KSH R50 2014/10/19 Debian-5
 - XTerm(312)
-- fzf 0.9.4 (Go version)
+- fzf 0.9.8 (Go version)
 - less 458 (GNU regular expressions)
 - ncurses 5.9.20140913: tput
 - zsh 5.0.7
