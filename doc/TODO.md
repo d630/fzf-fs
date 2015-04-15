@@ -1,10 +1,10 @@
-"fzf-fs" "1" "Sat Mar 28 17:41:55 UTC 2015" "0.2.1" "TODO"
+"fzf-fs" "1" "Wed Apr 15 13:55:28 UTC 2015" "0.2.2" "TODO"
 
 ##### TO DO
 
 - "VIEW MODE" with multi handling to cut, paste etc. and create more macros
 - "buffer" handling and interaction
-- colors => implement fzf --ansi
+- keybindings => implement fzf --expect
 - multiselection in fzf
 - give -e option to evaluate console commands on start up
 - more console commands and integration of tools like z, history, bookmarks

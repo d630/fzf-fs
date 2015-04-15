@@ -574,7 +574,7 @@ __fzffs_util_parse_macros ()
 __fzffs_version ()
 {
     builtin unset -v version;
-    builtin typeset version=v0.2.1;
+    builtin typeset version=v0.2.2;
 
     if [[ -n "$KSH_VERSION" ]]; then
         __fzffs_util_echoE "$version";

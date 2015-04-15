@@ -12,6 +12,7 @@
 [e] set/opener_editor
 [oi] set/opener_interactive
 [p] set/opener_pager
+[ ] set/os_interactive
 [ ] set/show_atime
 [ ] set/show_ctime
 [ ] set/show_hidden_false

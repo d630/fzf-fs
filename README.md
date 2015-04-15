@@ -1,4 +1,4 @@
-"fzf-fs" "1" "Sat Mar 28 17:41:55 UTC 2015" "0.2.1" "README"
+"fzf-fs" "1" "Wed Apr 15 13:55:28 UTC 2015" "0.2.2" "README"
 
 ##### README
 
