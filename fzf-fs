@@ -245,13 +245,8 @@ __fzffs_browser_select ()
 
 __fzffs_console ()
 {
-    if (($# == 0)); then
-        builtin return 1;
-    else
-        if [[ "$1" == "console" ]]; then
-            builtin shift 1;
-        fi;
-    fi;
+    (($# == 0)) && builtin return 1;
+    [[ "$1" == "console" ]] && builtin shift 1;
 
     builtin unset -v \
         console_args \
