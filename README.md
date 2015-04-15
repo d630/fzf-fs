@@ -4,6 +4,8 @@
 
 [fzf-fs](https://github.com/D630/fzf-fs) acts like a very simple and configurable file browser/navigator for the command line by taking advantage of the general-purpose fuzzy finder [fzf](https://github.com/junegunn/fzf). Although coming without Miller columns, fzf-fs is inspired by tools like [lscd](https://github.com/hut/lscd) and [deer](https://github.com/vifon/deer), which both follow the example set by [ranger](https://github.com/hut/ranger).
 
+![](https://raw.githubusercontent.com/D630/fzf-fs/master/doc/screenshot_0.2.2.gif)
+
 ##### BUGS & REQUESTS
 
 Get in touch with fzf-fs by reading the [USAGE](../master/doc/USAGE.md) text file and have also a look at the [TODO](../master/doc/TODO.md) document. Feel free to open an issue or put in a pull request on https://github.com/D630/fzf-fs
