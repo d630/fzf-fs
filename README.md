@@ -16,7 +16,7 @@ To download the very latest source code:
 git clone https://github.com/D630/fzf-fs
 ```
 
-If you also want to use the latest tagged version, do something like this:
+If you want to use the latest tagged version, do also something like this:
 
 ```
 cd ./fzf-fs
@@ -43,4 +43,4 @@ fzf-fs follows the [Utilities portion of the POSIX specification](http://pubs.op
 
 ##### LICENCE
 
-Same [license](https://github.com/junegunn/fzf#license) like in fzf. Notice that fzf-fs contains a (modified) function, that is part of [liquidprompt](https://github.com/nojhan/liquidprompt/blob/master/liquidprompt).
+Same [license](https://github.com/junegunn/fzf#license) like in fzf. fzf-fs contains a (modified) function, that is part of [liquidprompt](https://github.com/nojhan/liquidprompt/blob/master/liquidprompt).
