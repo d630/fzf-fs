@@ -1,9 +1,17 @@
 flags_func ()
 {
     case "$REPLY" in
-        "f")  console_fork_background=console_fork_background     ;;
-        "k")  console_keep=console_keep                           ;;
-        "t")  console_terminal=console_terminal                   ;;
-        *)  builtin :
+        "f")
+            console_fork_background=console_fork_background
+        ;;
+        "k")
+            console_keep=console_keep
+        ;;
+        "t")
+            console_terminal=console_terminal
+        ;;
+        *)
+            builtin :
+        ;;
     esac
 }

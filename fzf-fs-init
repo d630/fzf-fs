@@ -293,6 +293,7 @@ CODE
     s=;
     while IFS='|' builtin read -r f v s; do
         __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}${f}" 1>&2;
+        __fzffs_util_echoE "#!/usr/bin/env bash" > "${FZF_FS_CONFIG_DIR}${f}";
         __fzffs_util_rename_function "$v" console_func;
         if [[ "$v" == *"open_with" ]]; then
             builtin typeset -f console_func | command sed 's/builtin eval ${EDITOR} "$console_args"/builtin eval "$(__fzffs_util_echon builtin eval "$console_args")"/' >> "${FZF_FS_CONFIG_DIR}${f}";

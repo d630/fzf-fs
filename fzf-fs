@@ -136,7 +136,7 @@ __fzffs_browser_ls ()
 {
     function __fzffs_browser_ls_do ()
     {
-        ${1} -${ls_internal}${ls_symlink}${ls_hidden}${ls_reverse}${ls_default} .| \
+        ${1} -${ls_internal}${ls_symlink}${ls_hidden}${ls_reverse}${ls_default} . | \
         command sed ${ls_sed:+-e 's/^\([0-9 ]\{1,\}\) .*/\1/'} -ne '2,$p'
     };
 
@@ -396,11 +396,11 @@ __fzffs_main ()
             if builtin . "${FZF_FS_CONFIG_DIR}"/env/env.user; then
                 function __fzffs_ls ()
                 {
-                    builtin eval IFS=" " ${FZF_FS_LS_COMMAND} $*
+                    builtin eval IFS=" " "$FZF_FS_LS_COMMAND" "$*"
                 };
                 function __fzffs_ls_color ()
                 {
-                    builtin eval IFS=" " ${FZF_FS_LS_COMMAND_COLOR} $*
+                    builtin eval IFS=" " "$FZF_FS_LS_COMMAND_COLOR" "$*"
                 };
                 __fzffs_browser "$1";
                 ret=$?;
