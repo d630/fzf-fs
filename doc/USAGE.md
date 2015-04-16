@@ -1,4 +1,4 @@
-"fzf-fs" "1" "Wed Apr 15 13:55:28 UTC 2015" "0.2.2" "USAGE"
+"fzf-fs" "1" "Thu Apr 16 09:55:32 UTC 2015" "0.2.2" "USAGE"
 
 ##### USAGE
 
@@ -28,7 +28,7 @@ To source `fzf-fs`, you may use a shell alias like
 alias f='. fzf-fs'
 ```
 
-Run your alias like
+and run it like
 
 ```sh
 f
@@ -57,9 +57,9 @@ After starting up, you are confronted with a list of file and command entries in
 [~/var/code/projects/fzf-fs] ::
 ```
 
-You may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but with all fuzzy matching and extended-searching qualities of fzf. You should set the environment variable FZF_FS_OPENER at least to open files. If you are in the dark, what opener to use, have a look at [this](https://wiki.archlinux.org/index.php/xdg-open). Entries, which begin with a bracket, refer to configureable console commands. See also section [SHORTCUTS](#shortcuts).
+You may only browse your file system by selecting lines in the browser. It is like cd-ing on the command line, but with all fuzzy matching and extended-searching qualities of fzf. You should set the environment variable FZF_FS_OPENER at least to open files. If you are in the dark, what opener to use, have a look at [this](https://wiki.archlinux.org/index.php/xdg-open). Entries, which begin with a bracket, refer to configurable console commands. See also section [SHORTCUTS](#shortcuts).
 
-If you have problems with displaying the ls output, have a look at the environment variables FZF_FS_LS_COMMAND and FZF_FS_LS_COMMAND_COLOR.
+If you have problems with displaying the ls output, have a look at the environment variables FZF_FS_LS_COMMAND and FZF_FS_LS_COMMAND_COLOR. They are preconfigured after `fzf-fs --init`.
 
 ##### ENVIRONMENT
 
@@ -70,7 +70,7 @@ EDITOR                      Fallback: nano
 FZF_DEFAULT_COMMAND         Internally set to: "command echo uups"
 FZF_DEFAULT_OPTS            Internally unset
 FZF_FS_DEFAULT_OPTS         Additional fzf options in the browser pane. --prompt
-                            and --with-nth cannot be used. Fallback: -x -i
+                            and --with-nth cannot be used. Fallback: "-x -i"
 FZF_FS_LS_CLICOLOR          0/1. Fallback: 1
 FZF_FS_LS_COMMAND           Default ls command, depends on your OS and version of
                             ls. In GNU ls it is "ls --color=auto"; on FreeBSD
@@ -84,15 +84,15 @@ FZF_FS_LS_REVERSE           0/1. Fallback: 1
 FZF_FS_LS_SYMLINK           Fallback: NULL
 FZF_FS_OPENER               Fallback: PAGER
 FZF_FS_OPENER_CONSOLE       Fallback: NULL
-FZF_FS_OS                   Output of uname -s. Fallback: Linux
+FZF_FS_OS                   Output of "uname -s". Fallback: "Linux"
 FZF_FS_SORT                 See sort_interactive in the setting section.
                             Fallback: NULL
-LC_COLLATE                  Internally set to: C
-PAGER                       Fallback: less -R
-TERMINAL                    Fallback: xterm
+LC_COLLATE                  Internally set to: "C"
+PAGER                       Fallback: "less -R"
+TERMINAL                    Fallback: "xterm"
 ```
 
-`FZF_FS_CONFIG_DIR` needs to be set on the command line. Default value is `${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d`.
+FZF_FS_CONFIG_DIR needs to be set on the command line. Default value is `${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d`.
 
 ##### CONSOLE COMMANDS
 
@@ -110,7 +110,7 @@ terminal                    Execute TERMINAL in the background. Open its shell
 set <option>                Set/Unset/Toggle an option
 ```
 
-You can modify these default commands or create your own. Commands need to be placed in the directory `console/`. See section [SCRIPTING](#scripting).
+You can modify these default commands or create your own. Commands are stored in the directory `console/`. See section [SCRIPTING](#scripting).
 
 ##### SETTINGS
 
@@ -147,8 +147,8 @@ sort_interactive            FZF_FS_SORT=$(command fzf \
                             --prompt="sort " --print-query <<< "")
                             The first column of ls in the browser is internally
                             the second column; the first column shows the inode
-                            number like in ls -li. Do not sort colorized ls
-                            output; use first clicolor_force_toggle
+                            number like in ls -li. Do not sort ls output with
+                            ansi code; first use clicolor_force_toggle
 sort_mtime                  FZF_FS_LS=t
 sort_reverse_false          FZF_FS_LS_REVERSE=0
 sort_reverse_toggle         FZF_FS_LS_REVERSE=$((FZF_FS_LS_REVERSE ? 0 : 1))
@@ -194,7 +194,7 @@ You may configure your own macros in the file `env/macros.user`.
 
 ##### SHORTCUTS
 
-The browser pane lists files, and optionally shortcuts to have access to the console commands (configured in `env/browser_shortcuts.user`). When you run the console commands without additional specification, you can browse all configured console commands in a second browser pane ("console pane"). The console pane contains only shortcuts, which have been set in `env/console_shortcuts.user`.
+The browser pane lists files, and optionally shortcuts to have access to the console commands (configured in `env/browser_shortcuts.user`). When you run the console command without additional specification, you can browse all configured console commands in a second browser pane ("console pane"). The console pane contains only shortcuts, which have been set in `env/console_shortcuts.user`.
 
 A console shortcut has the following syntax:
 
@@ -240,7 +240,7 @@ browser_pwd                 The absolute path of the current working directory
 browser_pwd_inode           The inode number of browser_pwd
 browser_pwd_inode_parent    The inode number of the parent directory of
                             browser_pwd
-browser_root                Root of the file system. Usually `/`
+browser_root                Root of the file system. Usually "/"
 browser_selection           The selected list entry in the browser pane
                             (ls or shortcut entry)
 browser_selection_inode     The inode number of browser_file
