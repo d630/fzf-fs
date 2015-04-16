@@ -128,6 +128,9 @@ __fzffs_init ()
 /console/set/sort_type|console="FZF_FS_SORT=k2"|ot
 SETTINGS
 
+    __fzffs_util_echoE "[q] quit" >> "${FZF_FS_CONFIG_DIR}/env/console_shortcuts.default";
+    __fzffs_util_echoE "[q] quit" >> "${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user";
+
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/env.default" 1>&2;
     builtin unset -v env;
     {

@@ -140,10 +140,6 @@ __fzffs_browser_ls ()
         command sed ${ls_sed:+-e 's/^\([0-9 ]\{1,\}\) .*/\1/'} -ne '2,$p'
     };
 
-    builtin unset -v shortcuts;
-    builtin typeset shortcuts="$(<"${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user")";
-    __fzffs_util_echoE "$shortcuts";
-
     builtin unset -v \
         ls_color \
         ls_default \
@@ -240,7 +236,10 @@ __fzffs_browser_prompt ()
 
 __fzffs_browser_select ()
 {
-    __fzffs_browser_ls "$1" | __fzffs_browser_fzf "$1"
+    {
+        __fzffs_util_print_shortcuts "browser";
+        __fzffs_browser_ls "$1"
+    } | __fzffs_browser_fzf "$1"
 }
 
 __fzffs_console ()
@@ -325,10 +324,7 @@ __fzffs_console_fzf ()
 
 __fzffs_console_ls ()
 {
-    builtin unset -v shortcuts;
-    builtin typeset shortcuts="$(< "${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user")";
-    __fzffs_util_echoE "$shortcuts";
-    __fzffs_util_echoE "[q] quit"
+    __fzffs_util_print_shortcuts "console"
 }
 
 __fzffs_console_select ()
@@ -569,6 +565,25 @@ __fzffs_util_parse_macros ()
     console_args="${console_args%% }";
     console_args="${console_args## }";
     console_args="'${console_args}'"
+}
+
+__fzffs_util_print_shortcuts ()
+{
+    builtin unset -v shortcuts;
+
+    case "$1" in
+        browser)
+            builtin typeset shortcuts="$(< "${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user")"
+        ;;
+        console)
+            builtin typeset shortcuts="$(< "${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user")"
+        ;;
+        visual)
+            builtin typeset shortcuts="$(< "${FZF_FS_CONFIG_DIR}/env/visual_shortcuts.user")"
+        ;;
+    esac;
+
+    __fzffs_util_echoE "$shortcuts"
 }
 
 __fzffs_version ()
