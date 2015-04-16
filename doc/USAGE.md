@@ -1,4 +1,4 @@
-"fzf-fs" "1" "Thu Apr 16 09:55:32 UTC 2015" "0.2.2" "USAGE"
+"fzf-fs" "1" "Thu Apr 16 11:09:48 UTC 2015" "0.2.2" "USAGE"
 
 ##### USAGE
 
@@ -134,22 +134,22 @@ opener_interactive          FZF_FS_OPENER=$(command fzf \
 opener_pager                FZF_FS_OPENER=PAGER
 os_interactive              FZF_FS_OS=$(command fzf \
                             --prompt="uname -s => " --print-query <<< "")
-show_atime                  FZF_FS_LS=u
-show_ctime                  FZF_FS_LS=c
+show_atime                  FZF_FS_LS_OPTS=u
+show_ctime                  FZF_FS_LS_OPTS=c
 show_hidden_false           FZF_FS_LS_HIDDEN=0
 show_hidden_toggle          FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
 show_hidden_true            FZF_FS_LS_HIDDEN=1
-show_mtime                  FZF_FS_LS=
-sort_atime                  FZF_FS_LS=ut
-sort_basename               FZF_FS_LS=
-sort_ctime                  FZF_FS_LS=it
+show_mtime                  FZF_FS_LS_OPTS=
+sort_atime                  FZF_FS_LS_OPTS=ut
+sort_basename               FZF_FS_LS_OPTS=
+sort_ctime                  FZF_FS_LS_OPTS=it
 sort_interactive            FZF_FS_SORT=$(command fzf \
                             --prompt="sort " --print-query <<< "")
                             The first column of ls in the browser is internally
                             the second column; the first column shows the inode
                             number like in ls -li. Do not sort ls output with
                             ansi code; first use clicolor_force_toggle
-sort_mtime                  FZF_FS_LS=t
+sort_mtime                  FZF_FS_LS_OPTS=t
 sort_reverse_false          FZF_FS_LS_REVERSE=0
 sort_reverse_toggle         FZF_FS_LS_REVERSE=$((FZF_FS_LS_REVERSE ? 0 : 1))
 sort_reverse_true           FZF_FS_LS_REVERSE=1
