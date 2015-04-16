@@ -45,10 +45,7 @@ __fzffs_init ()
     builtin unset -v FZF_FS_LS_COMMAND FZF_FS_LS_COMMAND_COLOR FZF_FS_OS;
     builtin typeset FZF_FS_LS_COMMAND= FZF_FS_LS_COMMAND_COLOR= FZF_FS_OS=;
     case "$(command uname -s)" in
-        DragonFly)
-            builtin :
-        ;&
-        FreeBSD)
+        DragonFly|FreeBSD)
             FZF_FS_OS=FreeBSD;
             FZF_FS_LS_COMMAND="command ls -G";
             FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command ls -G"
@@ -138,7 +135,7 @@ SETTINGS
     }  <<-'ENV'
 builtin typeset EDITOR="${EDITOR:-nano}"
 builtin typeset FZF_FS_CONFIG_DIR="$FZF_FS_CONFIG_DIR"
-builtin typeset FZF_FS_DEFAULT_OPTS="${FZF_FS_DEFAULT_OPTS:--x -i --with-nth=2..}"
+builtin typeset FZF_FS_DEFAULT_OPTS="${FZF_FS_DEFAULT_OPTS:--x -i}"
 builtin typeset FZF_FS_LS_OPTS="${FZF_FS_LS_OPTS:+${FZF_FS_LS_OPTS}}"
 builtin typeset FZF_FS_SORT="${FZF_FS_SORT:+${FZF_FS_SORT}}"
 builtin typeset FZF_FS_LS_SYMLINK="$FZF_FS_LS_SYMLINK"
@@ -168,6 +165,7 @@ ENV
 
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/env.user" 1>&2;
     __fzffs_util_echon "builtin . \"\${FZF_FS_CONFIG_DIR}/env/env.default\"" > "${FZF_FS_CONFIG_DIR}/env/env.user";
+
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/macros.default" 1>&2;
     builtin unset -v macros;
     {
@@ -186,6 +184,7 @@ MACROS
 
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/macros.user" 1>&2;
     __fzffs_util_echon "builtin . \"\${FZF_FS_CONFIG_DIR}/env/macros.default\"" > "${FZF_FS_CONFIG_DIR}/env/macros.user";
+
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/flags.default" 1>&2;
     builtin unset -v flags_default;
     {
@@ -214,6 +213,7 @@ FLAGS
 
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/flags.user" 1>&2;
     __fzffs_util_echon "builtin . \"\${FZF_FS_CONFIG_DIR}/env/flags.default\"" > "${FZF_FS_CONFIG_DIR}/env/flags.user";
+
     __fzffs_util_echoE "Creating ${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.default" 1>&2;
     builtin unset -v browser_shortcuts;
     {

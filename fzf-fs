@@ -126,9 +126,9 @@ __fzffs_browser_fzf ()
     builtin typeset prompt="${1/${HOME}/"~"}";
     __fzffs_browser_prompt;
     if ((FZF_FS_LS_CLICOLOR == 0)); then
-        command fzf ${FZF_FS_DEFAULT_OPTS} --prompt="[$prompt] ";
+        command fzf ${FZF_FS_DEFAULT_OPTS} --with-nth=2.. --prompt="[$prompt] ";
     else
-        command fzf ${FZF_FS_DEFAULT_OPTS} --ansi --prompt="[$prompt] ";
+        command fzf ${FZF_FS_DEFAULT_OPTS} --ansi --with-nth=2.. --prompt="[$prompt] ";
     fi
 }
 
