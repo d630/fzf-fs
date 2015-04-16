@@ -285,7 +285,7 @@ __fzffs_console ()
                             if [[ -n "$FZF_FS_OPENER_CONSOLE" ]]; then
                                 command ${FZF_FS_OPENER_CONSOLE} "$console_file";
                             else
-                                builtin unset -f console_func;
+                                builtin unset -f console_func 2> /dev/null;
                                 builtin . "$console_file";
                                 [[ -n "$console" ]] && builtin eval "$console";
                                 if builtin typeset -f console_func > /dev/null; then
