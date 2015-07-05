@@ -47,6 +47,9 @@ __fzffs_browser ()
                 browser_pwd="$OLDPWD";
             else
                 if [[ -d "$browser_pwd" ]]; then
+                    if [[ "${browser_pwd:0:1}" != \/ ]]; then
+                        browser_pwd="${PWD}/${browser_pwd}"
+                    fi;
                     if [[ "${browser_pwd:${#browser_pwd}-1}" == \/ ]]; then
                         browser_pwd="${browser_pwd%/*}";
                     else
@@ -81,7 +84,7 @@ __fzffs_browser ()
         browser_pwd_inode="${browser_pwd_inode%% *}";
         browser_pwd_inode_parent="$(command ls -id ..)";
         browser_pwd_inode_parent="${browser_pwd_inode_parent%% *}";
-        browser_selection="$(__fzffs_browser_select "$browser_pwd")";
+        browser_selection="$(__fzffs_browser_select "${browser_pwd//$'\n'/?}")";
         while [[ "${browser_selection:0:1}" == _ || "${browser_selection:0:1}" == " " ]]; do
             browser_selection="${browser_selection#_}";
             browser_selection="${browser_selection#* }";
