@@ -47,18 +47,18 @@ __fzffs_init ()
     case "$(command uname -s)" in
         DragonFly|FreeBSD)
             FZF_FS_OS=FreeBSD;
-            FZF_FS_LS_COMMAND="command ls -G";
-            FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command ls -G"
+            FZF_FS_LS_COMMAND="command ls -G -q";
+            FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command ls -G -q"
         ;;
         OpenBSD)
             FZF_FS_OS=OpenBSD;
             if command -v colorls > /dev/null; then
-                FZF_FS_LS_COMMAND="command colorls -G";
-                FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command colorls -G";
+                FZF_FS_LS_COMMAND="command colorls -G -q";
+                FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command colorls -G -q";
             else
                 if command -v gls > /dev/null; then
-                    FZF_FS_LS_COMMAND="command gls --color=auto";
-                    FZF_FS_LS_COMMAND_COLOR="command gls --color=always";
+                    FZF_FS_LS_COMMAND="command gls --color=auto -q";
+                    FZF_FS_LS_COMMAND_COLOR="command gls --color=always -q";
                 else
                     FZF_FS_LS_COMMAND="command ls";
                     FZF_FS_LS_COMMAND_COLOR="command ls";
@@ -72,8 +72,8 @@ __fzffs_init ()
         ;;
         SunOS)
             FZF_FS_OS=SunOS;
-            FZF_FS_LS_COMMAND="command ls --color=auto";
-            FZF_FS_LS_COMMAND_COLOR="command ls --color=always"
+            FZF_FS_LS_COMMAND="command ls --color=auto -q";
+            FZF_FS_LS_COMMAND_COLOR="command ls --color=always -q"
         ;;
         *)
             FZF_FS_OS=Linux;
