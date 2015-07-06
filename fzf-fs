@@ -47,9 +47,7 @@ __fzffs_browser ()
                 browser_pwd="$OLDPWD";
             else
                 if [[ -d "$browser_pwd" ]]; then
-                    if [[ "${browser_pwd:0:1}" != \/ ]]; then
-                        browser_pwd="${PWD}/${browser_pwd}"
-                    fi;
+                    [[ "${browser_pwd:0:1}" == \/ ]] || browser_pwd="${PWD}/${browser_pwd}";
                     if [[ "${browser_pwd:${#browser_pwd}-1}" == \/ ]]; then
                         browser_pwd="${browser_pwd%/*}";
                     else
@@ -310,9 +308,9 @@ __fzffs_console ()
             builtin typeset console=;
             builtin unset -f console_func 2> /dev/null;
             builtin . "$console_file";
-            [[ -n $console ]] && builtin eval "$console";
+            [[ -n "$console" ]] && builtin eval "$console";
             if builtin typeset -f console_func > /dev/null; then
-                console_func "$*";
+                console_func "$@";
             fi;
         else
             console_file=;
@@ -563,7 +561,7 @@ __fzffs_util_parse_flags ()
 
 __fzffs_util_parse_macros ()
 {
-    console_args="$*";
+    #console_args="$@";
     builtin . "${FZF_FS_CONFIG_DIR}/env/macros.user" 2> /dev/null;
     console_args="${console_args%% }";
     console_args="${console_args## }";
