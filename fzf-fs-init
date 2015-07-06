@@ -67,8 +67,8 @@ __fzffs_init ()
         ;;
         Darwin)
             FZF_FS_OS=Darwin;
-            FZF_FS_LS_COMMAND="command ls -G";
-            FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command ls -G"
+            FZF_FS_LS_COMMAND="command ls -G -q";
+            FZF_FS_LS_COMMAND_COLOR="CLICOLOR_FORCE=1 command ls -G -q"
         ;;
         SunOS)
             FZF_FS_OS=SunOS;
@@ -77,8 +77,8 @@ __fzffs_init ()
         ;;
         *)
             FZF_FS_OS=Linux;
-            FZF_FS_LS_COMMAND="command ls --color=auto";
-            FZF_FS_LS_COMMAND_COLOR="command ls --color=always"
+            FZF_FS_LS_COMMAND="command ls --color=auto -q";
+            FZF_FS_LS_COMMAND_COLOR="command ls --color=always -q"
         ;;
     esac;
 
