@@ -1,1 +1,0 @@
-builtin . "${FZF_FS_CONFIG_DIR}/env/macros.default"

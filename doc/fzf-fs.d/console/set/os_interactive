@@ -1,1 +1,0 @@
-console="FZF_FS_OS=$(command fzf --prompt="uname -s => " --print-query <<< "")"

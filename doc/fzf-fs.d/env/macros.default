@@ -1,7 +1,0 @@
-console_args="${console_args//[%][b]/${FZF_FS_CONFIG_DIR}/env/browser_shortcuts.user}"
-console_args="${console_args//[%][c]/${FZF_FS_CONFIG_DIR}/env/console_shortcuts.user}"
-console_args="${console_args//[%][d]/$browser_pwd}"
-console_args="${console_args//[%][e]/${FZF_FS_CONFIG_DIR}/env/env.user}"
-console_args="${console_args//[%][f]/${FZF_FS_CONFIG_DIR}/env/flags.user}"
-console_args="${console_args//[%][m]/${FZF_FS_CONFIG_DIR}/env/macros.user}"
-console_args="${console_args//[%][s]/$browser_file}"

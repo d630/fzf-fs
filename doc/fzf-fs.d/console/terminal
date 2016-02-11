@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-console_func () 
-{ 
-    ( command ${SHELL:-sh} -c ${TERMINAL} & )
-}
