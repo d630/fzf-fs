@@ -1,0 +1,3 @@
+[submodule "modules/spath.sh"]
+	path = modules/spath.sh
+	url = https://github.com/D630/spath.sh.git
