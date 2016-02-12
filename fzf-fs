@@ -1213,11 +1213,11 @@ builtin typeset -x \
         FZF_FS_SET_CASE=${FZF_FS_SET_CASE:-smart} \
         FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR:-bw} \
         FZF_FS_SET_MARGIN=$FZF_FS_SET_MARGIN \
-        FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"lenght,index"}
+        FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"length,index"}
         FZF_FS_TOGGLE_CASE=${FZF_FS_TOGGLE_CASE:-smart} \
         FZF_FS_TOGGLE_COLOR=${FZF_FS_TOGGLE_COLOR:-bw} \
         FZF_FS_TOGGLE_MARGIN=$FZF_FS_TOGGLE_MARGIN \
-        FZF_FS_TOGGLE_TIEBREAK=${FZF_FS_TOGGLE_TIEBREAK:-"lenght,index"};
+        FZF_FS_TOGGLE_TIEBREAK=${FZF_FS_TOGGLE_TIEBREAK:-"length,index"};
 
 builtin typeset -i -x \
         FZF_FS_NORMALK_BLACK=$FZF_FS_NORMALK_BLACK \
