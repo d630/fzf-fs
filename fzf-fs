@@ -45,7 +45,7 @@ builtin typeset -a +i -x FZF_FS_COMMANDS="(
         Toggle
 )"
 
-Fzf::Fs::Commands::Chdir ()
+Fzf::Fs::C::Chdir ()
 {
         builtin typeset tmp
 
@@ -90,7 +90,7 @@ Fzf::Fs::Commands::Chdir ()
         }
 }
 
-Fzf::Fs::Commands::Child ()
+Fzf::Fs::C::Child ()
 {
         builtin typeset tmp
 
@@ -131,13 +131,13 @@ Fzf::Fs::Commands::Child ()
         if
                 [[ -d $tmp ]]
         then
-                Fzf::Fs::Commands::Chdir "$tmp"
+                Fzf::Fs::C::Chdir "$tmp"
         else
-                Fzf::Fs::Commands::Open "$tmp"
+                Fzf::Fs::C::Open "$tmp"
         fi
 }
 
-Fzf::Fs::Commands::Edit ()
+Fzf::Fs::C::Edit ()
 {
         builtin typeset tmp
 
@@ -180,7 +180,7 @@ Fzf::Fs::Commands::Edit ()
         Fzf::Fs::U::Set::Cursor 0
 }
 
-Fzf::Fs::Commands::GetKey ()
+Fzf::Fs::C::GetKey ()
 {
         [[ -z $1 ]] && builtin return 1
 
@@ -209,7 +209,7 @@ Fzf::Fs::Commands::GetKey ()
         esac
 }
 
-Fzf::Fs::Commands::Open ()
+Fzf::Fs::C::Open ()
 {
         builtin typeset tmp
 
@@ -252,7 +252,7 @@ Fzf::Fs::Commands::Open ()
         Fzf::Fs::U::Set::Cursor 0
 }
 
-Fzf::Fs::Commands::Page ()
+Fzf::Fs::C::Page ()
 {
         builtin typeset tmp
 
@@ -295,7 +295,7 @@ Fzf::Fs::Commands::Page ()
         Fzf::Fs::U::Set::Cursor 0
 }
 
-Fzf::Fs::Commands::Parent ()
+Fzf::Fs::C::Parent ()
 {
         (( $# )) || {
                 builtin typeset \
@@ -326,7 +326,7 @@ Fzf::Fs::Commands::Parent ()
         }
 }
 
-Fzf::Fs::Commands::PrintSettings ()
+Fzf::Fs::C::PrintSettings ()
 {
         case $1 in
         +i)
@@ -359,13 +359,13 @@ Fzf::Fs::Commands::PrintSettings ()
         fi
 }
 
-Fzf::Fs::Commands::Quit ()
+Fzf::Fs::C::Quit ()
 {
-        (( _console_interactive )) && Fzf::Fs::Commands::Set normal_mode
+        (( _console_interactive )) && Fzf::Fs::C::Set normal_mode
         Fzf::Fs::U::Spool "%s\n" "builtin break"
 }
 
-Fzf::Fs::Commands::Set ()
+Fzf::Fs::C::Set ()
 {
         [[ $1 == -i ]] && _console_interactive=1 && builtin shift 1
 
@@ -379,7 +379,7 @@ Fzf::Fs::Commands::Set ()
                 while
                         builtin read -r s _
                 do
-                        Fzf::Fs::Commands::Set "$s"
+                        Fzf::Fs::C::Set "$s"
                 done < <(
                         Fzf::Fs::U::Set::Cursor 1
                         Fzf::Fs::B::Set
@@ -793,7 +793,7 @@ SET
         esac
 }
 
-Fzf::Fs::Commands::Toggle ()
+Fzf::Fs::C::Toggle ()
 {
         [[ $1 == -i ]] && _console_interactive=1 && builtin shift 1
 
@@ -808,7 +808,7 @@ Fzf::Fs::Commands::Toggle ()
                 while
                         builtin read -r s _
                 do
-                        Fzf::Fs::Commands::Toggle "$s"
+                        Fzf::Fs::C::Toggle "$s"
                 done < <(
                         Fzf::Fs::U::Set::Cursor 1
                         Fzf::Fs::B::Toggle
@@ -1129,11 +1129,11 @@ Fzf::Fs::Exit ()
                 __fzf_fs_opener \
                 __fzf_fs_pager;
 
-        #builtin unset -f "${FZF_FS_COMMANDS[@/#/Fzf::Fs::Commands::}" "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
+        #builtin unset -f "${FZF_FS_COMMANDS[@/#/Fzf::Fs::C::}" "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
         builtin typeset f
         for f in "${FZF_FS_COMMANDS[@]}"
         do
-                builtin unset -f "Fzf::Fs::Commands::${f}"
+                builtin unset -f "Fzf::Fs::C::${f}"
         done
 
         for f in "${FZF_FS_FUNCS[@]}"
@@ -1160,7 +1160,7 @@ Fzf::Fs::F::Console ()
                 --print-query \
                 --prompt=':' \
                 --query="$query" || \
-        Fzf::Fs::Commands::Set normal_mode; # TODO
+        Fzf::Fs::C::Set normal_mode; # TODO
 }
 
 Fzf::Fs::F::ConsoleKeys ()
@@ -1198,7 +1198,7 @@ Fzf::Fs::F::Normal ()
                                 --nth=.. \
                                 --prompt="  ${_prompt} " \
                                 --with-nth=.. || \
-                        Fzf::Fs::Commands::Parent 1; # TODO
+                        Fzf::Fs::C::Parent 1; # TODO
                 }
         else
                 __fzf_fs_ls "${_ls_default_opts}" "$PWD" \
@@ -1214,7 +1214,7 @@ Fzf::Fs::F::Normal ()
                                 --nth=.. \
                                 --prompt="  ${_prompt} " \
                                 --with-nth=2.. || \
-                        Fzf::Fs::Commands::Parent 1; # TODO
+                        Fzf::Fs::C::Parent 1; # TODO
                 }
         fi
 }
@@ -1252,7 +1252,7 @@ Fzf::Fs::F::Search ()
                                 --nth=.. \
                                 --prompt='/' \
                                 --with-nth=.. || \
-                        Fzf::Fs::Commands::Parent 1; # TODO
+                        Fzf::Fs::C::Parent 1; # TODO
                 }
         else
                 __fzf_fs_ls "${_ls_default_opts}" "$PWD" \
@@ -1266,7 +1266,7 @@ Fzf::Fs::F::Search ()
                                 --nth=.. \
                                 --prompt='/' \
                                 --with-nth=2.. || \
-                        Fzf::Fs::Commands::Parent 1; # TODO
+                        Fzf::Fs::C::Parent 1; # TODO
                 }
         fi
 
@@ -1516,11 +1516,11 @@ key_quit='ctrl-[cgq]|esc'
 
 expect_console+='ctrl-c,ctrl-g,ctrl-i,ctrl-q,esc,f1'
 
-bind_console+='ctrl-c:execute(Fzf::Fs::Commands::Set normal_mode)',
-bind_console+='ctrl-g:execute(Fzf::Fs::Commands::Set normal_mode)',
-bind_console+='ctrl-q:execute(Fzf::Fs::Commands::Quit)',
-bind_console+='esc:execute(Fzf::Fs::Commands::Set normal_mode)',
-bind_console+='f1:execute(Fzf::Fs::Commands::GetKey f1)'
+bind_console+='ctrl-c:execute(Fzf::Fs::C::Set normal_mode)',
+bind_console+='ctrl-g:execute(Fzf::Fs::C::Set normal_mode)',
+bind_console+='ctrl-q:execute(Fzf::Fs::C::Quit)',
+bind_console+='esc:execute(Fzf::Fs::C::Set normal_mode)',
+bind_console+='f1:execute(Fzf::Fs::C::GetKey f1)'
 INIT
         builtin printf '%s' "$i"
 }
@@ -1530,24 +1530,24 @@ Fzf::Fs::I::BindsConsoleKeys ()
         case $1 in
         f1)
                 expect='1,C,H,S,T,b,c,d,g,i,l,m,o,r,s,t,w'
-                bind+="1:execute(Fzf::Fs::Commands::Set console_colorscheme_16)",
-                bind+="C:execute(Fzf::Fs::Commands::Toggle console_cycle)",
-                bind+="H:execute(Fzf::Fs::Commands::Set console_history)",
-                bind+="S:execute(Fzf::Fs::Commands::Set console_hsize)",
-                bind+="T:execute(Fzf::Fs::Commands::Set console_tac)",
-                bind+="b:execute(Fzf::Fs::Commands::Toggle console_black)",
-                bind+="c:execute(Fzf::Fs::Commands::Set console_color)",
-                bind+="d:execute(Fzf::Fs::Commands::Set console_colorscheme_dark)",
+                bind+="1:execute(Fzf::Fs::C::Set console_colorscheme_16)",
+                bind+="C:execute(Fzf::Fs::C::Toggle console_cycle)",
+                bind+="H:execute(Fzf::Fs::C::Set console_history)",
+                bind+="S:execute(Fzf::Fs::C::Set console_hsize)",
+                bind+="T:execute(Fzf::Fs::C::Set console_tac)",
+                bind+="b:execute(Fzf::Fs::C::Toggle console_black)",
+                bind+="c:execute(Fzf::Fs::C::Set console_color)",
+                bind+="d:execute(Fzf::Fs::C::Set console_colorscheme_dark)",
                 bind+="enter:ignore",
-                bind+="g:execute(Fzf::Fs::Commands::Set console_margin)",
-                bind+="i:execute(Fzf::Fs::Commands::Toggle console_inline)",
-                bind+="l:execute(Fzf::Fs::Commands::Set console_colorscheme_light)",
-                bind+="m:execute(Fzf::Fs::Commands::Toggle console_mouse)",
-                bind+="o:execute(Fzf::Fs::Commands::Toggle console_sort)",
-                bind+="r:execute(Fzf::Fs::Commands::Toggle console_reverse)",
-                bind+="s:execute(Fzf::Fs::Commands::Toggle console_hscroll)",
-                bind+="t:execute(Fzf::Fs::Commands::Set console_tabstop)",
-                bind+="w:execute(Fzf::Fs::Commands::Set console_colorscheme_bw)"
+                bind+="g:execute(Fzf::Fs::C::Set console_margin)",
+                bind+="i:execute(Fzf::Fs::C::Toggle console_inline)",
+                bind+="l:execute(Fzf::Fs::C::Set console_colorscheme_light)",
+                bind+="m:execute(Fzf::Fs::C::Toggle console_mouse)",
+                bind+="o:execute(Fzf::Fs::C::Toggle console_sort)",
+                bind+="r:execute(Fzf::Fs::C::Toggle console_reverse)",
+                bind+="s:execute(Fzf::Fs::C::Toggle console_hscroll)",
+                bind+="t:execute(Fzf::Fs::C::Set console_tabstop)",
+                bind+="w:execute(Fzf::Fs::C::Set console_colorscheme_bw)"
                 { keys=$( command column -t </dev/fd/0) ; } <<KEYS
 key command option
 --- ------- ------
@@ -1581,37 +1581,37 @@ builtin typeset \
 
 expect_normal+='/,:,;,C,N,Z,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,right,z'
 
-bind_normal+='/:execute(Fzf::Fs::Commands::Set search_mode)',
-bind_normal+='::execute(Fzf::Fs::Commands::Set console_mode)',
-bind_normal+=';:execute(Fzf::Fs::Commands::Set console_mode)',
-bind_normal+='C:execute(Fzf::Fs::Commands::GetKey C)',
-bind_normal+='E:execute(Fzf::Fs::Commands::Edit {})',
-bind_normal+='N:execute(Fzf::Fs::Commands::Set search_mode)',
-bind_normal+='Z:execute(Fzf::Fs::Commands::GetKey Z)',
+bind_normal+='/:execute(Fzf::Fs::C::Set search_mode)',
+bind_normal+='::execute(Fzf::Fs::C::Set console_mode)',
+bind_normal+=';:execute(Fzf::Fs::C::Set console_mode)',
+bind_normal+='C:execute(Fzf::Fs::C::GetKey C)',
+bind_normal+='E:execute(Fzf::Fs::C::Edit {})',
+bind_normal+='N:execute(Fzf::Fs::C::Set search_mode)',
+bind_normal+='Z:execute(Fzf::Fs::C::GetKey Z)',
 bind_normal+='ctrl-b:page-up',
-bind_normal+='ctrl-c:execute(Fzf::Fs::Commands::Quit)',
+bind_normal+='ctrl-c:execute(Fzf::Fs::C::Quit)',
 bind_normal+='ctrl-f:page-down',
 bind_normal+='ctrl-l:clear-screen',
-bind_normal+='ctrl-m:execute(Fzf::Fs::Commands::Child {})',
+bind_normal+='ctrl-m:execute(Fzf::Fs::C::Child {})',
 bind_normal+='down:down',
-bind_normal+='enter:execute(Fzf::Fs::Commands::Child {})',
-bind_normal+='g:execute(Fzf::Fs::Commands::GetKey g)',
-bind_normal+='h:execute(Fzf::Fs::Commands::Parent 1)',
-bind_normal+='i:execute(Fzf::Fs::Commands::Page {})',
+bind_normal+='enter:execute(Fzf::Fs::C::Child {})',
+bind_normal+='g:execute(Fzf::Fs::C::GetKey g)',
+bind_normal+='h:execute(Fzf::Fs::C::Parent 1)',
+bind_normal+='i:execute(Fzf::Fs::C::Page {})',
 bind_normal+='j:down',
 bind_normal+='k:up',
-bind_normal+='l:execute(Fzf::Fs::Commands::Child {})',
-bind_normal+='left:execute(Fzf::Fs::Commands::Parent 1)',
-bind_normal+='n:execute(Fzf::Fs::Commands::Set search_mode)',
-bind_normal+='o:execute(Fzf::Fs::Commands::GetKey o)',
+bind_normal+='l:execute(Fzf::Fs::C::Child {})',
+bind_normal+='left:execute(Fzf::Fs::C::Parent 1)',
+bind_normal+='n:execute(Fzf::Fs::C::Set search_mode)',
+bind_normal+='o:execute(Fzf::Fs::C::GetKey o)',
 bind_normal+='pgdn:page-down',
 bind_normal+='pgup:page-up',
-bind_normal+='q:execute(Fzf::Fs::Commands::Quit)',
-bind_normal+='right:execute(Fzf::Fs::Commands::Child {})',
+bind_normal+='q:execute(Fzf::Fs::C::Quit)',
+bind_normal+='right:execute(Fzf::Fs::C::Child {})',
 bind_normal+='up:up',
-bind_normal+='z:execute(Fzf::Fs::Commands::GetKey z)',
+bind_normal+='z:execute(Fzf::Fs::C::GetKey z)',
 
-#bind_normal+='T:execute(Fzf::Fs::Commands::Terminal)',
+#bind_normal+='T:execute(Fzf::Fs::C::Terminal)',
 #bind_normal+='S:execute(${FZF_FS_CONF_DIR}/bin/shell -k)', # TODO
 
 bind_normal+="!:ignore",
@@ -1767,14 +1767,14 @@ Fzf::Fs::I::BindsNormalKeys ()
         case $1 in
         C)
                 expect='1,C,b,c,d,l,w'
-                bind+="1:execute(Fzf::Fs::Commands::Set normal_colorscheme_16)",
-                bind+="C:execute(Fzf::Fs::Commands::Set normal_color)",
-                bind+="b:execute(Fzf::Fs::Commands::Toggle normal_black)",
-                bind+="c:execute(Fzf::Fs::Commands::Toggle ls_color)",
-                bind+="d:execute(Fzf::Fs::Commands::Set normal_colorscheme_dark)",
+                bind+="1:execute(Fzf::Fs::C::Set normal_colorscheme_16)",
+                bind+="C:execute(Fzf::Fs::C::Set normal_color)",
+                bind+="b:execute(Fzf::Fs::C::Toggle normal_black)",
+                bind+="c:execute(Fzf::Fs::C::Toggle ls_color)",
+                bind+="d:execute(Fzf::Fs::C::Set normal_colorscheme_dark)",
                 bind+="enter:ignore",
-                bind+="l:execute(Fzf::Fs::Commands::Set normal_colorscheme_light)",
-                bind+="w:execute(Fzf::Fs::Commands::Set normal_colorscheme_bw)"
+                bind+="l:execute(Fzf::Fs::C::Set normal_colorscheme_light)",
+                bind+="w:execute(Fzf::Fs::C::Set normal_colorscheme_bw)"
                 { keys=$(command column -t </dev/fd/0) ; } <<KEYS
 key command option
 --- ------- ------
@@ -1789,25 +1789,25 @@ KEYS
         ;;
         g)
                 expect='-,/,L,M,d,e,h,l,m,o,r,s,t,u,v,~,1,2'
-                bind+="-:execute(Fzf::Fs::Commands::Chdir "$OLDPWD")",
-                bind+="/:execute(Fzf::Fs::Commands::Chdir /)",
-                bind+="1:execute(Fzf::Fs::Commands::Parent 1)",
-                bind+="2:execute(Fzf::Fs::Commands::Parent 2)",
-                bind+="L:execute(Fzf::Fs::Commands::Chdir /var/log)",
-                bind+="M:execute(Fzf::Fs::Commands::Chdir /mnt)",
-                bind+="d:execute(Fzf::Fs::Commands::Chdir /dev)",
-                bind+="e:execute(Fzf::Fs::Commands::Chdir /etc)",
+                bind+="-:execute(Fzf::Fs::C::Chdir "$OLDPWD")",
+                bind+="/:execute(Fzf::Fs::C::Chdir /)",
+                bind+="1:execute(Fzf::Fs::C::Parent 1)",
+                bind+="2:execute(Fzf::Fs::C::Parent 2)",
+                bind+="L:execute(Fzf::Fs::C::Chdir /var/log)",
+                bind+="M:execute(Fzf::Fs::C::Chdir /mnt)",
+                bind+="d:execute(Fzf::Fs::C::Chdir /dev)",
+                bind+="e:execute(Fzf::Fs::C::Chdir /etc)",
                 bind+="enter:ignore",
-                bind+="h:execute(Fzf::Fs::Commands::Chdir "$HOME")",
-                bind+="l:execute(Fzf::Fs::Commands::Cddir /usr/lib)",
-                bind+="m:execute(Fzf::Fs::Commands::Chdir /media)",
-                bind+="o:execute(Fzf::Fs::Commands::Chdir /opt)",
-                bind+="r:execute(Fzf::Fs::Commands::Chdir /)",
-                bind+="s:execute(Fzf::Fs::Commands::Chdir /srv)",
-                bind+="t:execute(Fzf::Fs::Commands::Chdir /tmp)",
-                bind+="u:execute(Fzf::Fs::Commands::Chdir /usr)",
-                bind+="v:execute(Fzf::Fs::Commands::Chdir /var)",
-                bind+="~:execute(Fzf::Fs::Commands::Chdir "$HOME")"
+                bind+="h:execute(Fzf::Fs::C::Chdir "$HOME")",
+                bind+="l:execute(Fzf::Fs::C::Cddir /usr/lib)",
+                bind+="m:execute(Fzf::Fs::C::Chdir /media)",
+                bind+="o:execute(Fzf::Fs::C::Chdir /opt)",
+                bind+="r:execute(Fzf::Fs::C::Chdir /)",
+                bind+="s:execute(Fzf::Fs::C::Chdir /srv)",
+                bind+="t:execute(Fzf::Fs::C::Chdir /tmp)",
+                bind+="u:execute(Fzf::Fs::C::Chdir /usr)",
+                bind+="v:execute(Fzf::Fs::C::Chdir /var)",
+                bind+="~:execute(Fzf::Fs::C::Chdir "$HOME")"
                 { keys=$(command column -t </dev/fd/0) ; } <<KEYS
 key command option
 --- ------- ------
@@ -1833,18 +1833,18 @@ KEYS
         ;;
         o)
                 expect='A,B,C,M,S,a,b,c,m,n,s'
-                bind+="A:execute(Fzf::Fs::Commands::Set ls_sort_atime;Fzf::Fs::Commands::Set ls_reverse_false)",
-                bind+="B:execute(Fzf::Fs::Commands::Set ls_sort_bname;Fzf::Fs::Commands::Set ls_reverse_false)",
-                bind+="C:execute(Fzf::Fs::Commands::Set ls_sort_ctime;Fzf::Fs::Commands::Set ls_reverse_false)",
-                bind+="M:execute(Fzf::Fs::Commands::Set ls_sort_mtime;Fzf::Fs::Commands::Set ls_reverse_false)",
-                bind+="S:execute(Fzf::Fs::Commands::Set ls_sort_size;Fzf::Fs::Commands::Set ls_reverse_false)",
-                bind+="a:execute(Fzf::Fs::Commands::Set ls_sort_atime;Fzf::Fs::Commands::Set ls_reverse_true)",
-                bind+="b:execute(Fzf::Fs::Commands::Set ls_sort_bname;Fzf::Fs::Commands::Set ls_reverse_true)",
-                bind+="c:execute(Fzf::Fs::Commands::Set ls_sort_ctime;Fzf::Fs::Commands::Set ls_reverse_true)",
+                bind+="A:execute(Fzf::Fs::C::Set ls_sort_atime;Fzf::Fs::C::Set ls_reverse_false)",
+                bind+="B:execute(Fzf::Fs::C::Set ls_sort_bname;Fzf::Fs::C::Set ls_reverse_false)",
+                bind+="C:execute(Fzf::Fs::C::Set ls_sort_ctime;Fzf::Fs::C::Set ls_reverse_false)",
+                bind+="M:execute(Fzf::Fs::C::Set ls_sort_mtime;Fzf::Fs::C::Set ls_reverse_false)",
+                bind+="S:execute(Fzf::Fs::C::Set ls_sort_size;Fzf::Fs::C::Set ls_reverse_false)",
+                bind+="a:execute(Fzf::Fs::C::Set ls_sort_atime;Fzf::Fs::C::Set ls_reverse_true)",
+                bind+="b:execute(Fzf::Fs::C::Set ls_sort_bname;Fzf::Fs::C::Set ls_reverse_true)",
+                bind+="c:execute(Fzf::Fs::C::Set ls_sort_ctime;Fzf::Fs::C::Set ls_reverse_true)",
                 bind+="enter:ignore",
-                bind+="m:execute(Fzf::Fs::Commands::Set ls_sort_mtime;Fzf::Fs::Commands::Set ls_reverse_true)",
-                bind+="n:execute(Fzf::Fs::Commands::Set ls_sort_nothing)",
-                bind+="s:execute(Fzf::Fs::Commands::Set ls_sort_size;Fzf::Fs::Commands::Set ls_reverse_true)"
+                bind+="m:execute(Fzf::Fs::C::Set ls_sort_mtime;Fzf::Fs::C::Set ls_reverse_true)",
+                bind+="n:execute(Fzf::Fs::C::Set ls_sort_nothing)",
+                bind+="s:execute(Fzf::Fs::C::Set ls_sort_size;Fzf::Fs::C::Set ls_reverse_true)"
                 { keys=$(command column -t </dev/fd/0) ; } <<KEYS
 key command options
 --- ------- -------
@@ -1863,17 +1863,17 @@ KEYS
 ;;
         z)
                 expect='1,2,T,c,g,i,m,r,s,t'
-                bind+="1:execute(Fzf::Fs::Commands::Set lc_collate_c)",
-                bind+="2:execute(Fzf::Fs::Commands::Set lc_collate_lang)",
-                bind+="T:execute(Fzf::Fs::Commands::Toggle normal_tac)",
-                bind+="c:execute(Fzf::Fs::Commands::Toggle normal_cycle)",
+                bind+="1:execute(Fzf::Fs::C::Set lc_collate_c)",
+                bind+="2:execute(Fzf::Fs::C::Set lc_collate_lang)",
+                bind+="T:execute(Fzf::Fs::C::Toggle normal_tac)",
+                bind+="c:execute(Fzf::Fs::C::Toggle normal_cycle)",
                 bind+="enter:ignore",
-                bind+="g:execute(Fzf::Fs::Commands::Set normal_margin)",
-                bind+="i:execute(Fzf::Fs::Commands::Toggle normal_inline)",
-                bind+="m:execute(Fzf::Fs::Commands::Toggle normal_mouse)",
-                bind+="r:execute(Fzf::Fs::Commands::Toggle normal_reverse)",
-                bind+="s:execute(Fzf::Fs::Commands::Toggle normal_hscroll)",
-                bind+="t:execute(Fzf::Fs::Commands::Set normal_tabstop)"
+                bind+="g:execute(Fzf::Fs::C::Set normal_margin)",
+                bind+="i:execute(Fzf::Fs::C::Toggle normal_inline)",
+                bind+="m:execute(Fzf::Fs::C::Toggle normal_mouse)",
+                bind+="r:execute(Fzf::Fs::C::Toggle normal_reverse)",
+                bind+="s:execute(Fzf::Fs::C::Toggle normal_hscroll)",
+                bind+="t:execute(Fzf::Fs::C::Set normal_tabstop)"
                 { keys=$(command column -t </dev/fd/0) ; } <<KEYS
 key command option
 --- ------- ------
@@ -1891,21 +1891,21 @@ KEYS
         ;;
         Z)
                 expect='F,H,L,M,a,c,h,k,l,m,p,r,s,u'
-                bind+="F:execute(Fzf::Fs::Commands::Toggle ls_classify)",
-                bind+="H:execute(Fzf::Fs::Commands::Toggle ls_dereference_cl)",
-                bind+="L:execute(Fzf::Fs::Commands::Toggle ls_dereference)",
-                bind+="M:execute(Fzf::Fs::Commands::Set ls_format)",
-                bind+="a:execute(Fzf::Fs::Commands::Toggle ls_show_hidden)",
-                bind+="c:execute(Fzf::Fs::Commands::Set ls_show_ctime)",
+                bind+="F:execute(Fzf::Fs::C::Toggle ls_classify)",
+                bind+="H:execute(Fzf::Fs::C::Toggle ls_dereference_cl)",
+                bind+="L:execute(Fzf::Fs::C::Toggle ls_dereference)",
+                bind+="M:execute(Fzf::Fs::C::Set ls_format)",
+                bind+="a:execute(Fzf::Fs::C::Toggle ls_show_hidden)",
+                bind+="c:execute(Fzf::Fs::C::Set ls_show_ctime)",
                 bind+="enter:ignore",
-                bind+="h:execute(Fzf::Fs::Commands::Toggle ls_human)",
-                bind+="k:execute(Fzf::Fs::Commands::Toggle ls_kibibytes)",
-                bind+="l:execute(Fzf::Fs::Commands::Toggle ls_long)",
-                bind+="m:execute(Fzf::Fs::Commands::Set ls_show_mtime)",
-                bind+="p:execute(Fzf::Fs::Commands::Toggle ls_slash)",
-                bind+="r:execute(Fzf::Fs::Commands::Toggle ls_reverse)",
-                bind+="s:execute(Fzf::Fs::Commands::Toggle ls_show_size)",
-                bind+="u:execute(Fzf::Fs::Commands::Set ls_show_atime)"
+                bind+="h:execute(Fzf::Fs::C::Toggle ls_human)",
+                bind+="k:execute(Fzf::Fs::C::Toggle ls_kibibytes)",
+                bind+="l:execute(Fzf::Fs::C::Toggle ls_long)",
+                bind+="m:execute(Fzf::Fs::C::Set ls_show_mtime)",
+                bind+="p:execute(Fzf::Fs::C::Toggle ls_slash)",
+                bind+="r:execute(Fzf::Fs::C::Toggle ls_reverse)",
+                bind+="s:execute(Fzf::Fs::C::Toggle ls_show_size)",
+                bind+="u:execute(Fzf::Fs::C::Set ls_show_atime)"
                 { keys=$(command column -t </dev/fd/0) ; } <<KEYS
 key command option
 --- ------- ------
@@ -1937,17 +1937,17 @@ builtin typeset \
 
 expect_search+='alt-h,alt-l,ctrl-c,ctrl-g,ctrl-m,ctrl-q,enter,esc,f1'
 
-bind_search+='alt-e:execute(Fzf::Fs::Commands::Edit {})',
-bind_search+='alt-h:execute(Fzf::Fs::Commands::Parent 1)',
-bind_search+='alt-i:execute(Fzf::Fs::Commands::Page {})',
-bind_search+='alt-l:execute(Fzf::Fs::Commands::Child {})',
-bind_search+='ctrl-c:execute(Fzf::Fs::Commands::Set normal_mode)',
-bind_search+='ctrl-g:execute(Fzf::Fs::Commands::Set normal_mode)',
-bind_search+='ctrl-m:execute(Fzf::Fs::Commands::Child {})',
-bind_search+='ctrl-q:execute(Fzf::Fs::Commands::Quit)',
-bind_search+='enter:execute(Fzf::Fs::Commands::Child {})',
-bind_search+='esc:execute(Fzf::Fs::Commands::Set normal_mode)',
-bind_search+='f1:execute(Fzf::Fs::Commands::GetKey f1)'
+bind_search+='alt-e:execute(Fzf::Fs::C::Edit {})',
+bind_search+='alt-h:execute(Fzf::Fs::C::Parent 1)',
+bind_search+='alt-i:execute(Fzf::Fs::C::Page {})',
+bind_search+='alt-l:execute(Fzf::Fs::C::Child {})',
+bind_search+='ctrl-c:execute(Fzf::Fs::C::Set normal_mode)',
+bind_search+='ctrl-g:execute(Fzf::Fs::C::Set normal_mode)',
+bind_search+='ctrl-m:execute(Fzf::Fs::C::Child {})',
+bind_search+='ctrl-q:execute(Fzf::Fs::C::Quit)',
+bind_search+='enter:execute(Fzf::Fs::C::Child {})',
+bind_search+='esc:execute(Fzf::Fs::C::Set normal_mode)',
+bind_search+='f1:execute(Fzf::Fs::C::GetKey f1)'
 INIT
         builtin printf '%s' "$i"
 }
@@ -1957,28 +1957,28 @@ Fzf::Fs::I::BindsSearchKeys ()
         case $1 in
         f1)
                 expect='1,B,C,E,H,S,T,a,b,c,d,e,g,i,l,m,o,r,s,t,w'
-                bind+="1:execute(Fzf::Fs::Commands::Set search_colorscheme_16)",
-                bind+="B:execute(Fzf::Fs::Commands::Set search_tiebreak)",
-                bind+="C:execute(Fzf::Fs::Commands::Toggle search_cycle)",
-                bind+="E:execute(Fzf::Fs::Commands::Toggle search_extended)",
-                bind+="H:execute(Fzf::Fs::Commands::Set search_history)",
-                bind+="S:execute(Fzf::Fs::Commands::Set search_hsize)",
-                bind+="T:execute(Fzf::Fs::Commands::Set search_tac)",
-                bind+="a:execute(Fzf::Fs::Commands::Set search_case)",
-                bind+="b:execute(Fzf::Fs::Commands::Toggle search_black)",
-                bind+="c:execute(Fzf::Fs::Commands::Set search_color)",
-                bind+="d:execute(Fzf::Fs::Commands::Set search_colorscheme_dark)",
-                bind+="e:execute(Fzf::Fs::Commands::Toggle search_exact)",
+                bind+="1:execute(Fzf::Fs::C::Set search_colorscheme_16)",
+                bind+="B:execute(Fzf::Fs::C::Set search_tiebreak)",
+                bind+="C:execute(Fzf::Fs::C::Toggle search_cycle)",
+                bind+="E:execute(Fzf::Fs::C::Toggle search_extended)",
+                bind+="H:execute(Fzf::Fs::C::Set search_history)",
+                bind+="S:execute(Fzf::Fs::C::Set search_hsize)",
+                bind+="T:execute(Fzf::Fs::C::Set search_tac)",
+                bind+="a:execute(Fzf::Fs::C::Set search_case)",
+                bind+="b:execute(Fzf::Fs::C::Toggle search_black)",
+                bind+="c:execute(Fzf::Fs::C::Set search_color)",
+                bind+="d:execute(Fzf::Fs::C::Set search_colorscheme_dark)",
+                bind+="e:execute(Fzf::Fs::C::Toggle search_exact)",
                 bind+="enter:ignore",
-                bind+="g:execute(Fzf::Fs::Commands::Set search_margin)",
-                bind+="i:execute(Fzf::Fs::Commands::Toggle search_inline)",
-                bind+="l:execute(Fzf::Fs::Commands::Set search_colorscheme_light)",
-                bind+="m:execute(Fzf::Fs::Commands::Toggle search_mouse)",
-                bind+="o:execute(Fzf::Fs::Commands::Toggle search_sort)",
-                bind+="r:execute(Fzf::Fs::Commands::Toggle search_reverse)",
-                bind+="s:execute(Fzf::Fs::Commands::Toggle search_hscroll)",
-                bind+="t:execute(Fzf::Fs::Commands::Set search_tabstop)",
-                bind+="w:execute(Fzf::Fs::Commands::Set search_colorscheme_bw)"
+                bind+="g:execute(Fzf::Fs::C::Set search_margin)",
+                bind+="i:execute(Fzf::Fs::C::Toggle search_inline)",
+                bind+="l:execute(Fzf::Fs::C::Set search_colorscheme_light)",
+                bind+="m:execute(Fzf::Fs::C::Toggle search_mouse)",
+                bind+="o:execute(Fzf::Fs::C::Toggle search_sort)",
+                bind+="r:execute(Fzf::Fs::C::Toggle search_reverse)",
+                bind+="s:execute(Fzf::Fs::C::Toggle search_hscroll)",
+                bind+="t:execute(Fzf::Fs::C::Set search_tabstop)",
+                bind+="w:execute(Fzf::Fs::C::Set search_colorscheme_bw)"
                 { keys=$(command column -t </dev/fd/0) ; } <<KEYS
 key command option
 --- ------- ------
@@ -2218,10 +2218,10 @@ Fzf::Fs::Modes::Console ()
                         builtin continue
                 # TODO
                 elif
-                        builtin typeset -f "Fzf::Fs::Commands::${q}" 1>/dev/null
+                        builtin typeset -f "Fzf::Fs::C::${q}" 1>/dev/null
                 then
                         query=
-                        "Fzf::Fs::Commands::${q}"
+                        "Fzf::Fs::C::${q}"
                 else
                         #[[ $k =~ f1 ]]
                         query=$q
@@ -2673,10 +2673,10 @@ __fzf_fs_pager ()
 
 # TODO
 
-#builtin typeset -f -x "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::Commands::}"
+#builtin typeset -f -x "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}"
 for f in "${FZF_FS_COMMANDS[@]}"
 do
-        builtin typeset -f -x "Fzf::Fs::Commands::${f}"
+        builtin typeset -f -x "Fzf::Fs::C::${f}"
 done
 
 #builtin typeset -f -x "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}"
