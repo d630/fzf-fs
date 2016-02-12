@@ -34,8 +34,11 @@
 builtin typeset -a +i -x FZF_FS_COMMANDS="(
         Chdir
         Child
+        EMapKey
         Edit
+        ExpectKey
         GetKey
+        MapKey
         Open
         Page
         Parent
@@ -137,6 +140,44 @@ Fzf::Fs::C::Child ()
         fi
 }
 
+Fzf::Fs::C::EMapKey ()
+{
+        [[ $1 == -i ]] && _console_interactive=1 && builtin shift 1
+
+        if
+                (( _console_interactive ))
+        then
+                builtin typeset tmp="$(
+                        command fzf \
+                                --print-query \
+                                --prompt="EMapKey " \
+                                --query=". .:execute(.)" \
+                        0<&-;
+                )"
+                case $tmp in
+                c*)
+                        bind_console+="${tmp:2}",
+                ;;
+                n*)
+                        bind_normal+="${tmp:2}",
+                ;;
+                s*)
+                        bind_search+="${tmp:2}",
+                esac
+        else
+                case $1 in
+                c*)
+                        bind_console+="${2}:execute(${3:-builtin :})",
+                ;;
+                n*)
+                        bind_normal+="${2}:execute(${3:-builtin :})",
+                ;;
+                s*)
+                        bind_search+="${2}:execute(${3:-builtin :})",
+                esac
+        fi
+}
+
 Fzf::Fs::C::Edit ()
 {
         builtin typeset tmp
@@ -180,6 +221,45 @@ Fzf::Fs::C::Edit ()
         Fzf::Fs::U::Set::Cursor 0
 }
 
+Fzf::Fs::C::ExpectKey ()
+{
+        [[ $1 == -i ]] && _console_interactive=1 && builtin shift 1
+
+        if
+                (( _console_interactive ))
+        then
+                builtin typeset tmp="$(
+                        command fzf \
+                                --print-query \
+                                --prompt="ExpectKey " \
+                                --query=". ." \
+                        0<&-;
+                )"
+                case $tmp in
+                c*)
+                        expect_console+="${tmp:2}",
+                ;;
+                n*)
+                        expect_normal+="${tmp:2}",
+                ;;
+                s*)
+                        expect_search+="${tmp:2}",
+                esac
+        else
+                [[ -n $2 ]] || builtin return 1
+                case $1 in
+                c*)
+                        expect_console+="${2}",
+                ;;
+                n*)
+                        expect_normal+="${2}",
+                ;;
+                s*)
+                        expect_search+="${2}",
+                esac
+        fi
+}
+
 Fzf::Fs::C::GetKey ()
 {
         [[ -z $1 ]] && builtin return 1
@@ -214,6 +294,44 @@ Fzf::Fs::C::GetKey ()
                 Fzf::Fs::O::NormalKeys
                 Fzf::Fs::F::NormalKeys "$1"
         esac
+}
+
+Fzf::Fs::C::MapKey ()
+{
+        [[ $1 == -i ]] && _console_interactive=1 && builtin shift 1
+
+        if
+                (( _console_interactive ))
+        then
+                builtin typeset tmp="$(
+                        command fzf \
+                                --print-query \
+                                --prompt="MapKey " \
+                                --query=". .:." \
+                        0<&-;
+                )"
+                case $tmp in
+                c*)
+                        bind_console+="${tmp:2}",
+                ;;
+                n*)
+                        bind_normal+="${tmp:2}",
+                ;;
+                s*)
+                        bind_search+="${tmp:2}",
+                esac
+        else
+                case $1 in
+                c)
+                        bind_console+="${2}:${3:-ignore}",
+                ;;
+                n)
+                        bind_normal+="${2}:${3:-ignore}",
+                ;;
+                s)
+                        bind_search+="${2}:${3:-ignore}",
+                esac
+        fi
 }
 
 Fzf::Fs::C::Open ()
@@ -1088,9 +1206,9 @@ Fzf::Fs::F::Console ()
         command fzf \
                 +i \
                 --ansi \
-                --bind="$bind_console" \
+                --bind="${bind_console%,}" \
                 --exact \
-                --expect="$expect_console" \
+                --expect="${expect_console%,}" \
                 --header="${_prompt}" \
                 --no-extended \
                 --no-sort \
@@ -1128,9 +1246,9 @@ Fzf::Fs::F::Normal ()
                         command fzf \
                                 +i \
                                 --ansi \
-                                --bind="$bind_normal" \
+                                --bind="${bind_normal%,}" \
                                 --exact \
-                                --expect="$expect_normal" \
+                                --expect="${expect_norma%,}l" \
                                 --no-extended \
                                 --nth=.. \
                                 --prompt="  ${_prompt} " \
@@ -1144,9 +1262,9 @@ Fzf::Fs::F::Normal ()
                         command fzf \
                                 +i \
                                 --ansi \
-                                --bind="$bind_normal" \
+                                --bind="${bind_normal%,}" \
                                 --exact \
-                                --expect="$expect_normal" \
+                                --expect="${expect_normal%,}" \
                                 --no-extended \
                                 --nth=.. \
                                 --prompt="  ${_prompt} " \
@@ -1183,8 +1301,8 @@ Fzf::Fs::F::Search ()
                         1>/dev/null \
                         command fzf \
                                 --ansi \
-                                --bind="$bind_search" \
-                                --expect="$expect_search" \
+                                --bind="${bind_search%,}" \
+                                --expect="${expect_search,}" \
                                 --header="${_prompt}" \
                                 --nth=.. \
                                 --prompt='/' \
@@ -1197,8 +1315,8 @@ Fzf::Fs::F::Search ()
                         1>/dev/null \
                         command fzf \
                                 --ansi \
-                                --bind="$bind_search" \
-                                --expect="$expect_search" \
+                                --bind="${bind_search%,}" \
+                                --expect="${expect_search%,}" \
                                 --header="${_prompt}" \
                                 --nth=.. \
                                 --prompt='/' \
@@ -1231,7 +1349,7 @@ Fzf::Fs::F::Set ()
 {
         command fzf \
                 --ansi \
-                --bind="$bind_set" \
+                --bind="${bind_set%,}" \
                 --header=Set \
                 --multi \
                 --prompt="Set ";
@@ -1241,7 +1359,7 @@ Fzf::Fs::F::Toggle ()
 {
         command fzf \
                 --ansi \
-                --bind="$bind_toggle" \
+                --bind="${bind_toggle%,}" \
                 --header=Toggle \
                 --multi \
                 --prompt="Toggle ";
@@ -1451,20 +1569,20 @@ builtin typeset -x \
 key_comp+=ctrl-i
 key_quit+="ctrl-[cgq]|esc"
 
-expect_console+='ctrl-c,ctrl-g,ctrl-i,ctrl-q,esc,f1'
+expect_console+='ctrl-c,ctrl-g,ctrl-i,ctrl-q,esc,f1,'
 
 bind_console+="ctrl-c:execute(Fzf::Fs::C::Set normal_mode)",
 bind_console+="ctrl-g:execute(Fzf::Fs::C::Set normal_mode)",
 bind_console+="ctrl-q:execute(Fzf::Fs::C::Quit)",
 bind_console+="esc:execute(Fzf::Fs::C::Set normal_mode)",
-bind_console+="f1:execute(Fzf::Fs::C::GetKey f1)"
+bind_console+="f1:execute(Fzf::Fs::C::GetKey f1)",
 
 
 builtin typeset -x \
         bind_normal= \
         expect_normal=;
 
-expect_normal+='/,:,;,C,N,Z,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,right,z'
+expect_normal+='/,:,;,C,N,Z,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,right,z,'
 
 bind_normal+='/:execute(Fzf::Fs::C::Set search_mode)',
 bind_normal+='::execute(Fzf::Fs::C::Set console_mode)',
@@ -1642,14 +1760,13 @@ bind_normal+='Ö:ignore',
 bind_normal+='Ü:ignore',
 bind_normal+='ä:ignore',
 bind_normal+='ö:ignore',
-bind_normal+='ü:ignore'
-
+bind_normal+='ü:ignore',
 
 builtin typeset -x \
         bind_search= \
         expect_search=;
 
-expect_search+='alt-h,alt-l,ctrl-c,ctrl-g,ctrl-m,ctrl-q,enter,esc,f1'
+expect_search+='alt-h,alt-l,ctrl-c,ctrl-g,ctrl-m,ctrl-q,enter,esc,f1,'
 
 bind_search+='alt-e:execute(Fzf::Fs::C::Edit {})',
 bind_search+='alt-h:execute(Fzf::Fs::C::Parent 1)',
@@ -1661,7 +1778,7 @@ bind_search+='ctrl-m:execute(Fzf::Fs::C::Child {})',
 bind_search+='ctrl-q:execute(Fzf::Fs::C::Quit)',
 bind_search+='enter:execute(Fzf::Fs::C::Child {})',
 bind_search+='esc:execute(Fzf::Fs::C::Set normal_mode)',
-bind_search+='f1:execute(Fzf::Fs::C::GetKey f1)'
+bind_search+='f1:execute(Fzf::Fs::C::GetKey f1)',
 
 
 builtin typeset -x bind_set=
@@ -1674,7 +1791,7 @@ bind_set+='f2:deselect-all',
 bind_set+='shift-tab:toggle-out',
 bind_set+='space:toggle',
 bind_set+='tab:toggle-in',
-bind_set+='v:toggle-all'
+bind_set+='v:toggle-all',
 
 
 builtin typeset -x bind_toggle=
@@ -1687,7 +1804,7 @@ bind_toggle+='f2:deselect-all',
 bind_toggle+='shift-tab:toggle-out',
 bind_toggle+='space:toggle',
 bind_toggle+='tab:toggle-in',
-bind_toggle+='v:toggle-all'
+bind_toggle+='v:toggle-all',
 INIT
         builtin printf '%s' "$i"
 }
@@ -2082,7 +2199,6 @@ Fzf::Fs::Modes::Console ()
                                         | command grep -e "^${q}";
                                 )
                         )
-                        echo ${matches[@]} > /tmp/FZF
                         if
                                 (( ${#matches[@]} > 1 ))
                         then
