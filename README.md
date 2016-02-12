@@ -48,8 +48,11 @@ Put `./fzf-fs` and `./modules/spath.sh/spath.sh` on your PATH.
 ```
 Chdir           Change directory
 Child           Open the selection in normal and search mode. Calls Chdir or Open
+EMapKey         Map key on fzf's execute() action
+ExpectKey       Append key to expect variable
 Edit            Open X in editor
 GetKey          Opens a fzf "pane" to complete the keybinding
+MapKey          Map key on one of fzf's actions
 Open            Open X in opener
 Page            Open X in pager
 Parent          Go n directories up
