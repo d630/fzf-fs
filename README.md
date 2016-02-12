@@ -18,11 +18,13 @@ A complete documentation will follow.
 
 #### GIT
 
-git clone -b 0.2.3 --single-branch --depth 1 --recursive -- https://github.com/d630/fzf
+```
+git clone -b 0.2.3 --single-branch --depth 1 --recursive -- https://github.com/d630/fzf-fs
+```
 
 #### Install
 
-Put `fzf-fs` and ./modules/spath.sh/spath.sh on your PATH.
+Put `./fzf-fs` and `./modules/spath.sh/spath.sh` on your PATH.
 
 #### Usage
 
@@ -38,6 +40,7 @@ Put `fzf-fs` and ./modules/spath.sh/spath.sh on your PATH.
 
 . fzf-fs -d /tmp
 . fzf-fs -e "Fzf::Fs::Command::Set search_mode"
+. fzf-fs -e "Fzf::Fs::Command::Set -i"
 ```
 
 ##### Subcommands
@@ -51,7 +54,7 @@ Open        Open X in opener
 Page        Open X in pager
 Parent      Go n directories up
 Quit        Quit fzf-fs
-Set         Set settings with string values (interactive in console):
+Set         Set settings with string values (interactively in console):
             console_color
             console_colorscheme_16
             console_colorscheme_bw
@@ -62,20 +65,24 @@ Set         Set settings with string values (interactive in console):
             console_margin
             console_mode
             console_tabstop
+            lc_collate
             lc_collate_c
             lc_collate_lang
             ls_format
             ls_reverse_false
             ls_reverse_true
+            ls_show
             ls_show_atime
             ls_show_ctime
             ls_show_mtime
+            ls_sort
             ls_sort_atime
             ls_sort_bname
             ls_sort_ctime
             ls_sort_mtime
             ls_sort_nothing
             ls_sort_size
+            mode
             normal_color
             normal_colorscheme_16
             normal_colorscheme_bw
@@ -96,7 +103,7 @@ Set         Set settings with string values (interactive in console):
             search_mode
             search_tabstop
             search_tiebreak
-Toggle      Toggle settings with integer values (interactive in console):
+Toggle      Toggle settings with integer values (interactively in console):
             console_black
             console_cycle
             console_hscroll
@@ -341,6 +348,9 @@ v           toggle-all
 
 ##### Environment
 
+Specify FZF_FS_CONF_DIR on the commandline, otherwise:
+`${FZF_FS_CONF_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}`.
+
 ```sh
 builtin typeset -x \
         FZF_DEFAULT_COMMAND= \
@@ -348,8 +358,8 @@ builtin typeset -x \
         FZF_FS_MODE=${FZF_FS_MODE:-normal} \
         FZF_FS_OS= \
         FZF_FS_SPOOL_FILE="${FZF_FS_SPOOL_FILE:-/tmp/fzf-fs-${USER}/fzf-fs.$$}" \
-        LC_COLLATE=C \
         LC_COLLATE_OLD=$LC_COLLATE \
+        LC_COLLATE=C \
         _cursor_off="$(command tput civis || command tput vi)" \
         _cursor_on="$(command tput cnorm || command tput ve)" \
         _ls_default_opts= \
@@ -382,11 +392,9 @@ builtin typeset -i -x \
         FZF_FS_CONSOLE_BLACK=$FZF_FS_CONSOLE_BLACK \
         FZF_FS_CONSOLE_CYCLE=$FZF_FS_CONSOLE_CYCLE \
         FZF_FS_CONSOLE_HSCROLL=$FZF_FS_CONSOLE_HSCROLL \
-        FZF_FS_CONSOLE_HSIZE=${FZF_FS_CONSOLE_HSIZE:-1000} \
         FZF_FS_CONSOLE_INLINE=$FZF_FS_CONSOLE_INLINE \
         FZF_FS_CONSOLE_MOUSE=$FZF_FS_CONSOLE_MOUSE \
         FZF_FS_CONSOLE_REVERSE=$FZF_FS_CONSOLE_REVERSE \
-        FZF_FS_CONSOLE_TABSTOP=${FZF_FS_CONSOLE_TABSTOP:-8} \
         FZF_FS_CONSOLE_TAC=$FZF_FS_CONSOLE_TAC \
         FZF_FS_NORMAL_BLACK=$FZF_FS_NORMAL_BLACK \
         FZF_FS_NORMAL_CYCLE=$FZF_FS_NORMAL_CYCLE \
@@ -394,19 +402,16 @@ builtin typeset -i -x \
         FZF_FS_NORMAL_INLINE=$FZF_FS_NORMAL_INLINE \
         FZF_FS_NORMAL_MOUSE=$FZF_FS_NORMAL_MOUSE \
         FZF_FS_NORMAL_REVERSE=${FZF_FS_NORMAL_REVERSE:-1} \
-        FZF_FS_NORMAL_TABSTOP=${FZF_FS_NORMAL_TABSTOP:-8} \
         FZF_FS_NORMAL_TAC=$FZF_FS_NORMAL_TAC \
         FZF_FS_SEARCH_BLACK=$FZF_FS_SEARCH_BLACK \
         FZF_FS_SEARCH_CYCLE=$FZF_FS_SEARCH_CYCLE \
         FZF_FS_SEARCH_EXACT=$FZF_FS_SEARCH_EXACT \
         FZF_FS_SEARCH_EXTENDED=${FZF_FS_SEARCH_EXTENDED:-1} \
         FZF_FS_SEARCH_HSCROLL=$FZF_FS_SEARCH_HSCROLL \
-        FZF_FS_SEARCH_HSIZE=${FZF_FS_SEARCH_HSIZE:-1000} \
         FZF_FS_SEARCH_INLINE=$FZF_FS_SEARCH_INLINE \
         FZF_FS_SEARCH_MOUSE=$FZF_FS_SEARCH_MOUSE \
         FZF_FS_SEARCH_REVERSE=$FZF_FS_SEARCH_REVERSE \
         FZF_FS_SEARCH_SORT=${FZF_FS_SEARCH_SORT:-1} \
-        FZF_FS_SEARCH_TABSTOP=${FZF_FS_SEARCH_TABSTOP:-8} \
         FZF_FS_SEARCH_TAC=$FZF_FS_SEARCH_TAC \
         FZF_FS_SET_BLACK=$FZF_FS_SET_BLACK \
         FZF_FS_SET_CYCLE=$FZF_FS_SET_CYCLE \
@@ -417,7 +422,6 @@ builtin typeset -i -x \
         FZF_FS_SET_MOUSE=$FZF_FS_SET_MOUSE \
         FZF_FS_SET_REVERSE=$FZF_FS_SET_REVERSE \
         FZF_FS_SET_SORT=${FZF_FS_SET_SORT:-1} \
-        FZF_FS_SET_TABSTOP=${FZF_FS_SET_TABSTOP:-8} \
         FZF_FS_SET_TAC=$FZF_FS_SET_TAC \
         FZF_FS_TOGGLE_BLACK=$FZF_FS_TOGGLE_BLACK \
         FZF_FS_TOGGLE_CYCLE=$FZF_FS_TOGGLE_CYCLE \
@@ -428,28 +432,34 @@ builtin typeset -i -x \
         FZF_FS_TOGGLE_MOUSE=$FZF_FS_TOGGLE_MOUSE \
         FZF_FS_TOGGLE_REVERSE=$FZF_FS_TOGGLE_REVERSE \
         FZF_FS_TOGGLE_SORT=${FZF_FS_TOGGLE_SORT:-1} \
-        FZF_FS_TOGGLE_TABSTOP=${FZF_FS_TOGGLE_TABSTOP:-8} \
         FZF_FS_TOGGLE_TAC=$FZF_FS_TOGGLE_TAC;
 
 builtin typeset -x \
-        FZF_FS_CONSOLE_COLOR=${FZF_FS_CONSOLE_COLOR} \
+        FZF_FS_CONSOLE_COLOR=${FZF_FS_CONSOLE_COLOR:-bw} \
         FZF_FS_CONSOLE_HISTORY=$FZF_FS_CONSOLE_HISTORY \
+        FZF_FS_CONSOLE_HSIZE=${FZF_FS_CONSOLE_HSIZE:-1000} \
         FZF_FS_CONSOLE_MARGIN=$FZF_FS_CONSOLE_MARGIN \
-        FZF_FS_NORMAL_COLOR=${FZF_FS_NORMAL_COLOR} \
+        FZF_FS_CONSOLE_TABSTOP=${FZF_FS_CONSOLE_TABSTOP:-8} \
+        FZF_FS_NORMAL_COLOR=${FZF_FS_NORMAL_COLOR:-bw} \
         FZF_FS_NORMAL_MARGIN=$FZF_FS_NORMAL_MARGIN \
-        FZF_FS_SEARCH_CASE=$FZF_FS_SEARCH_CASE \
-        FZF_FS_SEARCH_COLOR=${FZF_FS_SEARCH_COLOR} \
+        FZF_FS_NORMAL_TABSTOP=${FZF_FS_NORMAL_TABSTOP:-8} \
+        FZF_FS_SEARCH_CASE=${FZF_FS_SEARCH_CASE:-smart} \
+        FZF_FS_SEARCH_COLOR=${FZF_FS_SEARCH_COLOR:-bw} \
         FZF_FS_SEARCH_HISTORY=$FZF_FS_SEARCH_HISTORY \
+        FZF_FS_SEARCH_HSIZE=${FZF_FS_SEARCH_HSIZE:-1000} \
         FZF_FS_SEARCH_MARGIN=$FZF_FS_SEARCH_MARGIN \
-        FZF_FS_SEARCH_TIEBREAK=$FZF_FS_SEARCH_TIEBREAK \
-        FZF_FS_SET_CASE=$FZF_FS_SET_CASE \
-        FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR} \
+        FZF_FS_SEARCH_TABSTOP=${FZF_FS_SEARCH_TABSTOP:-8} \
+        FZF_FS_SEARCH_TIEBREAK=${FZF_FS_SEARCH_TIEBREAK:-"length,index"} \
+        FZF_FS_SET_CASE=${FZF_FS_SET_CASE:-smart} \
+        FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR:-bw} \
         FZF_FS_SET_MARGIN=$FZF_FS_SET_MARGIN \
-        FZF_FS_SET_TIEBREAK=$FZF_FS_SET_TIEBREAK
-        FZF_FS_TOGGLE_CASE=$FZF_FS_TOGGLE_CASE \
-        FZF_FS_TOGGLE_COLOR=${FZF_FS_TOGGLE_COLOR} \
+        FZF_FS_SET_TABSTOP=${FZF_FS_SET_TABSTOP:-8} \
+        FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"length,index"}
+        FZF_FS_TOGGLE_CASE=${FZF_FS_TOGGLE_CASE:-smart} \
+        FZF_FS_TOGGLE_COLOR=${FZF_FS_TOGGLE_COLOR:-bw} \
         FZF_FS_TOGGLE_MARGIN=$FZF_FS_TOGGLE_MARGIN \
-        FZF_FS_TOGGLE_TIEBREAK=$FZF_FS_TOGGLE_TIEBREAK;
+        FZF_FS_TOGGLE_TABSTOP=${FZF_FS_TOGGLE_TABSTOP:-8} \
+        FZF_FS_TOGGLE_TIEBREAK=${FZF_FS_TOGGLE_TIEBREAK:-"length,index"};
 
 builtin typeset -i -x \
         FZF_FS_NORMALK_BLACK=$FZF_FS_NORMALK_BLACK \
@@ -458,11 +468,11 @@ builtin typeset -i -x \
         FZF_FS_NORMALK_INLINE=$FZF_FS_NORMALK_INLINE \
         FZF_FS_NORMALK_MOUSE=$FZF_FS_NORMALK_MOUSE \
         FZF_FS_NORMALK_REVERSE=${FZF_FS_NORMALK_REVERSE:-1} \
-        FZF_FS_NORMALK_TABSTOP=${FZF_FS_NORMALK_TABSTOP:-8} \
         FZF_FS_NORMALK_TAC=$FZF_FS_NORMALK_TAC;
 builtin typeset -x \
         FZF_FS_NORMALK_COLOR=${FZF_FS_NORMALK_COLOR:-bw} \
-        FZF_FS_NORMALK_MARGIN=$FZF_FS_NORMALK_MARGIN;
+        FZF_FS_NORMALK_MARGIN=$FZF_FS_NORMALK_MARGIN \
+        FZF_FS_NORMALK_TABSTOP=${FZF_FS_NORMALK_TABSTOP:-8};
 
 builtin typeset -i -x \
         FZF_FS_SEARCHK_BLACK=$FZF_FS_SEARCHK_BLACK \
@@ -471,11 +481,11 @@ builtin typeset -i -x \
         FZF_FS_SEARCHK_INLINE=$FZF_FS_SEARCHK_INLINE \
         FZF_FS_SEARCHK_MOUSE=$FZF_FS_SEARCHK_MOUSE \
         FZF_FS_SEARCHK_REVERSE=${FZF_FS_SEARCHK_REVERSE:-1} \
-        FZF_FS_SEARCHK_TABSTOP=${FZF_FS_SEARCHK_TABSTOP:-8} \
         FZF_FS_SEARCHK_TAC=$FZF_FS_SEARCHK_TAC;
 builtin typeset -x \
         FZF_FS_SEARCHK_COLOR=${FZF_FS_SEARCHK_COLOR:-bw} \
-        FZF_FS_SEARCHK_MARGIN=$FZF_FS_SEARCHK_MARGIN;
+        FZF_FS_SEARCHK_MARGIN=$FZF_FS_SEARCHK_MARGIN \
+        FZF_FS_SEARCHK_TABSTOP=${FZF_FS_SEARCHK_TABSTOP:-8};
 
 builtin typeset -i -x \
         FZF_FS_CONSOLEK_BLACK=$FZF_FS_CONSOLEK_BLACK \
@@ -484,11 +494,11 @@ builtin typeset -i -x \
         FZF_FS_CONSOLEK_INLINE=$FZF_FS_CONSOLEK_INLINE \
         FZF_FS_CONSOLEK_MOUSE=$FZF_FS_CONSOLEK_MOUSE \
         FZF_FS_CONSOLEK_REVERSE=${FZF_FS_CONSOLEK_REVERSE:-1} \
-        FZF_FS_CONSOLEK_TABSTOP=${FZF_FS_CONSOLEK_TABSTOP:-8} \
         FZF_FS_CONSOLEK_TAC=$FZF_FS_CONSOLEK_TAC;
 builtin typeset -x \
         FZF_FS_CONSOLEK_COLOR=${FZF_FS_CONSOLEK_COLOR:-bw} \
-        FZF_FS_CONSOLEK_MARGIN=$FZF_FS_CONSOLEK_MARGIN;
+        FZF_FS_CONSOLEK_MARGIN=$FZF_FS_CONSOLEK_MARGIN \
+        FZF_FS_CONSOLEK_TABSTOP=${FZF_FS_CONSOLEK_TABSTOP:-8};
 ```
 
 ##### TO DO
@@ -510,7 +520,7 @@ builtin typeset -x \
 [Southern Death Cult - Moya](https://www.youtube.com/watch?v=kuuGxiuRvm8)
 [The Slits - I Heard It Through The Grapevine](https://www.youtube.com/watch?v=pSq3-lE377Q)
 [Teenage, Jesus and the Jerks - Orphans](https://www.youtube.com/watch?v=pQHc9NFPxdw)
-[Mission of Burmai - Trem Two](https://www.youtube.com/watch?v=BUZ8_TAdjg8)
+[Mission of Burma - Trem Two](https://www.youtube.com/watch?v=BUZ8_TAdjg8)
 [The Raincoats - In Love](https://www.youtube.com/watch?v=3r2ZZC49IAw)
 [Dinosaur Jr. - Little Fury Things](https://www.youtube.com/watch?v=4WAFdBU88bg)
 [Desmond Dekker - 007 (Shanty Town)](https://www.youtube.com/watch?v=ZqgWuMcHc3g)
