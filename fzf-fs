@@ -39,6 +39,7 @@ builtin typeset -a +i -x FZF_FS_COMMANDS="(
         Open
         Page
         Parent
+        PrintSettings
         Quit
         Set
         Toggle
@@ -323,6 +324,39 @@ Fzf::Fs::Commands::Parent ()
                         Fzf::Fs::U::Spool -a "builtin cd -- '%s'\n" "${PWD//\'/\'\\\'\'}"
                 }
         }
+}
+
+Fzf::Fs::Commands::PrintSettings ()
+{
+        case $1 in
+        +i)
+                _console_interactive=0
+                builtin shift 1
+        ;;
+        -i)
+                _console_interactive=1
+                builtin shift 1
+        esac
+
+
+        if
+                (( _console_interactive ))
+        then
+                Fzf::Fs::U::Set::Cursor 0
+                builtin set \
+                | command sed '
+                        /^FZF_FS_/ !{d;b return};
+                        s/=/{}/;
+                        : return;
+                ' \
+                | command sort \
+                | command column -t -s '{}' \
+                | 1>/dev/null command fzf --header=ShowSettings --prompt="ENV";
+                Fzf::Fs::U::Set::Cursor 1
+        else
+                builtin set \
+                | command grep '^FZF_FS_';
+        fi
 }
 
 Fzf::Fs::Commands::Quit ()
