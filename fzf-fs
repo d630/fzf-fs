@@ -1224,10 +1224,6 @@ builtin typeset -x \
         _ls_default_opts= \
         _prompt=;
 
-builtin typeset \
-        bind \
-        expect;
-
 builtin typeset -i -x FZF_FS_SHOW_CURSOR=$FZF_FS_SHOW_CURSOR
 
 builtin typeset -i -x \
