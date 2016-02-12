@@ -1023,9 +1023,9 @@ builtin typeset -a +i -x FZF_FS_FUNCS="(
 
 Fzf::Fs::Exit ()
 {
-        # TODO
-
         Fzf::Fs::U::Set::Cursor 1
+
+        builtin typeset syntax=\#
 
         builtin unset -f \
                 Spath::Do \
@@ -1034,19 +1034,9 @@ Fzf::Fs::Exit ()
                 __fzf_fs_ls \
                 __fzf_fs_ls_color \
                 __fzf_fs_opener \
-                __fzf_fs_pager;
-
-        #builtin unset -f "${FZF_FS_COMMANDS[@/#/Fzf::Fs::C::}" "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
-        builtin typeset f
-        for f in "${FZF_FS_COMMANDS[@]}"
-        do
-                builtin unset -f "Fzf::Fs::C::${f}"
-        done
-
-        for f in "${FZF_FS_FUNCS[@]}"
-        do
-                builtin unset -f "Fzf::Fs::${f}"
-        done
+                __fzf_fs_pager \
+                "${FZF_FS_COMMANDS[@]/$syntax/Fzf::Fs::C::}" \
+                "${FZF_FS_FUNCS[@]/$syntax/Fzf::Fs::}";
 
         builtin unset -v \
                 FZF_FS_COMMANDS \
@@ -2604,19 +2594,9 @@ __fzf_fs_pager ()
 # -- MAIN.
 ###############################################################################
 
-# TODO
-
-#builtin typeset -f -x "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}"
-for f in "${FZF_FS_COMMANDS[@]}"
-do
-        builtin typeset -f -x "Fzf::Fs::C::${f}"
-done
-
-#builtin typeset -f -x "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}"
-for f in "${FZF_FS_FUNCS[@]}"
-do
-        builtin typeset -f -x "Fzf::Fs::${f}"
-done
+builtin typeset -f -x \
+        "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}" \
+        "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
 
 builtin typeset -f -x \
         __fzf_fs_editor \
