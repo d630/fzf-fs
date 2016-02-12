@@ -1398,7 +1398,7 @@ Fzf::Fs::I::KeyBinds ()
 {
         { builtin typeset i="$(</dev/fd/0)" ; } <<-'INIT'
 
-builtin typeset -x \
+builtin typeset \
         bind_console= \
         key_comp= \
         key_quit= \
@@ -1416,7 +1416,7 @@ bind_console+="esc:execute(Fzf::Fs::C::Set normal_mode)",
 bind_console+="f1:execute(Fzf::Fs::C::GetKey f1)",
 
 
-builtin typeset -x \
+builtin typeset \
         bind_normal= \
         expect_normal=;
 
@@ -1600,7 +1600,7 @@ bind_normal+='ä:ignore',
 bind_normal+='ö:ignore',
 bind_normal+='ü:ignore',
 
-builtin typeset -x \
+builtin typeset \
         bind_search= \
         expect_search=;
 
@@ -1619,7 +1619,7 @@ bind_search+='esc:execute(Fzf::Fs::C::Set normal_mode)',
 bind_search+='f1:execute(Fzf::Fs::C::GetKey f1)',
 
 
-builtin typeset -x bind_set=
+builtin typeset bind_set=
 
 bind_set+='btab:toggle-out',
 bind_set+='ctrl-i:toggle-in',
@@ -1632,7 +1632,7 @@ bind_set+='tab:toggle-in',
 bind_set+='v:toggle-all',
 
 
-builtin typeset -x bind_toggle=
+builtin typeset bind_toggle=
 
 bind_toggle+='btab:toggle-out',
 bind_toggle+='ctrl-i:toggle-in',
