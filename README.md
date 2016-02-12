@@ -46,99 +46,100 @@ Put `./fzf-fs` and `./modules/spath.sh/spath.sh` on your PATH.
 ##### Subcommands
 
 ```
-Chdir       Change directory
-Child       Open the selection in normal and search mode. Calls Chdir or Open
-Edit        Open X in editor
-GetKey      Opens a fzf "pane" to complete the keybinding
-Open        Open X in opener
-Page        Open X in pager
-Parent      Go n directories up
-Quit        Quit fzf-fs
-Set         Set settings with string values (interactively in console):
-            console_color
-            console_colorscheme_16
-            console_colorscheme_bw
-            console_colorscheme_dark
-            console_colorscheme_light
-            console_history
-            console_hsize
-            console_margin
-            console_mode
-            console_tabstop
-            lc_collate
-            lc_collate_c
-            lc_collate_lang
-            ls_format
-            ls_reverse_false
-            ls_reverse_true
-            ls_show
-            ls_show_atime
-            ls_show_ctime
-            ls_show_mtime
-            ls_sort
-            ls_sort_atime
-            ls_sort_bname
-            ls_sort_ctime
-            ls_sort_mtime
-            ls_sort_nothing
-            ls_sort_size
-            mode
-            normal_color
-            normal_colorscheme_16
-            normal_colorscheme_bw
-            normal_colorscheme_dark
-            normal_colorscheme_light
-            normal_margin
-            normal_mode
-            normal_tabstop
-            search_case
-            search_color
-            search_colorscheme_16
-            search_colorscheme_bw
-            search_colorscheme_dark
-            search_colorscheme_light
-            search_history
-            search_hsize
-            search_margin
-            search_mode
-            search_tabstop
-            search_tiebreak
-Toggle      Toggle settings with integer values (interactively in console):
-            console_black
-            console_cycle
-            console_hscroll
-            console_inline
-            console_mouse
-            console_reverse
-            console_tac
-            ls_classify
-            ls_color
-            ls_dereference
-            ls_dereference_cl
-            ls_human
-            ls_kibibytes
-            ls_long
-            ls_reverse
-            ls_show_hidden
-            ls_show_size
-            ls_slash
-            normal_black
-            normal_cycle
-            normal_hscroll
-            normal_inline
-            normal_mouse
-            normal_reverse
-            normal_tac
-            search_black
-            search_cycle
-            search_exact
-            search_extended
-            search_hscroll
-            search_inline
-            search_mouse
-            search_reverse
-            search_sort
-            search_tac
+Chdir           Change directory
+Child           Open the selection in normal and search mode. Calls Chdir or Open
+Edit            Open X in editor
+GetKey          Opens a fzf "pane" to complete the keybinding
+Open            Open X in opener
+Page            Open X in pager
+Parent          Go n directories up
+PrintSettings   Print out current environment (interactively in console)
+Quit            Quit fzf-fs
+Set             Set settings with string values (interactively in console):
+                console_color
+                console_colorscheme_16
+                console_colorscheme_bw
+                console_colorscheme_dark
+                console_colorscheme_light
+                console_history
+                console_hsize
+                console_margin
+                console_mode
+                console_tabstop
+                lc_collate
+                lc_collate_c
+                lc_collate_lang
+                ls_format
+                ls_reverse_false
+                ls_reverse_true
+                ls_show
+                ls_show_atime
+                ls_show_ctime
+                ls_show_mtime
+                ls_sort
+                ls_sort_atime
+                ls_sort_bname
+                ls_sort_ctime
+                ls_sort_mtime
+                ls_sort_nothing
+                ls_sort_size
+                mode
+                normal_color
+                normal_colorscheme_16
+                normal_colorscheme_bw
+                normal_colorscheme_dark
+                normal_colorscheme_light
+                normal_margin
+                normal_mode
+                normal_tabstop
+                search_case
+                search_color
+                search_colorscheme_16
+                search_colorscheme_bw
+                search_colorscheme_dark
+                search_colorscheme_light
+                search_history
+                search_hsize
+                search_margin
+                search_mode
+                search_tabstop
+                search_tiebreak
+Toggle          Toggle settings with integer values (interactively in console):
+                console_black
+                console_cycle
+                console_hscroll
+                console_inline
+                console_mouse
+                console_reverse
+                console_tac
+                ls_classify
+                ls_color
+                ls_dereference
+                ls_dereference_cl
+                ls_human
+                ls_kibibytes
+                ls_long
+                ls_reverse
+                ls_show_hidden
+                ls_show_size
+                ls_slash
+                normal_black
+                normal_cycle
+                normal_hscroll
+                normal_inline
+                normal_mouse
+                normal_reverse
+                normal_tac
+                search_black
+                search_cycle
+                search_exact
+                search_extended
+                search_hscroll
+                search_inline
+                search_mouse
+                search_reverse
+                search_sort
+                search_tac
 ```
 
 ##### Utils functions
@@ -503,7 +504,7 @@ builtin typeset -x \
 
 ##### TO DO
 
-- commands: shell, open_with and terminal (all with flags); help and version;show_settings and dump_settings
+- commands: shell, open_with and terminal (all with flags); help and version
 - macros via macro.sh
 - provide searching in GetKey command
 - commandline option to use fzf-curr-position
@@ -513,7 +514,7 @@ builtin typeset -x \
 
 ##### Playlist
 
-[Neu! - Heroes](https://www.youtube.com/watch?v=owA7mW8S5Fo)
+[Neu! - Hero](https://www.youtube.com/watch?v=owA7mW8S5Fo)
 [The Sound - I Can't Escape Myself ](https://www.youtube.com/watch?v=8Ad2ujW5Sl8)
 [Bush Tetras - Too Many Creeps](https://www.youtube.com/watch?v=PERvoP9YuM4)
 [The Au Pairs - Headache for Michelle](https://www.youtube.com/watch?v=-JJuEDrxJ-0)
