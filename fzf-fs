@@ -1011,6 +1011,7 @@ builtin typeset -a +i -x FZF_FS_FUNCS="(
         O::SearchKeys
         O::Set
         O::Toggle
+        U::CopyFunc
         U::Get::Args
         U::Parse::Line
         U::Set::Cursor
@@ -2551,6 +2552,26 @@ Fzf::Fs::U::Set::Pwd ()
                         builtin cd -- "${pwd:-$root}"
                 fi
         fi
+}
+
+Fzf::Fs::U::CopyFunc ()
+{
+        case $1 in
+        c*)
+                typeset -n tmp=FZF_FS_FUNCS
+        ;;
+        f*)
+                typeset -n tmp=FZF_FS_COMMANDS
+        ;;
+        *)
+                builtin return 1
+        esac
+        builtin shift 1
+
+        builtin test -n "$(builtin typeset -f "${1:-1}")" && {
+                builtin eval "${_/${1}/${2:-1}}" && tmp+=( $2 )
+        }
+        builtin unset -n tmp
 }
 
 Fzf::Fs::U::Spool ()
