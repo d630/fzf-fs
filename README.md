@@ -39,8 +39,8 @@ Put `./fzf-fs` and `./modules/spath.sh/spath.sh` on your PATH.
 # examples
 
 . fzf-fs -d /tmp
-. fzf-fs -e "Fzf::Fs::Command::Set search_mode"
-. fzf-fs -e "Fzf::Fs::Command::Set -i"
+. fzf-fs -e "Fzf::Fs::C::Set search_mode"
+. fzf-fs -e "Fzf::Fs::C::Set -i"
 ```
 
 ##### Subcommands
