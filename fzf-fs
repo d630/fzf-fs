@@ -50,41 +50,11 @@ builtin typeset -a +i -x FZF_FS_COMMANDS="(
 
 Fzf::Fs::C::Chdir ()
 {
-        builtin typeset tmp
+        builtin typeset \
+                prompt=Chdir \
+                tmp;
 
-        if
-                (( $# ))
-        then
-                if
-                        [[ -e $1 ]]
-                then
-                        tmp=$1
-                else
-                        builtin typeset -a finfo
-                        Fzf::Fs::U::Parse::Line finfo "$1"
-                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
-                        if
-                                [[ ${finfo[1]} ]]
-                        then
-                                tmp=${finfo[1]}
-                        else
-                                builtin return 1
-                        fi
-                fi
-        else
-                builtin typeset prompt=chdir
-                command tput sc
-                command tput cup 99999 0
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
-                command tput rc
-                command tput ed
-        fi
+        Fzf::Fs::U::Get::Args "$@"
 
         builtin cd -- "$tmp"
 
@@ -95,41 +65,11 @@ Fzf::Fs::C::Chdir ()
 
 Fzf::Fs::C::Child ()
 {
-        builtin typeset tmp
+        builtin typeset \
+                prompt=Child \
+                tmp;
 
-        if
-                (( $# ))
-        then
-                if
-                        [[ -e $1 ]]
-                then
-                        tmp=$1
-                else
-                        builtin typeset -a finfo
-                        Fzf::Fs::U::Parse::Line finfo "$1"
-                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
-                        if
-                                [[ ${finfo[1]} ]]
-                        then
-                                tmp=${finfo[1]}
-                        else
-                                builtin return 1
-                        fi
-                fi
-        else
-                builtin typeset prompt=child
-                command tput sc
-                command tput cup 99999 0
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
-                command tput rc
-                command tput ed
-        fi
+        Fzf::Fs::U::Get::Args "$@"
 
         if
                 [[ -d $tmp ]]
@@ -180,41 +120,11 @@ Fzf::Fs::C::EMapKey ()
 
 Fzf::Fs::C::Edit ()
 {
-        builtin typeset tmp
+        builtin typeset \
+                prompt=Editor \
+                tmp;
 
-        if
-                (( $# ))
-        then
-                if
-                        [[ -e $1 ]]
-                then
-                        tmp=$1
-                else
-                        builtin typeset -a finfo
-                        Fzf::Fs::U::Parse::Line finfo "$1"
-                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
-                        if
-                                [[ ${finfo[1]} ]]
-                        then
-                                tmp=${finfo[1]}
-                        else
-                                builtin return 1
-                        fi
-                fi
-        else
-                builtin typeset prompt=editor
-                command tput sc
-                command tput cup 99999 0
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
-                command tput rc
-                command tput ed
-        fi
+        Fzf::Fs::U::Get::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
         __fzf_fs_editor "$tmp"
@@ -336,41 +246,11 @@ Fzf::Fs::C::MapKey ()
 
 Fzf::Fs::C::Open ()
 {
-        builtin typeset tmp
+        builtin typeset \
+                prompt=Opener \
+                tmp;
 
-        if
-                (( $# ))
-        then
-                if
-                        [[ -e $1 ]]
-                then
-                        tmp=$1
-                else
-                        builtin typeset -a finfo
-                        Fzf::Fs::U::Parse::Line finfo "$1"
-                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
-                        if
-                                [[ ${finfo[1]} ]]
-                        then
-                                tmp=${finfo[1]}
-                        else
-                                builtin return 1
-                        fi
-                fi
-        else
-                builtin typeset prompt=opener
-                command tput sc
-                command tput cup 99999 0
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
-                command tput rc
-                command tput ed
-        fi
+        Fzf::Fs::U::Get::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
         __fzf_fs_opener "$tmp"
@@ -379,41 +259,11 @@ Fzf::Fs::C::Open ()
 
 Fzf::Fs::C::Page ()
 {
-        builtin typeset tmp
+        builtin typeset \
+                prompt=Pager \
+                tmp;
 
-        if
-                (( $# ))
-        then
-                if
-                        [[ -e $1 ]]
-                then
-                        tmp=$1
-                else
-                        builtin typeset -a finfo
-                        Fzf::Fs::U::Parse::Line finfo "$1"
-                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
-                        if
-                                [[ ${finfo[1]} ]]
-                        then
-                                tmp=${finfo[1]}
-                        else
-                                builtin return 1
-                        fi
-                fi
-        else
-                builtin typeset prompt=pager
-                command tput sc
-                command tput cup 99999 0
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
-                command tput rc
-                command tput ed
-        fi
+        Fzf::Fs::U::Get::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
         __fzf_fs_pager "$tmp"
@@ -424,7 +274,7 @@ Fzf::Fs::C::Parent ()
 {
         (( $# )) || {
                 builtin typeset \
-                        prompt=parent \
+                        prompt=Parent \
                         tmp;
 
                 command tput sc
@@ -1161,6 +1011,7 @@ builtin typeset -a +i -x FZF_FS_FUNCS="(
         O::SearchKeys
         O::Set
         O::Toggle
+        U::Get::Args
         U::Parse::Line
         U::Set::Cursor
         U::Set::FName
@@ -2550,6 +2401,42 @@ Fzf::Fs::O::Toggle ()
         o+="--tabstop=${FZF_FS_TOGGLE_TABSTOP} "
 
         FZF_DEFAULT_OPTS=$o
+}
+
+Fzf::Fs::U::Get::Args ()
+{
+        if
+                (( $# ))
+        then
+                if
+                        [[ -e $1 ]]
+                then
+                        tmp=$1
+                else
+                        builtin typeset -a finfo
+                        Fzf::Fs::U::Parse::Line finfo "$1"
+                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
+                        if
+                                [[ ${finfo[1]} ]]
+                        then
+                                tmp=${finfo[1]}
+                        else
+                                builtin return 1
+                        fi
+                fi
+        else
+                command tput sc
+                command tput cup 99999 0
+                if
+                        [[ -n "$ZSH_VERSION" ]]
+                then
+                        builtin vared -p ":${prompt} " tmp
+                else
+                        builtin read -re -p ":${prompt} " tmp
+                fi
+                command tput rc
+                command tput ed
+        fi
 }
 
 Fzf::Fs::U::Parse::Line ()
