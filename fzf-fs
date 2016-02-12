@@ -2217,13 +2217,13 @@ Fzf::Fs::O::Search ()
 
         [[ -n $FZF_FS_SEARCH_COLOR ]] && o+="--color=${FZF_FS_SEARCH_COLOR} "
         [[ -n $FZF_FS_SEARCH_MARGIN ]] && o+="--margin=${FZF_FS_SEARCH_MARGIN} "
-        [[ -n $FZF_FS_SEARCH_TIEBREAK ]] && o+="--tiebreak=${FZF_FS_SEARCH_MARGIN} "
+        [[ -n $FZF_FS_SEARCH_TIEBREAK ]] && o+="--tiebreak=${FZF_FS_SEARCH_TIEBREAK} "
 
         case $FZF_FS_SEARCH_CASE in
-        insensitive)
+        insensi*)
                 o+="-i "
         ;;
-        sensitive)
+        sensi*)
                 o+="+i "
         esac
 
@@ -2276,13 +2276,13 @@ Fzf::Fs::O::Set ()
 
         [[ -n $FZF_FS_SET_COLOR ]] && o+="--color=${FZF_FS_SET_COLOR} "
         [[ -n $FZF_FS_SET_MARGIN ]] && o+="--margin=${FZF_FS_SET_MARGIN} "
-        [[ -n $FZF_FS_SET_TIEBREAK ]] && o+="--tiebreak=${FZF_FS_SET_MARGIN} "
+        [[ -n $FZF_FS_SET_TIEBREAK ]] && o+="--tiebreak=${FZF_FS_SET_TIEBREAK} "
 
         case $FZF_FS_SET_CASE in
-        insensitive)
+        insensi*)
                 o+="-i "
         ;;
-        sensitive)
+        sensi*)
                 o+="+i "
         esac
 
@@ -2308,13 +2308,13 @@ Fzf::Fs::O::Toggle ()
 
         [[ -n $FZF_FS_TOGGLE_COLOR ]] && o+="--color=${FZF_FS_TOGGLE_COLOR} "
         [[ -n $FZF_FS_TOGGLE_MARGIN ]] && o+="--margin=${FZF_FS_TOGGLE_MARGIN} "
-        [[ -n $FZF_FS_TOGGLE_TIEBREAK ]] && o+="--tiebreak=${FZF_FS_TOGGLE_MARGIN} "
+        [[ -n $FZF_FS_TOGGLE_TIEBREAK ]] && o+="--tiebreak=${FZF_FS_TOGGLE_TIEBREAK} "
 
         case $FZF_FS_TOGGLE_CASE in
-        insensitive)
+        insensi*)
                 o+="-i "
         ;;
-        sensitive)
+        sensi*)
                 o+="+i "
         esac
 
