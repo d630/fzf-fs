@@ -370,20 +370,24 @@ console_hsize ${FZF_FS_CONSOLE_HSIZE:-null}
 console_margin ${FZF_FS_CONSOLE_MARGIN:-null}
 console_mode
 console_tabstop ${FZF_FS_CONSOLE_TABSTOP:-null}
+lc_collate ${LC_COLLATE:-null}
 lc_collate_c
 lc_collate_lang
 ls_format ${FZF_FS_LS_FORMAT:-null}
 ls_reverse_false
 ls_reverse_true
+ls_show ${FZF_FS_LS_TIME:-null}
 ls_show_atime
 ls_show_ctime
 ls_show_mtime
+ls_sort ${FZF_FS_LS_SORT:-null}
 ls_sort_atime
 ls_sort_bname
 ls_sort_ctime
 ls_sort_mtime
 ls_sort_nothing
 ls_sort_size
+mode ${FZF_FS_MODE:-null}
 normal_color ${FZF_FS_NORMAL_COLOR:-null}
 normal_colorscheme_16
 normal_colorscheme_bw
@@ -487,6 +491,20 @@ SET
                 FZF_FS_CONSOLE_TABSTOP=${FZF_FS_CONSOLE_TABSTOP:-8}
                 Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_TABSTOP=%d\n" "$FZF_FS_CONSOLE_TABSTOP"
         ;;
+        lc_collate)
+                if
+                        (( _console_interactive ))
+                then
+                        LC_COLLATE=$(
+                                builtin printf '%s\n' C "$LANG" \
+                                | command fzf --prompt="LC_COLLATE=";
+                        )
+                else
+                        LC_COLLATE=$2
+                fi
+                LC_COLLATE=${LC_COLLATE:-C}
+                Fzf::Fs::U::Spool -a "LC_COLLATE=%s\n" "$LC_COLLATE"
+        ;;
         lc_collate_c)
                 LC_COLLATE=C
                 Fzf::Fs::U::Spool -a "LC_COLLATE=%s\n" "C"
@@ -514,6 +532,20 @@ SET
                 FZF_FS_LS_r=1
                 Fzf::Fs::U::Spool -a "FZF_FS_LS_r=%s\n" "1"
         ;;
+        ls_show)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_LS_TIME=$(
+                                builtin printf '%s\n' atime ctime mtime \
+                                | command fzf --prompt="FZF_FS_LS_TIME=";
+                        )
+                else
+                        FZF_FS_LS_TIME=$2
+                fi
+                FZF_FS_LS_TIME=${FZF_FS_LS_TIME:-mtime}
+                Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "$FZF_FS_LS_TIME"
+        ;;
         ls_show_atime)
                 FZF_FS_LS_TIME=atime
                 Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "atime"
@@ -525,6 +557,20 @@ SET
         ls_show_mtime)
                 FZF_FS_LS_TIME=mtime
                 Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "mtime"
+        ;;
+        ls_sort)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_LS_SORT=$(
+                                builtin printf '%s\n' atime bname ctime mtime nothing size \
+                                | command fzf --prompt="FZF_FS_LS_SORT=";
+                        )
+                else
+                        FZF_FS_LS_SORT=$2
+                fi
+                FZF_FS_LS_SORT=${FZF_FS_LS_SORT:-nothing}
+                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "$FZF_FS_LS_SORT"
         ;;
         ls_sort_atime)
                 FZF_FS_LS_SORT=atime
@@ -601,6 +647,20 @@ SET
                 fi
                 FZF_FS_NORMAL_TABSTOP=${FZF_FS_NORMAL_TABSTOP:-8}
                 Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_TABSTOP=%d\n" "$FZF_FS_NORMAL_TABSTOP"
+        ;;
+        mode)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_MODE=$(
+                                builtin printf '%s\n' console normal search \
+                                | command fzf --prompt="FZF_FS_MODE=";
+                        )
+                else
+                        FZF_FS_MODE=$2
+                fi
+                FZF_FS_MODE=${FZF_FS_MODE:-normal}
+                Fzf::Fs::U::Spool -a "FZF_FS_MODE=%s\n" "$FZF_FS_MODE"
         ;;
         search_case)
                 if
