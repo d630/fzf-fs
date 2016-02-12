@@ -612,10 +612,10 @@ Fzf::Fs::Commands::Toggle ()
                         {
                                 command sed "
                                         /.* 1/ {
-                                                s/[01]$/${bold}${green}enabled${reset}/;
+                                                s/1$/${bold}${green}1${reset}/;
                                                 b return
                                         };
-                                        s/[01]$/${bold}${red}disabled${reset}/;
+                                        s/0$/${bold}${red}0${reset}/;
                                         : return;
                                 " <<SET
 console_black ${FZF_FS_CONSOLE_BLACK}
