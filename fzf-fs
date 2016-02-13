@@ -1103,7 +1103,7 @@ Fzf::Fs::F::Normal ()
                                 --ansi \
                                 --bind="${bind_normal%,}" \
                                 --exact \
-                                --expect="${expect_norma%,}l" \
+                                --expect="${expect_normal%,}" \
                                 --no-extended \
                                 --nth=.. \
                                 --prompt="  ${_prompt} " \
@@ -1157,7 +1157,7 @@ Fzf::Fs::F::Search ()
                         command fzf \
                                 --ansi \
                                 --bind="${bind_search%,}" \
-                                --expect="${expect_search,}" \
+                                --expect="${expect_search%,}" \
                                 --header="${_prompt}" \
                                 --nth=.. \
                                 --prompt='/' \
