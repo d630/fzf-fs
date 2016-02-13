@@ -515,7 +515,6 @@ builtin typeset -x \
 - commandline option to use fzf-curr-position
 - give more settings for Set and Toggle (all environment variable)
 - update docs
-- better handling of the spool file
 
 ##### Playlist
 

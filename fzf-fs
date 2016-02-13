@@ -62,7 +62,7 @@ Fzf::Fs::C::Chdir ()
         builtin cd -- "$tmp"
 
         (( _console_interactive )) || {
-                Fzf::Fs::U::Spool -a "builtin cd -- '%s'\n" "${PWD//\'/\'\\\'\'}"
+                Fzf::Fs::U::Spool "builtin cd -- '%s'\n" "${PWD//\'/\'\\\'\'}"
         }
 }
 
@@ -314,7 +314,7 @@ Fzf::Fs::C::Parent ()
                 builtin typeset tmp="$(builtin printf '%*s' "${1:-1}" "")"
                 builtin cd -- "${tmp// /..\/}"
                 (( _console_interactive )) || {
-                        Fzf::Fs::U::Spool -a "builtin cd -- '%s'\n" "${PWD//\'/\'\\\'\'}"
+                        Fzf::Fs::U::Spool "builtin cd -- '%s'\n" "${PWD//\'/\'\\\'\'}"
                 }
         }
 }
@@ -453,23 +453,23 @@ SET
                         FZF_FS_CONSOLE_COLOR=$2
                 fi
                 FZF_FS_CONSOLE_COLOR=${FZF_FS_CONSOLE_COLOR:-bw}
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_COLOR='%s'\n" "$FZF_FS_CONSOLE_COLOR"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_COLOR='%s'\n" "$FZF_FS_CONSOLE_COLOR"
         ;;
         console_colorscheme_16)
                 FZF_FS_CONSOLE_COLOR=16
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_COLOR=%d\n" "16"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_COLOR=%d\n" "16"
         ;;
         console_colorscheme_bw)
                 FZF_FS_CONSOLE_COLOR=bw
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_COLOR=%s\n" "bw"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_COLOR=%s\n" "bw"
         ;;
         console_colorscheme_dark)
                 FZF_FS_CONSOLE_COLOR=dark
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_COLOR=%s\n" "dark"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_COLOR=%s\n" "dark"
         ;;
         console_colorscheme_light)
                 FZF_FS_CONSOLE_COLOR=light
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_COLOR=%s\n" "light"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_COLOR=%s\n" "light"
         ;;
         console_history)
                 if
@@ -479,7 +479,7 @@ SET
                 else
                         FZF_FS_CONSOLE_HISTORY=$2
                 fi
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_HISTORY='%s'\n" "$FZF_FS_CONSOLE_HISTORY"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_HISTORY='%s'\n" "$FZF_FS_CONSOLE_HISTORY"
         ;;
         console_hsize)
                 if
@@ -490,7 +490,7 @@ SET
                         FZF_FS_CONSOLE_HSIZE=$2
                 fi
                 FZF_FS_CONSOLE_HSIZE=${FZF_FS_CONSOLE_HSIZE:-1000}
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_HSIZE=%d\n" "$FZF_FS_CONSOLE_HSIZE"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_HSIZE=%d\n" "$FZF_FS_CONSOLE_HSIZE"
         ;;
         console_margin)
                 if
@@ -500,11 +500,11 @@ SET
                 else
                         FZF_FS_CONSOLE_MARGIN=$2
                 fi
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_MARGIN='%s'\n" "$FZF_FS_CONSOLE_MARGIN"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_MARGIN='%s'\n" "$FZF_FS_CONSOLE_MARGIN"
         ;;
         console_mode)
                 FZF_FS_MODE=console
-                Fzf::Fs::U::Spool -a "FZF_FS_MODE=%s\n" "console"
+                Fzf::Fs::U::Spool "FZF_FS_MODE=%s\n" "console"
         ;;
         console_tabstop)
                 if
@@ -515,7 +515,7 @@ SET
                         FZF_FS_CONSOLE_TABSTOP=$2
                 fi
                 FZF_FS_CONSOLE_TABSTOP=${FZF_FS_CONSOLE_TABSTOP:-8}
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_TABSTOP=%d\n" "$FZF_FS_CONSOLE_TABSTOP"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_TABSTOP=%d\n" "$FZF_FS_CONSOLE_TABSTOP"
         ;;
         lc_collate)
                 if
@@ -529,15 +529,15 @@ SET
                         LC_COLLATE=$2
                 fi
                 LC_COLLATE=${LC_COLLATE:-C}
-                Fzf::Fs::U::Spool -a "LC_COLLATE=%s\n" "$LC_COLLATE"
+                Fzf::Fs::U::Spool "LC_COLLATE=%s\n" "$LC_COLLATE"
         ;;
         lc_collate_c)
                 LC_COLLATE=C
-                Fzf::Fs::U::Spool -a "LC_COLLATE=%s\n" "C"
+                Fzf::Fs::U::Spool "LC_COLLATE=%s\n" "C"
         ;;
         lc_collate_lang)
                 LC_COLLATE=$LANG
-                Fzf::Fs::U::Spool -a "LC_COLLATE=%s\n" "$LC_COLLATE"
+                Fzf::Fs::U::Spool "LC_COLLATE=%s\n" "$LC_COLLATE"
         ;;
         ls_format)
                 if
@@ -548,15 +548,15 @@ SET
                         FZF_FS_LS_FORMAT=$2
                 fi
                 FZF_FS_LS_FORMAT=${FZF_FS_LS_FORMAT:-l}
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_FORMAT='%s'\n" "$FZF_FS_LS_FORMAT"
+                Fzf::Fs::U::Spool "FZF_FS_LS_FORMAT='%s'\n" "$FZF_FS_LS_FORMAT"
         ;;
         ls_reverse_false)
                 FZF_FS_LS_r=0
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_r=%d\n" "0"
+                Fzf::Fs::U::Spool "FZF_FS_LS_r=%d\n" "0"
         ;;
         ls_reverse_true)
                 FZF_FS_LS_r=1
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_r=%s\n" "1"
+                Fzf::Fs::U::Spool "FZF_FS_LS_r=%s\n" "1"
         ;;
         ls_show)
                 if
@@ -570,19 +570,19 @@ SET
                         FZF_FS_LS_TIME=$2
                 fi
                 FZF_FS_LS_TIME=${FZF_FS_LS_TIME:-mtime}
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "$FZF_FS_LS_TIME"
+                Fzf::Fs::U::Spool "FZF_FS_LS_TIME=%s\n" "$FZF_FS_LS_TIME"
         ;;
         ls_show_atime)
                 FZF_FS_LS_TIME=atime
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "atime"
+                Fzf::Fs::U::Spool "FZF_FS_LS_TIME=%s\n" "atime"
         ;;
         ls_show_ctime)
                 FZF_FS_LS_TIME=ctime
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "ctime"
+                Fzf::Fs::U::Spool "FZF_FS_LS_TIME=%s\n" "ctime"
         ;;
         ls_show_mtime)
                 FZF_FS_LS_TIME=mtime
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_TIME=%s\n" "mtime"
+                Fzf::Fs::U::Spool "FZF_FS_LS_TIME=%s\n" "mtime"
         ;;
         ls_sort)
                 if
@@ -596,31 +596,31 @@ SET
                         FZF_FS_LS_SORT=$2
                 fi
                 FZF_FS_LS_SORT=${FZF_FS_LS_SORT:-nothing}
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "$FZF_FS_LS_SORT"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "$FZF_FS_LS_SORT"
         ;;
         ls_sort_atime)
                 FZF_FS_LS_SORT=atime
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "atime"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "atime"
         ;;
         ls_sort_bname)
                 FZF_FS_LS_SORT=bname
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "bname"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "bname"
         ;;
         ls_sort_ctime)
                 FZF_FS_LS_SORT=ctime
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "ctime"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "ctime"
         ;;
         ls_sort_mtime)
                 FZF_FS_LS_SORT=mtime
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "mtime"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "mtime"
         ;;
         ls_sort_nothing)
                 FZF_FS_LS_SORT=nothing
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "nothing"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "nothing"
         ;;
         ls_sort_size)
                 FZF_FS_LS_SORT=size
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_SORT=%s\n" "size"
+                Fzf::Fs::U::Spool "FZF_FS_LS_SORT=%s\n" "size"
         ;;
         normal_color)
                 if
@@ -631,23 +631,23 @@ SET
                         FZF_FS_NORMAL_COLOR=$2
                 fi
                 FZF_FS_NORMAL_COLOR=${FZF_FS_NORMAL_COLOR:-bw}
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_COLOR='%s'\n" "$FZF_FS_NORMAL_COLOR"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_COLOR='%s'\n" "$FZF_FS_NORMAL_COLOR"
         ;;
         normal_colorscheme_16)
                 FZF_FS_NORMAL_COLOR=16
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_COLOR=%d\n" "16"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_COLOR=%d\n" "16"
         ;;
         normal_colorschme_bw)
                 FZF_FS_NORMAL_COLOR=bw
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_COLOR=%s\n" "bw"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_COLOR=%s\n" "bw"
         ;;
         normal_colorscheme_dark)
                 FZF_FS_NORMAL_COLOR=dark
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_COLOR=%s\n" "dark"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_COLOR=%s\n" "dark"
         ;;
         normal_colorscheme_light)
                 FZF_FS_NORMAL_COLOR=light
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_COLOR=%s\n" "light"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_COLOR=%s\n" "light"
         ;;
         normal_margin)
                 if
@@ -657,11 +657,11 @@ SET
                 else
                         FZF_FS_NORMAL_MARGIN=$2
                 fi
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_MARGIN='%s'\n" "$FZF_FS_NORMAL_MARGIN"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_MARGIN='%s'\n" "$FZF_FS_NORMAL_MARGIN"
         ;;
         normal_mode)
                 FZF_FS_MODE=normal
-                Fzf::Fs::U::Spool -a "FZF_FS_MODE=%s\n" "normal"
+                Fzf::Fs::U::Spool "FZF_FS_MODE=%s\n" "normal"
         ;;
         normal_tabstop)
                 if
@@ -672,7 +672,7 @@ SET
                         FZF_FS_NORMAL_TABSTOP=$2
                 fi
                 FZF_FS_NORMAL_TABSTOP=${FZF_FS_NORMAL_TABSTOP:-8}
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_TABSTOP=%d\n" "$FZF_FS_NORMAL_TABSTOP"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_TABSTOP=%d\n" "$FZF_FS_NORMAL_TABSTOP"
         ;;
         mode)
                 if
@@ -686,7 +686,7 @@ SET
                         FZF_FS_MODE=$2
                 fi
                 FZF_FS_MODE=${FZF_FS_MODE:-normal}
-                Fzf::Fs::U::Spool -a "FZF_FS_MODE=%s\n" "$FZF_FS_MODE"
+                Fzf::Fs::U::Spool "FZF_FS_MODE=%s\n" "$FZF_FS_MODE"
         ;;
         search_case)
                 if
@@ -697,7 +697,7 @@ SET
                         FZF_FS_SEARCH_CASE=$2
                 fi
                 FZF_FS_SEARCH_CASE=${FZF_FS_SEARCH_CASE:-smart}
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_CASE='%s'\n" "$FZF_FS_SEARCH_CASE"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_CASE='%s'\n" "$FZF_FS_SEARCH_CASE"
         ;;
         search_color)
                 if
@@ -708,23 +708,23 @@ SET
                         FZF_FS_SEARCH_COLOR
                 fi
                 FZF_FS_SEARCH_COLOR=${FZF_FS_SEARCH_COLOR:-bw}
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_COLOR='%s'\n" "$FZF_FS_SEARCH_COLOR"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_COLOR='%s'\n" "$FZF_FS_SEARCH_COLOR"
         ;;
         search_colorscheme_16)
                 FZF_FS_SEARCH_COLOR=16
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_COLOR=%d\n" "16"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_COLOR=%d\n" "16"
         ;;
         search_colorscheme_bw)
                 FZF_FS_SEARCH_COLOR=bw
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_COLOR=%s\n" "bw"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_COLOR=%s\n" "bw"
         ;;
         search_colorscheme_dark)
                 FZF_FS_SEARCH_COLOR=dark
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_COLOR=%s\n" "dark"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_COLOR=%s\n" "dark"
         ;;
         search_colorscheme_light)
                 FZF_FS_SEARCH_COLOR=light
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_COLOR=%s\n" "light"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_COLOR=%s\n" "light"
         ;;
         search_history)
                 if
@@ -734,7 +734,7 @@ SET
                 else
                         FZF_FS_SEARCH_HISTORY=$2
                 fi
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_HISTORY='%s'\n" "$FZF_FS_SEARCH_HISTORY"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_HISTORY='%s'\n" "$FZF_FS_SEARCH_HISTORY"
         ;;
         search_hsize)
                 if
@@ -745,7 +745,7 @@ SET
                         FZF_FS_SEARCH_HSIZE=$2
                 fi
                 FZF_FS_SEARCH_HSIZE=${FZF_FS_SEARCH_HSIZE:-1000}
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_HSIZE=%d\n" "$FZF_FS_SEARCH_HSIZE"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_HSIZE=%d\n" "$FZF_FS_SEARCH_HSIZE"
         ;;
         search_margin)
                 if
@@ -755,11 +755,11 @@ SET
                 else
                         FZF_FS_SEARCH_MARGIN=$2
                 fi
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_MARGIN='%s'\n" "$FZF_FS_SEARCH_MARGIN"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_MARGIN='%s'\n" "$FZF_FS_SEARCH_MARGIN"
         ;;
         search_mode)
                 FZF_FS_MODE=search
-                Fzf::Fs::U::Spool -a "FZF_FS_MODE=%s\n" "search"
+                Fzf::Fs::U::Spool "FZF_FS_MODE=%s\n" "search"
         ;;
         search_tabstop)
                 if
@@ -770,7 +770,7 @@ SET
                         FZF_FS_SEARCH_TABSTOP=$2
                 fi
                 FZF_FS_SEARCH_TABSTOP=${FZF_FS_SEARCH_TABSTOP:-8}
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_TABSTOP=%d\n" "$FZF_FS_SEARCH_TABSTOP"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_TABSTOP=%d\n" "$FZF_FS_SEARCH_TABSTOP"
         ;;
         search_tiebreak)
                 if
@@ -781,7 +781,7 @@ SET
                         FZF_FS_SEARCH_TIEBREAK=$2
                 fi
                 FZF_FS_SEARCH_TIEBREAK=${FZF_FS_SEARCH_TIEBREAK:-"length,index"}
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_TIEBREAK='%s'\n" "$FZF_FS_SEARCH_TIEBREAK"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_TIEBREAK='%s'\n" "$FZF_FS_SEARCH_TIEBREAK"
         esac
 }
 
@@ -859,143 +859,143 @@ SET
         case $1 in
         console_black)
                 FZF_FS_CONSOLE_BLACK=$((FZF_FS_CONSOLE_BLACK ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_BLACK=%d\n" "$FZF_FS_CONSOLE_BLACK"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_BLACK=%d\n" "$FZF_FS_CONSOLE_BLACK"
         ;;
         console_cycle)
                 FZF_FS_CONSOLE_CYCLE=$((FZF_FS_CONSOLE_CYCLE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_CYCLE=%d\n" "$FZF_FS_CONSOLE_CYCLE"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_CYCLE=%d\n" "$FZF_FS_CONSOLE_CYCLE"
         ;;
         console_hscroll)
                 FZF_FS_CONSOLE_HSCROLL=$((FZF_FS_CONSOLE_HSCROLL ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_HSCROLL=%d\n" "$FZF_FS_CONSOLE_HSCROLL"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_HSCROLL=%d\n" "$FZF_FS_CONSOLE_HSCROLL"
         ;;
         console_inline)
                 FZF_FS_CONSOLE_INLINE=$((FZF_FS_CONSOLE_INLINE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_INLINE=%d\n" "$FZF_FS_CONSOLE_INLINE"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_INLINE=%d\n" "$FZF_FS_CONSOLE_INLINE"
         ;;
         console_mouse)
                 FZF_FS_CONSOLE_MOUSE=$((FZF_FS_CONSOLE_MOUSE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_MOUSE=%d\n" "$FZF_FS_CONSOLE_MOUSE"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_MOUSE=%d\n" "$FZF_FS_CONSOLE_MOUSE"
         ;;
         console_reverse)
                 FZF_FS_CONSOLE_REVERSE=$((FZF_FS_CONSOLE_REVERSE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_REVERSE=%d\n" "$FZF_FS_CONSOLE_REVERSE"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_REVERSE=%d\n" "$FZF_FS_CONSOLE_REVERSE"
         ;;
         console_tac)
                 FZF_FS_CONSOLE_TAC=$((FZF_FS_CONSOLE_TAC ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_CONSOLE_TAC=%d\n" "$FZF_FS_CONSOLE_TAC"
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLE_TAC=%d\n" "$FZF_FS_CONSOLE_TAC"
         ;;
         ls_classify)
                 FZF_FS_LS_F=$((FZF_FS_LS_F ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_F=%d\n" "$FZF_FS_LS_F"
+                Fzf::Fs::U::Spool "FZF_FS_LS_F=%d\n" "$FZF_FS_LS_F"
         ;;
         ls_color)
                 FZF_FS_LS_COLOR=$((FZF_FS_LS_COLOR ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_COLOR=%d\n" "$FZF_FS_LS_COLOR"
+                Fzf::Fs::U::Spool "FZF_FS_LS_COLOR=%d\n" "$FZF_FS_LS_COLOR"
         ;;
         ls_dereference)
                 FZF_FS_LS_L=$((FZF_FS_LS_L ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_L=%d\n" "$FZF_FS_LS_L"
+                Fzf::Fs::U::Spool "FZF_FS_LS_L=%d\n" "$FZF_FS_LS_L"
         ;;
         ls_dereference_cl)
                 FZF_FS_LS_H=$((FZF_FS_LS_H ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_H=%d\n" "$FZF_FS_LS_H"
+                Fzf::Fs::U::Spool "FZF_FS_LS_H=%d\n" "$FZF_FS_LS_H"
         ;;
         ls_human)
                 FZF_FS_LS_h=$((FZF_FS_LS_h ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_h=%d\n" "$FZF_FS_LS_h"
+                Fzf::Fs::U::Spool "FZF_FS_LS_h=%d\n" "$FZF_FS_LS_h"
         ;;
         ls_kibibytes)
                 FZF_FS_LS_k=$((FZF_FS_LS_k ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_k=%d\n" "$FZF_FS_LS_k"
+                Fzf::Fs::U::Spool "FZF_FS_LS_k=%d\n" "$FZF_FS_LS_k"
         ;;
         ls_long)
                 FZF_FS_LS_LONG=$(($FZF_FS_LS_LONG ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_LONG=%d\n" "$FZF_FS_LS_LONG"
+                Fzf::Fs::U::Spool "FZF_FS_LS_LONG=%d\n" "$FZF_FS_LS_LONG"
         ;;
         ls_reverse)
                 FZF_FS_LS_r=$((FZF_FS_LS_r ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_r=%d\n" "$FZF_FS_LS_r"
+                Fzf::Fs::U::Spool "FZF_FS_LS_r=%d\n" "$FZF_FS_LS_r"
         ;;
         ls_show_hidden)
                 FZF_FS_LS_HIDDEN=$((FZF_FS_LS_HIDDEN ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_HIDDEN=%d\n" "$FZF_FS_LS_HIDDEN"
+                Fzf::Fs::U::Spool "FZF_FS_LS_HIDDEN=%d\n" "$FZF_FS_LS_HIDDEN"
         ;;
         ls_show_size)
                 FZF_FS_LS_s=$((FZF_FS_LS_s ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_s=%d\n" "$FZF_FS_LS_s"
+                Fzf::Fs::U::Spool "FZF_FS_LS_s=%d\n" "$FZF_FS_LS_s"
         ;;
         ls_slash)
                 FZF_FS_LS_p=$((FZF_FS_LS_p ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_LS_p=%d\n" "$FZF_FS_LS_p"
+                Fzf::Fs::U::Spool "FZF_FS_LS_p=%d\n" "$FZF_FS_LS_p"
         ;;
         normal_black)
                 FZF_FS_NORMAL_BLACK=$((FZF_FS_NORMAL_BLACK ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_BLACK=%d\n" "$FZF_FS_NORMAL_BLACK"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_BLACK=%d\n" "$FZF_FS_NORMAL_BLACK"
         ;;
         normal_cycle)
                 FZF_FS_NORMAL_CYCLE=$((FZF_FS_NORMAL_CYCLE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_CYCLE=%d\n" "$FZF_FS_NORMAL_CYCLE"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_CYCLE=%d\n" "$FZF_FS_NORMAL_CYCLE"
         ;;
         normal_hscroll)
                 FZF_FS_NORMAL_HSCROLL=$((FZF_FS_NORMAL_HSCROLL ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_HSCROLL=%d\n" "$FZF_FS_NORMAL_HSCROLL"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_HSCROLL=%d\n" "$FZF_FS_NORMAL_HSCROLL"
         ;;
         normal_inline)
                 FZF_FS_NORMAL_INLINE=$((FZF_FS_NORMAL_INLINE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_INLINE=%d\n" "$FZF_FS_NORMAL_INLINE"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_INLINE=%d\n" "$FZF_FS_NORMAL_INLINE"
         ;;
         normal_mouse)
                 FZF_FS_NORMAL_MOUSE=$((FZF_FS_NORMAL_MOUSE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_MOUSE=%d\n" "$FZF_FS_NORMAL_MOUSE"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_MOUSE=%d\n" "$FZF_FS_NORMAL_MOUSE"
         ;;
         normal_reverse)
                 FZF_FS_NORMAL_REVERSE=$((FZF_FS_NORMAL_REVERSE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_REVERSE=%d\n" "$FZF_FS_NORMAL_REVERSE"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_REVERSE=%d\n" "$FZF_FS_NORMAL_REVERSE"
         ;;
         normal_tac)
                 FZF_FS_NORMAL_TAC=$((FZF_FS_NORMAL_TAC ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_NORMAL_TAC=%d\n" "$FZF_FS_NORMAL_TAC"
+                Fzf::Fs::U::Spool "FZF_FS_NORMAL_TAC=%d\n" "$FZF_FS_NORMAL_TAC"
         ;;
         search_black)
                 FZF_FS_SEARCH_BLACK=$((FZF_FS_SEARCH_BLACK ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_BLACK=%d\n" "$FZF_FS_SEARCH_BLACK"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_BLACK=%d\n" "$FZF_FS_SEARCH_BLACK"
         ;;
         search_cycle)
                 FZF_FS_SEARCH_CYCLE=$((FZF_FS_SEARCH_CYCLE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_CYCLE=%d\n" "$FZF_FS_SEARCH_CYCLE"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_CYCLE=%d\n" "$FZF_FS_SEARCH_CYCLE"
         ;;
         search_exact)
                 FZF_FS_SEARCH_EXACT=$((FZF_FS_SEARCH_EXACT ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_EXACT=%d\n" "$FZF_FS_SEARCH_EXACT"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_EXACT=%d\n" "$FZF_FS_SEARCH_EXACT"
         ;;
         search_extended)
                 FZF_FS_SEARCH_EXTENDED=$((FZF_FS_SEARCH_EXTENDED ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_EXTENDED=%d\n" "$FZF_FS_SEARCH_EXTENDED"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_EXTENDED=%d\n" "$FZF_FS_SEARCH_EXTENDED"
         ;;
         search_hscroll)
                 FZF_FS_SEARCH_HSCROLL=$((FZF_FS_SEARCH_HSCROLL ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_HSCROLL=%d\n" "$FZF_FS_SEARCH_HSCROLL"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_HSCROLL=%d\n" "$FZF_FS_SEARCH_HSCROLL"
         ;;
         search_inline)
                 FZF_FS_SEARCH_INLINE=$((FZF_FS_SEARCH_INLINE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_INLINE=%d\n" "$FZF_FS_SEARCH_INLINE"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_INLINE=%d\n" "$FZF_FS_SEARCH_INLINE"
         ;;
         search_mouse)
                 FZF_FS_SEARCH_MOUSE=$((FZF_FS_SEARCH_MOUSE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_MOUSE=%d\n" "$FZF_FS_SEARCH_MOUSE"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_MOUSE=%d\n" "$FZF_FS_SEARCH_MOUSE"
         ;;
         search_reverse)
                 FZF_FS_SEARCH_REVERSE=$((FZF_FS_SEARCH_REVERSE ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_REVERSE=%d\n" "$FZF_FS_SEARCH_REVERSE"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_REVERSE=%d\n" "$FZF_FS_SEARCH_REVERSE"
         ;;
         search_sort)
                 FZF_FS_SEARCH_SORT=$((FZF_FS_SEARCH_SORT ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_SORT=%d\n" "$FZF_FS_SEARCH_SORT"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_SORT=%d\n" "$FZF_FS_SEARCH_SORT"
         ;;
         search_tac)
                 FZF_FS_SEARCH_TAC=$((FZF_FS_SEARCH_TAC ? 0 : 1))
-                Fzf::Fs::U::Spool -a "FZF_FS_SEARCH_TAC=%d\n" "$FZF_FS_SEARCH_TAC"
+                Fzf::Fs::U::Spool "FZF_FS_SEARCH_TAC=%d\n" "$FZF_FS_SEARCH_TAC"
         esac
 }
 
@@ -1951,6 +1951,10 @@ Fzf::Fs::Main ()
         builtin . "${FZF_FS_CONF_DIR}/commands.user" 2>/dev/null
 
         #builtin trap 'Fzf::Fs::Exit;exit 1' INT TERM QUIT EXIT
+        exec 7>&-
+        exec 8<&-
+        exec 7>>"$FZF_FS_SPOOL_FILE"
+        exec 8< "$FZF_FS_SPOOL_FILE"
 
         builtin typeset \
                 OPTARG \
@@ -1978,13 +1982,12 @@ Fzf::Fs::Main ()
                 esac
         done
 
+
+
         while
                 builtin :
         do
-                [[ -f $FZF_FS_SPOOL_FILE ]] && {
-                        builtin . "$FZF_FS_SPOOL_FILE"
-                        > "$FZF_FS_SPOOL_FILE"
-                }
+                [[ -f $FZF_FS_SPOOL_FILE ]] && { builtin . /dev/fd/0 ; } 0<&8
                 case $FZF_FS_MODE in
                 console)
                         Fzf::Fs::O::Console
@@ -2007,6 +2010,8 @@ Fzf::Fs::Main ()
         done
 
         Fzf::Fs::Exit
+        exec 7>&-
+        exec 8<&-
 }
 
 Fzf::Fs::Modes::Console ()
@@ -2579,14 +2584,7 @@ Fzf::Fs::U::CopyFunc ()
 
 Fzf::Fs::U::Spool ()
 {
-        case $1 in
-        -a)
-                builtin shift 1
-                builtin printf "$@" >> "$FZF_FS_SPOOL_FILE"
-        ;;
-        *)
-                builtin printf "$@" > "$FZF_FS_SPOOL_FILE"
-        esac
+        builtin printf "$@" 1>&7
 }
 
 ###############################################################################
