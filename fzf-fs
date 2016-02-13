@@ -1976,7 +1976,7 @@ Fzf::Fs::Main ()
                 e)
                         (
                                 builtin set -- ${OPTARG}
-                                builtin typeset -f "$1" 1>/dev/null 2>&1 && {
+                                builtin typeset -fp "$1" 1>/dev/null 2>&1 && {
                                         ${1} "${@:2}"
                                 }
                         )
@@ -1986,8 +1986,6 @@ Fzf::Fs::Main ()
                         builtin return 79
                 esac
         done
-
-
 
         while
                 builtin :
@@ -2108,7 +2106,7 @@ Fzf::Fs::Modes::Console ()
                         builtin continue
                 # TODO
                 elif
-                        builtin typeset -f "Fzf::Fs::C::${q}" 1>/dev/null
+                        builtin typeset -fp "Fzf::Fs::C::${q}" 1>/dev/null
                 then
                         query=
                         "Fzf::Fs::C::${q}"
