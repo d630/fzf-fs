@@ -1671,21 +1671,21 @@ Fzf::Fs::GetKeyConsole ()
                 expect_console='1,C,H,S,T,b,c,d,g,i,l,m,o,r,s,t,w'
                 bind_console+="1:execute(Fzf::Fs::C::Set console_colorscheme_16)",
                 bind_console+="C:execute(Fzf::Fs::C::Toggle console_cycle)",
-                bind_console+="H:execute(Fzf::Fs::C::Set console_history)",
-                bind_console+="S:execute(Fzf::Fs::C::Set console_hsize)",
+                bind_console+="H:execute(Fzf::Fs::C::Set -i console_history)",
+                bind_console+="S:execute(Fzf::Fs::C::Set -i console_hsize)",
                 bind_console+="T:execute(Fzf::Fs::C::Set console_tac)",
                 bind_console+="b:execute(Fzf::Fs::C::Toggle console_black)",
-                bind_console+="c:execute(Fzf::Fs::C::Set console_color)",
+                bind_console+="c:execute(Fzf::Fs::C::Set -i console_color)",
                 bind_console+="d:execute(Fzf::Fs::C::Set console_colorscheme_dark)",
                 bind_console+="enter:ignore",
-                bind_console+="g:execute(Fzf::Fs::C::Set console_margin)",
+                bind_console+="g:execute(Fzf::Fs::C::Set -i console_margin)",
                 bind_console+="i:execute(Fzf::Fs::C::Toggle console_inline)",
                 bind_console+="l:execute(Fzf::Fs::C::Set console_colorscheme_light)",
                 bind_console+="m:execute(Fzf::Fs::C::Toggle console_mouse)",
                 bind_console+="o:execute(Fzf::Fs::C::Toggle console_sort)",
                 bind_console+="r:execute(Fzf::Fs::C::Toggle console_reverse)",
                 bind_console+="s:execute(Fzf::Fs::C::Toggle console_hscroll)",
-                bind_console+="t:execute(Fzf::Fs::C::Set console_tabstop)",
+                bind_console+="t:execute(Fzf::Fs::C::Set -i console_tabstop)",
                 bind_console+="w:execute(Fzf::Fs::C::Set console_colorscheme_bw)"
                 { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
 key command option
@@ -1716,7 +1716,7 @@ Fzf::Fs::GetKeyNormal ()
         C)
                 expect_normal='1,C,b,c,d,l,w'
                 bind_normal+="1:execute(Fzf::Fs::C::Set normal_colorscheme_16)",
-                bind_normal+="C:execute(Fzf::Fs::C::Set normal_color)",
+                bind_normal+="C:execute(Fzf::Fs::C::Set -i normal_color)",
                 bind_normal+="b:execute(Fzf::Fs::C::Toggle normal_black)",
                 bind_normal+="c:execute(Fzf::Fs::C::Toggle ls_color)",
                 bind_normal+="d:execute(Fzf::Fs::C::Set normal_colorscheme_dark)",
@@ -1816,12 +1816,12 @@ KEYS
                 bind_normal+="T:execute(Fzf::Fs::C::Toggle normal_tac)",
                 bind_normal+="c:execute(Fzf::Fs::C::Toggle normal_cycle)",
                 bind_normal+="enter:ignore",
-                bind_normal+="g:execute(Fzf::Fs::C::Set normal_margin)",
+                bind_normal+="g:execute(Fzf::Fs::C::Set -i normal_margin)",
                 bind_normal+="i:execute(Fzf::Fs::C::Toggle normal_inline)",
                 bind_normal+="m:execute(Fzf::Fs::C::Toggle normal_mouse)",
                 bind_normal+="r:execute(Fzf::Fs::C::Toggle normal_reverse)",
                 bind_normal+="s:execute(Fzf::Fs::C::Toggle normal_hscroll)",
-                bind_normal+="t:execute(Fzf::Fs::C::Set normal_tabstop)"
+                bind_normal+="t:execute(Fzf::Fs::C::Set -i normal_tabstop)"
                 { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
 key command option
 --- ------- ------
@@ -1842,7 +1842,7 @@ KEYS
                 bind_normal+="F:execute(Fzf::Fs::C::Toggle ls_classify)",
                 bind_normal+="H:execute(Fzf::Fs::C::Toggle ls_dereference_cl)",
                 bind_normal+="L:execute(Fzf::Fs::C::Toggle ls_dereference)",
-                bind_normal+="M:execute(Fzf::Fs::C::Set ls_format)",
+                bind_normal+="M:execute(Fzf::Fs::C::Set -i ls_format)",
                 bind_normal+="a:execute(Fzf::Fs::C::Toggle ls_show_hidden)",
                 bind_normal+="c:execute(Fzf::Fs::C::Set ls_show_ctime)",
                 bind_normal+="enter:ignore",
@@ -1884,23 +1884,23 @@ Fzf::Fs::GetKeySearch ()
                 bind_search+="B:execute(Fzf::Fs::C::Set search_tiebreak)",
                 bind_search+="C:execute(Fzf::Fs::C::Toggle search_cycle)",
                 bind_search+="E:execute(Fzf::Fs::C::Toggle search_extended)",
-                bind_search+="H:execute(Fzf::Fs::C::Set search_history)",
-                bind_search+="S:execute(Fzf::Fs::C::Set search_hsize)",
+                bind_search+="H:execute(Fzf::Fs::C::Set -i search_history)",
+                bind_search+="S:execute(Fzf::Fs::C::Set -i search_hsize)",
                 bind_search+="T:execute(Fzf::Fs::C::Set search_tac)",
-                bind_search+="a:execute(Fzf::Fs::C::Set search_case)",
+                bind_search+="a:execute(Fzf::Fs::C::Set -i search_case)",
                 bind_search+="b:execute(Fzf::Fs::C::Toggle search_black)",
-                bind_search+="c:execute(Fzf::Fs::C::Set search_color)",
+                bind_search+="c:execute(Fzf::Fs::C::Set -i search_color)",
                 bind_search+="d:execute(Fzf::Fs::C::Set search_colorscheme_dark)",
                 bind_search+="e:execute(Fzf::Fs::C::Toggle search_exact)",
                 bind_search+="enter:ignore",
-                bind_search+="g:execute(Fzf::Fs::C::Set search_margin)",
+                bind_search+="g:execute(Fzf::Fs::C::Set -i search_margin)",
                 bind_search+="i:execute(Fzf::Fs::C::Toggle search_inline)",
                 bind_search+="l:execute(Fzf::Fs::C::Set search_colorscheme_light)",
                 bind_search+="m:execute(Fzf::Fs::C::Toggle search_mouse)",
                 bind_search+="o:execute(Fzf::Fs::C::Toggle search_sort)",
                 bind_search+="r:execute(Fzf::Fs::C::Toggle search_reverse)",
                 bind_search+="s:execute(Fzf::Fs::C::Toggle search_hscroll)",
-                bind_search+="t:execute(Fzf::Fs::C::Set search_tabstop)",
+                bind_search+="t:execute(Fzf::Fs::C::Set -i search_tabstop)",
                 bind_search+="w:execute(Fzf::Fs::C::Set search_colorscheme_bw)"
                 { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
 key command option
