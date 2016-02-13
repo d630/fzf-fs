@@ -163,11 +163,11 @@ Fzf::Fs::U::Spool
 ##### Command functions
 
 ```
-__fzf_fs_ls
-__fzf_fs_ls_color
-__fzf_fs_editor
-__fzf_fs_opener
-__fzf_fs_pager
+Fzf::Fs::C::Editor
+Fzf::Fs::C::Ls
+Fzf::Fs::C::LsColor
+Fzf::Fs::C::Opener
+Fzf::Fs::C::Pager
 ```
 
 ##### Default Keybindings

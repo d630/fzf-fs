@@ -36,11 +36,14 @@ builtin typeset -a +i -x FZF_FS_COMMANDS="(
         Child
         EMapKey
         Edit
+        Editor
         ExpectKey
         GetKey
         MapKey
         Open
+        Opener
         Page
+        Pager
         Parent
         PrintSettings
         Quit
@@ -78,6 +81,11 @@ Fzf::Fs::C::Child ()
         else
                 Fzf::Fs::C::Open "$tmp"
         fi
+}
+
+Fzf::Fs::C::Editor ()
+{
+        </dev/tty command ${EDITOR:-vi} "$@" >/dev/tty
 }
 
 Fzf::Fs::C::EMapKey ()
@@ -127,7 +135,7 @@ Fzf::Fs::C::Edit ()
         Fzf::Fs::U::Get::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
-        __fzf_fs_editor "$tmp"
+        Fzf::Fs::C::Editor "$tmp"
         Fzf::Fs::U::Set::Cursor 0
 }
 
@@ -253,8 +261,13 @@ Fzf::Fs::C::Open ()
         Fzf::Fs::U::Get::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
-        __fzf_fs_opener "$tmp"
+        Fzf::Fs::C::Opener "$tmp"
         Fzf::Fs::U::Set::Cursor 0
+}
+
+Fzf::Fs::C::Opener ()
+{
+        </dev/tty command ${OPENER:-${PAGER:-less -R}} "$@" >/dev/tty
 }
 
 Fzf::Fs::C::Page ()
@@ -266,8 +279,13 @@ Fzf::Fs::C::Page ()
         Fzf::Fs::U::Get::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
-        __fzf_fs_pager "$tmp"
+        Fzf::Fs::C::Pager "$tmp"
         Fzf::Fs::U::Set::Cursor 0
+}
+
+Fzf::Fs::C::Pager ()
+{
+        </dev/tty command ${PAGER:-less -R} "$@" >/dev/tty
 }
 
 Fzf::Fs::C::Parent ()
@@ -1028,15 +1046,10 @@ Fzf::Fs::Exit ()
         builtin typeset syntax=\#
 
         builtin unset -f \
-                Spath::Do \
-                Spath::GetCols \
-                __fzf_fs_editor \
-                __fzf_fs_ls \
-                __fzf_fs_ls_color \
-                __fzf_fs_opener \
-                __fzf_fs_pager \
                 "${FZF_FS_COMMANDS[@]/$syntax/Fzf::Fs::C::}" \
-                "${FZF_FS_FUNCS[@]/$syntax/Fzf::Fs::}";
+                "${FZF_FS_FUNCS[@]/$syntax/Fzf::Fs::}" \
+                Spath::Do \
+                Spath::GetCols;
 
         builtin unset -v \
                 FZF_FS_COMMANDS \
@@ -1082,7 +1095,7 @@ Fzf::Fs::F::Normal ()
         if
                 (( FZF_FS_LS_COLOR ))
         then
-                __fzf_fs_ls_color "${_ls_default_opts}" "$PWD" \
+                Fzf::Fs::C::LsColor "${_ls_default_opts}" "$PWD" \
                 | {
                         1>/dev/null \
                         command fzf \
@@ -1098,7 +1111,7 @@ Fzf::Fs::F::Normal ()
                         Fzf::Fs::C::Parent 1; # TODO
                 }
         else
-                __fzf_fs_ls "${_ls_default_opts}" "$PWD" \
+                Fzf::Fs::C::Ls "${_ls_default_opts}" "$PWD" \
                 | {
                         1>/dev/null \
                         command fzf \
@@ -1138,7 +1151,7 @@ Fzf::Fs::F::Search ()
         if
                 (( FZF_FS_LS_COLOR ))
         then
-                __fzf_fs_ls_color "${_ls_default_opts}" "$PWD" \
+                Fzf::Fs::C::LsColor "${_ls_default_opts}" "$PWD" \
                 | {
                         1>/dev/null \
                         command fzf \
@@ -1152,7 +1165,7 @@ Fzf::Fs::F::Search ()
                         Fzf::Fs::C::Parent 1; # TODO
                 }
         else
-                __fzf_fs_ls "${_ls_default_opts}" "$PWD" \
+                Fzf::Fs::C::Ls "${_ls_default_opts}" "$PWD" \
                 | {
                         1>/dev/null \
                         command fzf \
@@ -1356,40 +1369,44 @@ builtin typeset -x \
         FZF_FS_CONSOLEK_TABSTOP=${FZF_FS_CONSOLEK_TABSTOP:-8};
 
 if
-        ! >/dev/null 2>&1 builtin typeset -f __fzf_fs_ls __fzf_fs_ls_color
+        ! >/dev/null 2>&1 builtin typeset -f Fzf::Fs::C::Ls Fzf::Fs::C::LsColor
 then
         case ${FZF_FS_OS:-$( command uname -s )} in
         Darwin | DragonFly | FreeBSD)
-                __fzf_fs_ls () { command ls -G "$@" ; }
-                __fzf_fs_ls_color () { CLICOLOR_FORCE=1 command ls -G "$@" ; }
+                function Fzf::Fs::C::Ls () { command ls -G "$@" ; }
+                function Fzf::Fs::C::LsColor () { CLICOLOR_FORCE=1 command ls -G "$@" ; }
         ;;
         OpenBSD)
                 if
                         >/dev/null builtin command -v colorls
                 then
-                        __fzf_fs_ls () { command colorls -G "$@" ; }
-                        __fzf_fs_ls_color () { CLICOLOR_FORCE=1 command colorls -G "$@" ; }
+                        function Fzf::Fs::C::Ls () { command colorls -G "$@" ; }
+                        function Fzf::Fs::C::LsColor () { CLICOLOR_FORCE=1 command colorls -G "$@" ; }
                 else
                         if
                                 >/dev/null builtin command -v gls
                         then
-                                __fzf_fs_ls () { command gls --color=auto "$@" ; }
-                                __fzf_fs_ls_color () { command gls --color=always "$@" ; }
+                                function Fzf::Fs::C::Ls () { command gls --color=auto "$@" ; }
+                                function Fzf::Fs::C::LsColor () { command gls --color=always "$@" ; }
                         else
-                                __fzf_fs_ls () { command ls "$@" ; }
-                                __fzf_fs_ls_color () { command ls "$@" ; }
+                                function Fzf::Fs::C::Ls () { command ls "$@" ; }
+                                function Fzf::Fs::C::LsColor () { command ls "$@" ; }
                         fi
                 fi
         ;;
         *)
-                __fzf_fs_ls () { command ls --color=auto "$@" ; }
-                __fzf_fs_ls_color () { command ls --color=always "$@" ; }
+                function Fzf::Fs::C::Ls () { command ls --color=auto "$@" ; }
+                function Fzf::Fs::C::LsColor () { command ls --color=always "$@" ; }
         esac
 
-        builtin typeset -f -x \
-                __fzf_fs_ls \
-                __fzf_fs_ls_color;
 fi
+
+builtin typeset -f -x \
+        Fzf::Fs::C::Ls \
+        Fzf::Fs::C::LsColor;
+
+FZF_FS_COMMANDS+=( Ls LsColor )
+
 INIT
         builtin printf '%s' "$i"
 }
@@ -2572,20 +2589,6 @@ Fzf::Fs::U::Spool ()
         esac
 }
 
-__fzf_fs_editor ()
-{
-        </dev/tty command ${EDITOR:-vi} "$@" >/dev/tty
-}
-
-__fzf_fs_opener ()
-{
-        </dev/tty command ${OPENER:-${PAGER:-less -R}} "$@" >/dev/tty
-}
-__fzf_fs_pager ()
-{
-        </dev/tty command ${PAGER:-less -R} "$@" >/dev/tty
-}
-
 ###############################################################################
 # -- MAIN.
 ###############################################################################
@@ -2593,11 +2596,6 @@ __fzf_fs_pager ()
 builtin typeset -f -x \
         "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}" \
         "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
-
-builtin typeset -f -x \
-        __fzf_fs_editor \
-        __fzf_fs_opener \
-        __fzf_fs_pager;
 
 Fzf::Fs::Main "$@"
 
