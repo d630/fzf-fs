@@ -344,7 +344,7 @@ Fzf::Fs::C::PrintSettings ()
                 ' \
                 | command sort \
                 | command column -t -s '{}' \
-                | 1>/dev/null command fzf --header=ShowSettings --prompt="ENV";
+                | 1>/dev/null command fzf --header=ShowSettings --prompt="ENV ";
                 Fzf::Fs::U::Set::Cursor 1
         else
                 builtin set \
