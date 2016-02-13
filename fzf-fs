@@ -1943,10 +1943,15 @@ Fzf::Fs::Main ()
         builtin . "${FZF_FS_CONF_DIR}/get_keys.user" 2>/dev/null
         builtin . "spath.sh"
 
-        command mkdir -p \
-                "$FZF_FS_CONF_DIR" \
-                "${FZF_FS_SPOOL_FILE%/*}";
-        > "$FZF_FS_SPOOL_FILE"
+        [[ -d $FZF_FS_CONF_DIR && -d ${FZF_FS_SPOOL_FILE%/*} ]] || {
+                command mkdir -p \
+                        "$FZF_FS_CONF_DIR" \
+                        "${FZF_FS_SPOOL_FILE%/*}";
+        }
+
+        [[ -f $FZF_FS_CONF_DIR/spool.user ]] && {
+                command cp "${FZF_FS_CONF_DIR}/spool.user" "$FZF_FS_SPOOL_FILE"
+        }
 
         builtin . "${FZF_FS_CONF_DIR}/commands.user" 2>/dev/null
 
@@ -1987,7 +1992,7 @@ Fzf::Fs::Main ()
         while
                 builtin :
         do
-                [[ -f $FZF_FS_SPOOL_FILE ]] && { builtin . /dev/fd/0 ; } 0<&8
+                { builtin . /dev/fd/0 ; } 0<&8
                 case $FZF_FS_MODE in
                 console)
                         Fzf::Fs::O::Console
