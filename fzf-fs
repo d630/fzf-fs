@@ -448,7 +448,7 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_CONSOLE_COLOR=$(command fzf --prompt="FZF_FS_CONSOLE_COLOR=" --print-query 0<&-)
+                        FZF_FS_CONSOLE_COLOR=$(command fzf --prompt="FZF_FS_CONSOLE_COLOR=" --print-query 0<&-;)
                 else
                         FZF_FS_CONSOLE_COLOR=$2
                 fi
@@ -543,7 +543,13 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_LS_FORMAT=$(command fzf --prompt="FZF_FS_LS_FORMAT=" --print-query 0<&-)
+                        FZF_FS_LS_FORMAT=$(
+                                command fzf \
+                                        --prompt="FZF_FS_LS_FORMAT="\
+                                        --print-query \
+                                        --header='[glno]*' \
+                                0<&-;
+                        )
                 else
                         FZF_FS_LS_FORMAT=$2
                 fi
@@ -692,7 +698,10 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_CASE=$(command fzf --prompt="FZF_FS_SEARCH_CASE=" --print-query 0<&-)
+                        FZF_FS_SEARCH_CASE=$(
+                                builtin printf '%s\n' insensitive sensitive smart \
+                                | command fzf --prompt="FZF_FS_SEARCH_CASE=";
+                        )
                 else
                         FZF_FS_SEARCH_CASE=$2
                 fi
