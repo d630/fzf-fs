@@ -2523,8 +2523,8 @@ Fzf::Fs::U::Set::Prompt ()
         builtin typeset -i "cols=${COLUMNS:-$(Spath::GetCols :)}"
 
         COLUMNS=$cols \
-        SPATH_MARK=" ... " \
-        SPATH_LENGTH=$(( cols / 3 )) \
+        SPATH_MARK=${SPATH_MARK:-" ... "} \
+        SPATH_LENGTH=${SPATH_LENGTH:-$(( cols / 3 ))} \
                 Spath::Do "_prompt" "${PWD//$'\n'/?}"
 
         _prompt=${USER}@${HOSTNAME}:${_prompt}
