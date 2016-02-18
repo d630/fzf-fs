@@ -47,7 +47,7 @@ Put `./fzf-fs` and `./modules/spath.sh/spath.sh` on your PATH.
 
 ```
 Chdir           Change directory
-Child           Open the selection in normal and search mode. Calls Chdir or Open
+Child           Calls Chdir or Open
 EMapKey         Map key on fzf's execute() action
 ExpectKey       Append key to expect variable
 Edit            Open X in editor
@@ -224,6 +224,9 @@ Ctrl-f  page-down
 Ctrl-l  clear-screen
 Ctrl-m  Child
 Cw      Set normal_colorscheme_bw
+c       GetKey c
+cd      Open Chdir prompt
+cp      Open Parent prompt
 E       Edit
 N       Search mode
 S       Fork shell in the current directory
@@ -285,6 +288,10 @@ os      Set ls_sort_size ls_reverse_true
 pgdn    page-down
 pgup    page-up
 q       Quit
+r       GetKey r
+re      Edit selection
+ro      Open selection
+rp      Page selection
 right   Child
 up      up
 z       GetKey z

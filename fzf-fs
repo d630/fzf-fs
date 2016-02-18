@@ -182,7 +182,7 @@ Fzf::Fs::C::ExpectKey ()
 
 Fzf::Fs::C::GetKey ()
 {
-        [[ -z $1 ]] && builtin return 1
+        (( $# )) || builtin return 1
 
         Fzf::Fs::U::Set::Cursor 0
 
@@ -194,7 +194,7 @@ Fzf::Fs::C::GetKey ()
                 builtin typeset \
                         bind_console \
                         expect_console;
-                Fzf::Fs::GetKeyConsole "$1"
+                Fzf::Fs::GetKeyConsole "$@"
                 Fzf::Fs::O::ConsoleKeys
                 Fzf::Fs::F::ConsoleKeys "$1"
         ;;
@@ -202,7 +202,7 @@ Fzf::Fs::C::GetKey ()
                 builtin typeset \
                         bind_search \
                         expect_search;
-                Fzf::Fs::GetKeySearch "$1"
+                Fzf::Fs::GetKeySearch "$@"
                 Fzf::Fs::O::SearchKeys
                 Fzf::Fs::F::SearchKeys "$1"
         ;;
@@ -210,7 +210,7 @@ Fzf::Fs::C::GetKey ()
                 builtin typeset \
                         bind_normal \
                         expect_normal;
-                Fzf::Fs::GetKeyNormal "$1"
+                Fzf::Fs::GetKeyNormal "$@"
                 Fzf::Fs::O::NormalKeys
                 Fzf::Fs::F::NormalKeys "$1"
         esac
@@ -1534,7 +1534,7 @@ builtin typeset \
         bind_normal= \
         expect_normal=;
 
-expect_normal+='/,:,;,C,N,Z,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,right,z,'
+expect_normal+='/,:,;,C,N,Z,c,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,r,right,z,'
 
 bind_normal+='/:execute(Fzf::Fs::C::Set search_mode)',
 bind_normal+='::execute(Fzf::Fs::C::Set console_mode)',
@@ -1544,6 +1544,7 @@ bind_normal+='E:execute(Fzf::Fs::C::Edit {})',
 bind_normal+='N:execute(Fzf::Fs::C::Set search_mode)',
 bind_normal+='S:execute(Fzf::Fs::C::Shell)',
 bind_normal+='Z:execute(Fzf::Fs::C::GetKey Z)',
+bind_normal+='c:execute(Fzf::Fs::C::GetKey c)',
 bind_normal+='ctrl-b:page-up',
 bind_normal+='ctrl-c:execute(Fzf::Fs::C::Quit)',
 bind_normal+='ctrl-f:page-down',
@@ -1563,6 +1564,7 @@ bind_normal+='o:execute(Fzf::Fs::C::GetKey o)',
 bind_normal+='pgdn:page-down',
 bind_normal+='pgup:page-up',
 bind_normal+='q:execute(Fzf::Fs::C::Quit)',
+bind_normal+='r:execute(Fzf::Fs::C::GetKey r {})',
 bind_normal+='right:execute(Fzf::Fs::C::Child {})',
 bind_normal+='up:up',
 bind_normal+='z:execute(Fzf::Fs::C::GetKey z)',
@@ -1656,7 +1658,6 @@ bind_normal+='alt-z:ignore',
 bind_normal+='b:ignore',
 bind_normal+='bspace:ignore',
 bind_normal+='btab:ignore',
-bind_normal+='c:ignore',
 bind_normal+='ctrl-a:ignore',
 bind_normal+='ctrl-d:ignore',
 bind_normal+='ctrl-e:ignore',
@@ -1690,7 +1691,6 @@ bind_normal+='f:ignore',
 bind_normal+='home:ignore',
 bind_normal+='m:ignore',
 bind_normal+='p:ignore',
-bind_normal+='r:ignore',
 bind_normal+='s:ignore',
 bind_normal+='shift-left:ignore',
 bind_normal+='shift-right:ignore',
@@ -1831,6 +1831,18 @@ l Set normal_colorscheme_light
 w Set normal_colorscheme_bw
 KEYS
         ;;
+        c)
+                expect_normal='d,p'
+                bind_normal+="d:execute(Fzf::Fs::C::Chdir)",
+                bind_normal+="p:execute(Fzf::Fs::C::Parent)",
+                bind_normal+="enter:ignore"
+                { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
+key command option
+--- ------- ------
+d Chdir
+p parent
+KEYS
+        ;;
         g)
                 expect_normal='-,/,L,M,d,e,h,l,m,o,r,s,t,u,v,~,1,2'
                 bind_normal+="-:execute(Fzf::Fs::C::Chdir "$OLDPWD")",
@@ -1904,7 +1916,33 @@ m Set ls_sort_mtime ls_reverse_true
 n Set ls_sort_nothing
 s Set ls_sort_size ls_reverse_true
 KEYS
-;;
+        ;;
+        c)
+                expect_normal='d,p'
+                bind_normal+="d:execute(Fzf::Fs::C::Chdir)",
+                bind_normal+="p:execute(Fzf::Fs::C::Parent)",
+                bind_normal+="enter:ignore"
+                { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
+key command option
+--- ------- ------
+d Chdir
+p parent
+KEYS
+        ;;
+        r)
+                expect_normal='e,o,p'
+                bind_normal+="e:execute(Fzf::Fs::C::Edit "$2")",
+                bind_normal+="enter:ignore",
+                bind_normal+="o:execute(Fzf::Fs::C::Open "$2")",
+                bind_normal+="p:execute(Fzf::Fs::C::Page "$2")"
+                { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
+key command
+--- -------
+e Edit $2
+p Page $2
+o Open $2
+KEYS
+        ;;
         z)
                 expect_normal='1,2,T,c,g,i,m,r,s,t'
                 bind_normal+="1:execute(Fzf::Fs::C::Set lc_collate_c)",
