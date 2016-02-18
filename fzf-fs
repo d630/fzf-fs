@@ -803,22 +803,58 @@ Fzf::Fs::C::Sh ()
 {
         case ${flag_f}${flag_t}${flag_w} in
         111)
-                ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}" & )
+                if
+                        (( $# ))
+                then
+                        ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}" & )
+                else
+                        ( exec ${TERMCMD} -e "${SHELL:-sh}" & )
+                fi
         ;;
         110)
-                ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*}" & )
+                if
+                        (( $# ))
+                then
+                        ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*}" & )
+                else
+                        ( exec ${TERMCMD} -e "${SHELL:-sh}" & )
+                fi
         ;;
         100)
-                ( exec "${SHELL:-sh}" -c "${*}" & )
+                if
+                        (( $# ))
+                then
+                        ( exec "${SHELL:-sh}" -c "${*}" & )
+                else
+                        ( exec "${SHELL:-sh}" & )
+                fi
         ;;
         011)
-                command ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}"
+                if
+                        (( $# ))
+                then
+                        command ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}"
+                else
+                        command ${TERMCMD} -e "${SHELL:-sh}"
+                fi
         ;;
         010)
-                command ${TERMCMD} -e "${SHELL:-sh}" -c "${*}"
+                if
+                        (( $# ))
+                then
+                        command ${TERMCMD} -e "${SHELL:-sh}" -c "${*}"
+                else
+                        command ${TERMCMD} -e "${SHELL:-sh}"
+                fi
         ;;
         001)
-                "${SHELL:-sh}" -c "${*};builtin printf '%s\n' 'Press ENTER to continue';builtin read"
+                if
+                        (( $# ))
+                then
+                        "${SHELL:-sh}" -c "${*};builtin printf '%s\n' 'Press ENTER to continue';builtin read"
+                else
+                        "${SHELL:-sh}"
+                fi
         ;;
         000)
                 if
@@ -848,7 +884,7 @@ Fzf::Fs::C::Shell ()
 
         builtin typeset -a command_quoted
 
-        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+        Fzf::Fs::U::Get::Args "$@"
         builtin set -- ${tmp}
 
         while
@@ -1534,8 +1570,9 @@ builtin typeset \
         bind_normal= \
         expect_normal=;
 
-expect_normal+='/,:,;,C,N,Z,c,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,r,right,z,'
+expect_normal+='/,:,;,C,N,Z,c,ctrl-c,ctrl-m,enter,g,h,l,left,n,o,q,r,right,z'
 
+bind_normal+="T:execute(Fzf::Fs::C::Shell -ft exec "$SHELL")",
 bind_normal+='/:execute(Fzf::Fs::C::Set search_mode)',
 bind_normal+='::execute(Fzf::Fs::C::Set console_mode)',
 bind_normal+=';:execute(Fzf::Fs::C::Set console_mode)',
@@ -1569,11 +1606,8 @@ bind_normal+='right:execute(Fzf::Fs::C::Child {})',
 bind_normal+='up:up',
 bind_normal+='z:execute(Fzf::Fs::C::GetKey z)',
 
-#bind_normal+='T:execute(Fzf::Fs::C::Terminal)',
-
 bind_normal+="!:ignore",
 bind_normal+="':ignore",
-bind_normal+="T:ignore",
 bind_normal+='":ignore',
 bind_normal+='#:ignore',
 bind_normal+='$:ignore',
@@ -2555,7 +2589,7 @@ Fzf::Fs::U::Get::Args ()
                         then
                                 tmp=${finfo[1]}
                         else
-                                builtin return 1
+                                tmp=$@
                         fi
                 fi
         else

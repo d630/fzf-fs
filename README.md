@@ -230,6 +230,7 @@ cp      Open Parent prompt
 E       Edit
 N       Search mode
 S       Fork shell in the current directory
+T       Spawn new terminal instance in the background
 Z       GetKey Z
 ZF      Toggle ls_classify
 ZH      Toggle ls_dereference_cl
@@ -516,7 +517,7 @@ builtin typeset -x \
 
 ##### TO DO
 
-- commands: open_with and terminal (all with flags); help and version
+- commands: open_with, help and version
 - macros via macro.sh
 - provide searching in GetKey command
 - commandline option to use fzf-curr-position
