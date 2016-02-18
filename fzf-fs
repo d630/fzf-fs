@@ -826,10 +826,10 @@ Fzf::Fs::C::Sh ()
                 then
                         "${SHELL-sh}" -c "${*}"
                 else
-                        </dev/tty "${SHELL:-sh}" >/dev/tty
+                        "${SHELL:-sh}"
                 fi
         esac
-}
+} </dev/tty >/dev/tty
 
 Fzf::Fs::C::Shell ()
 {
