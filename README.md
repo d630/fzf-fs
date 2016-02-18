@@ -367,16 +367,13 @@ builtin typeset -x \
         FZF_FS_MODE=${FZF_FS_MODE:-normal} \
         FZF_FS_OS= \
         FZF_FS_SPOOL_FILE="${FZF_FS_SPOOL_FILE:-/tmp/fzf-fs-${USER}/fzf-fs.$$}" \
-        LC_COLLATE_OLD=$LC_COLLATE \
         LC_COLLATE=C \
+        LC_COLLATE_OLD=$LC_COLLATE \
+        TERMCMD=${TERMCMD:-xterm} \
         _cursor_off="$(command tput civis || command tput vi)" \
         _cursor_on="$(command tput cnorm || command tput ve)" \
         _ls_default_opts= \
         _prompt=;
-
-builtin typeset \
-        bind \
-        expect;
 
 builtin typeset -i -x FZF_FS_SHOW_CURSOR=$FZF_FS_SHOW_CURSOR
 
@@ -463,7 +460,7 @@ builtin typeset -x \
         FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR:-bw} \
         FZF_FS_SET_MARGIN=$FZF_FS_SET_MARGIN \
         FZF_FS_SET_TABSTOP=${FZF_FS_SET_TABSTOP:-8} \
-        FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"length,index"}
+        FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"length,index"} \
         FZF_FS_TOGGLE_CASE=${FZF_FS_TOGGLE_CASE:-smart} \
         FZF_FS_TOGGLE_COLOR=${FZF_FS_TOGGLE_COLOR:-bw} \
         FZF_FS_TOGGLE_MARGIN=$FZF_FS_TOGGLE_MARGIN \
