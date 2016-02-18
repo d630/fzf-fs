@@ -107,6 +107,7 @@ Set             Set settings with string values (interactively in console):
                 search_mode
                 search_tabstop
                 search_tiebreak
+Shell           Open shell/run command in shell
 Toggle          Toggle settings with integer values (interactively in console):
                 console_black
                 console_cycle
@@ -168,6 +169,7 @@ Fzf::Fs::C::Ls
 Fzf::Fs::C::LsColor
 Fzf::Fs::C::Opener
 Fzf::Fs::C::Pager
+Fzf::Fs::C::Sh
 ```
 
 ##### Default Keybindings
@@ -224,6 +226,7 @@ Ctrl-m  Child
 Cw      Set normal_colorscheme_bw
 E       Edit
 N       Search mode
+S       Fork shell in the current directory
 Z       GetKey Z
 ZF      Toggle ls_classify
 ZH      Toggle ls_dereference_cl
@@ -509,7 +512,7 @@ builtin typeset -x \
 
 ##### TO DO
 
-- commands: shell, open_with and terminal (all with flags); help and version
+- commands: open_with and terminal (all with flags); help and version
 - macros via macro.sh
 - provide searching in GetKey command
 - commandline option to use fzf-curr-position

@@ -48,6 +48,8 @@ builtin typeset -a +i -x FZF_FS_COMMANDS="(
         PrintSettings
         Quit
         Set
+        Sh
+        Shell
         Toggle
 )"
 
@@ -57,7 +59,7 @@ Fzf::Fs::C::Chdir ()
                 prompt=Chdir \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@"
+        Fzf::Fs::U::Get::Args "$@" || builtin return 1
 
         builtin cd -- "$tmp"
 
@@ -72,7 +74,7 @@ Fzf::Fs::C::Child ()
                 prompt=Child \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@"
+        Fzf::Fs::U::Get::Args "$@" || builtin return 1
 
         if
                 [[ -d $tmp ]]
@@ -83,9 +85,22 @@ Fzf::Fs::C::Child ()
         fi
 }
 
+Fzf::Fs::C::Edit ()
+{
+        builtin typeset \
+                prompt=Editor \
+                tmp;
+
+        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+
+        Fzf::Fs::U::Set::Cursor 1
+        Fzf::Fs::C::Editor "$tmp"
+        Fzf::Fs::U::Set::Cursor 0
+}
+
 Fzf::Fs::C::Editor ()
 {
-        </dev/tty command ${EDITOR:-vi} "$@" >/dev/tty
+        </dev/tty command ${EDITOR:-vi} -- "$@" >/dev/tty
 }
 
 Fzf::Fs::C::EMapKey ()
@@ -124,19 +139,6 @@ Fzf::Fs::C::EMapKey ()
                         bind_search+="${2}:execute(${3:-builtin :})",
                 esac
         fi
-}
-
-Fzf::Fs::C::Edit ()
-{
-        builtin typeset \
-                prompt=Editor \
-                tmp;
-
-        Fzf::Fs::U::Get::Args "$@"
-
-        Fzf::Fs::U::Set::Cursor 1
-        Fzf::Fs::C::Editor "$tmp"
-        Fzf::Fs::U::Set::Cursor 0
 }
 
 Fzf::Fs::C::ExpectKey ()
@@ -267,7 +269,7 @@ Fzf::Fs::C::Open ()
 
 Fzf::Fs::C::Opener ()
 {
-        </dev/tty command ${OPENER:-${PAGER:-less -R}} "$@" >/dev/tty
+        </dev/tty command ${OPENER:-${PAGER:-less -R}} -- "$@" >/dev/tty
 }
 
 Fzf::Fs::C::Page ()
@@ -276,7 +278,7 @@ Fzf::Fs::C::Page ()
                 prompt=Pager \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@"
+        Fzf::Fs::U::Get::Args "$@" || builtin return 1
 
         Fzf::Fs::U::Set::Cursor 1
         Fzf::Fs::C::Pager "$tmp"
@@ -285,7 +287,7 @@ Fzf::Fs::C::Page ()
 
 Fzf::Fs::C::Pager ()
 {
-        </dev/tty command ${PAGER:-less -R} "$@" >/dev/tty
+        </dev/tty command ${PAGER:-less -R} -- "$@" >/dev/tty
 }
 
 Fzf::Fs::C::Parent ()
@@ -295,8 +297,11 @@ Fzf::Fs::C::Parent ()
                         prompt=Parent \
                         tmp;
 
+                Fzf::Fs::U::Set::Cursor 1
+
                 command tput sc
-                command tput cup 99999 0
+                command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+
                 if
                         [[ -n "$ZSH_VERSION" ]]
                 then
@@ -308,7 +313,7 @@ Fzf::Fs::C::Parent ()
                 command tput ed
 
                 builtin set -- ${tmp}
-        }
+        } </dev/tty >/dev/tty
 
         [[ -z ${1//[0-9]/} ]] && {
                 builtin typeset tmp="$(builtin printf '%*s' "${1:-1}" "")"
@@ -792,6 +797,88 @@ SET
                 FZF_FS_SEARCH_TIEBREAK=${FZF_FS_SEARCH_TIEBREAK:-"length,index"}
                 Fzf::Fs::U::Spool "FZF_FS_SEARCH_TIEBREAK='%s'\n" "$FZF_FS_SEARCH_TIEBREAK"
         esac
+}
+
+Fzf::Fs::C::Sh ()
+{
+        case ${flag_f}${flag_t}${flag_w} in
+        111)
+                ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}" & )
+        ;;
+        110)
+                ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*}" & )
+        ;;
+        100)
+                ( exec "${SHELL:-sh}" -c "${*}" & )
+        ;;
+        011)
+                command ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}"
+        ;;
+        010)
+                command ${TERMCMD} -e "${SHELL:-sh}" -c "${*}"
+        ;;
+        001)
+                "${SHELL:-sh}" -c "${*};builtin printf '%s\n' 'Press ENTER to continue';builtin read"
+        ;;
+        000)
+                if
+                        (( $# ))
+                then
+                        "${SHELL-sh}" -c "${*}"
+                else
+                        </dev/tty "${SHELL:-sh}" >/dev/tty
+                fi
+        esac
+}
+
+Fzf::Fs::C::Shell ()
+{
+        builtin typeset \
+                OPTERR=1 \
+                OPTIND=1 \
+                a \
+                opt \
+                prompt=Shell \
+                tmp;
+
+        builtin typeset -i \
+                flag_f= \
+                flag_t= \
+                flag_w=;
+
+        builtin typeset -a command_quoted
+
+        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+        builtin set -- ${tmp}
+
+        while
+                builtin getopts :ftw opt
+        do
+                case $opt in
+                f)
+                        flag_f=1
+                ;;
+                t)
+                        flag_t=1
+                ;;
+                w)
+                        flag_w=1
+                ;;
+                \?)
+                        1>&2 printf "Unknown flag: '-%s'\n" "$OPTARG"
+                        builtin exit 1
+                esac
+        done
+        builtin shift $(( OPTIND - 1 ))
+
+        for a
+        do
+                command_quoted+=( "${a//\'/\'\\\'\'}" )
+        done
+
+        Fzf::Fs::U::Set::Cursor 1
+        Fzf::Fs::C::Sh "${command_quoted[@]}"
+        Fzf::Fs::U::Set::Cursor 0
 }
 
 Fzf::Fs::C::Toggle ()
@@ -1378,7 +1465,7 @@ builtin typeset -x \
         FZF_FS_CONSOLEK_TABSTOP=${FZF_FS_CONSOLEK_TABSTOP:-8};
 
 if
-        ! >/dev/null 2>&1 builtin typeset -f Fzf::Fs::C::Ls Fzf::Fs::C::LsColor
+        ! builtin typeset -fp Fzf::Fs::C::Ls Fzf::Fs::C::LsColor >/dev/null 2>&1
 then
         case ${FZF_FS_OS:-$( command uname -s )} in
         Darwin | DragonFly | FreeBSD)
@@ -1454,6 +1541,7 @@ bind_normal+=';:execute(Fzf::Fs::C::Set console_mode)',
 bind_normal+='C:execute(Fzf::Fs::C::GetKey C)',
 bind_normal+='E:execute(Fzf::Fs::C::Edit {})',
 bind_normal+='N:execute(Fzf::Fs::C::Set search_mode)',
+bind_normal+='S:execute(Fzf::Fs::C::Shell)',
 bind_normal+='Z:execute(Fzf::Fs::C::GetKey Z)',
 bind_normal+='ctrl-b:page-up',
 bind_normal+='ctrl-c:execute(Fzf::Fs::C::Quit)',
@@ -1479,7 +1567,6 @@ bind_normal+='up:up',
 bind_normal+='z:execute(Fzf::Fs::C::GetKey z)',
 
 #bind_normal+='T:execute(Fzf::Fs::C::Terminal)',
-#bind_normal+='S:execute(${FZF_FS_CONF_DIR}/bin/shell -k)', # TODO
 
 bind_normal+="!:ignore",
 bind_normal+="':ignore",
@@ -1526,7 +1613,6 @@ bind_normal+='O:ignore',
 bind_normal+='P:ignore',
 bind_normal+='Q:ignore',
 bind_normal+='R:ignore',
-bind_normal+='S:ignore',
 bind_normal+='U:ignore',
 bind_normal+='V:ignore',
 bind_normal+='W:ignore',
@@ -2115,7 +2201,7 @@ Fzf::Fs::Modes::Console ()
                         builtin continue
                 # TODO
                 elif
-                        builtin typeset -fp "Fzf::Fs::C::${q}" 1>/dev/null
+                        builtin typeset -fp "Fzf::Fs::C::${q}" 1>/dev/null 2>&1
                 then
                         query=
                         "Fzf::Fs::C::${q}"
@@ -2438,7 +2524,7 @@ Fzf::Fs::U::Get::Args ()
                         Fzf::Fs::U::Parse::Line finfo "$1"
                         Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
                         if
-                                [[ ${finfo[1]} ]]
+                                [[ -n ${finfo[1]} ]]
                         then
                                 tmp=${finfo[1]}
                         else
@@ -2446,19 +2532,20 @@ Fzf::Fs::U::Get::Args ()
                         fi
                 fi
         else
-                command tput sc
-                command tput cup 99999 0
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
-                command tput rc
-                command tput ed
+                        Fzf::Fs::U::Set::Cursor 1
+                        command tput sc
+                        command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+                        if
+                                [[ -n $ZSH_VERSION ]]
+                        then
+                                builtin vared -p ":${prompt} " tmp
+                        else
+                                builtin read -re -p ":${prompt} " tmp
+                        fi
+                        command tput rc
+                        command tput ed
         fi
-}
+} </dev/tty >/dev/tty
 
 Fzf::Fs::U::Parse::Line ()
 {
@@ -2588,7 +2675,7 @@ Fzf::Fs::U::CopyFunc ()
         esac
         builtin shift 1
 
-        builtin test -n "$(builtin typeset -f "${1:-1}")" && {
+        builtin test -n "$(builtin typeset -fp "${1:-1}" 2>/dev/null)" && {
                 builtin eval "${_/${1}/${2:-1}}" && tmp+=( $2 )
         }
         builtin unset -n tmp
