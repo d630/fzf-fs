@@ -1326,8 +1326,8 @@ builtin typeset -x \
         FZF_FS_MODE=${FZF_FS_MODE:-normal} \
         FZF_FS_OS= \
         FZF_FS_SPOOL_FILE="${FZF_FS_SPOOL_FILE:-/tmp/fzf-fs-${USER}/fzf-fs.$$}" \
-        LC_COLLATE=C \
         LC_COLLATE_OLD=$LC_COLLATE \
+        LC_COLLATE=C \
         TERMCMD=${TERMCMD:-xterm} \
         _cursor_off="$(command tput civis || command tput vi)" \
         _cursor_on="$(command tput cnorm || command tput ve)" \
@@ -1915,18 +1915,6 @@ c Set ls_sort_ctime ls_reverse_true
 m Set ls_sort_mtime ls_reverse_true
 n Set ls_sort_nothing
 s Set ls_sort_size ls_reverse_true
-KEYS
-        ;;
-        c)
-                expect_normal='d,p'
-                bind_normal+="d:execute(Fzf::Fs::C::Chdir)",
-                bind_normal+="p:execute(Fzf::Fs::C::Parent)",
-                bind_normal+="enter:ignore"
-                { keys=$( command column -t </dev/fd/0 ) ; } <<KEYS
-key command option
---- ------- ------
-d Chdir
-p parent
 KEYS
         ;;
         r)

@@ -374,8 +374,8 @@ builtin typeset -x \
         FZF_FS_MODE=${FZF_FS_MODE:-normal} \
         FZF_FS_OS= \
         FZF_FS_SPOOL_FILE="${FZF_FS_SPOOL_FILE:-/tmp/fzf-fs-${USER}/fzf-fs.$$}" \
-        LC_COLLATE=C \
         LC_COLLATE_OLD=$LC_COLLATE \
+        LC_COLLATE=C \
         TERMCMD=${TERMCMD:-xterm} \
         _cursor_off="$(command tput civis || command tput vi)" \
         _cursor_on="$(command tput cnorm || command tput ve)" \
