@@ -28,6 +28,19 @@
 #less
 
 ###############################################################################
+# -- CONTROL.
+###############################################################################
+
+if
+        [[ ${BASH_SOURCE[0]} == $0 && -n ${BASH_VERSION[0]} ]]
+then
+        builtin typeset -x FZF_FS_CONF_DIR="${FZF_FS_CONF_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}"
+else
+        builtin printf '%s\n' "fzf-fs:Error: Do not execute fzf-fs via source" 1>&2
+        builtin return 1 2>/dev/null
+fi
+
+###############################################################################
 # -- COMMANDS.
 ###############################################################################
 
@@ -1264,6 +1277,8 @@ Fzf::Fs::Exit ()
 {
         Fzf::Fs::U::Set::Cursor 1
 
+        > "$FZF_FS_SPOOL_FILE"
+
         builtin typeset syntax=\#
 
         builtin unset -f \
@@ -1275,6 +1290,9 @@ Fzf::Fs::Exit ()
         builtin unset -v \
                 FZF_FS_COMMANDS \
                 FZF_FS_FUNCS;
+
+        exec 7>&-
+        exec 8<&-
 }
 
 Fzf::Fs::F::Console ()
@@ -1876,13 +1894,6 @@ KEYS
 
 Fzf::Fs::Main ()
 {
-        builtin typeset -x FZF_FS_CONF_DIR="${FZF_FS_CONF_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/fzf-fs.d}"
-
-        builtin . "${FZF_FS_CONF_DIR}/config.user" 2>/dev/null
-        builtin . <(
-                Fzf::Fs::I
-                Fzf::Fs::I::KeyBinds
-        )
         builtin . "${FZF_FS_CONF_DIR}/keybinds.user" 2>/dev/null
         builtin . "${FZF_FS_CONF_DIR}/get_keys.user" 2>/dev/null
         builtin . "spath.sh"
@@ -1899,11 +1910,12 @@ Fzf::Fs::Main ()
 
         builtin . "${FZF_FS_CONF_DIR}/commands.user" 2>/dev/null
 
-        #builtin trap 'Fzf::Fs::Exit;exit 1' INT TERM QUIT EXIT
         exec 7>&-
         exec 8<&-
         exec 7>>"$FZF_FS_SPOOL_FILE"
         exec 8< "$FZF_FS_SPOOL_FILE"
+
+        builtin trap 'Fzf::Fs::Exit' INT TERM QUIT EXIT
 
         builtin typeset \
                 OPTARG \
@@ -1956,9 +1968,7 @@ Fzf::Fs::Main ()
                 esac
         done
 
-        Fzf::Fs::Exit
-        exec 7>&-
-        exec 8<&-
+        #Fzf::Fs::Exit
 }
 
 Fzf::Fs::Modes::Console ()
@@ -2514,6 +2524,13 @@ Fzf::Fs::U::Spool ()
 ###############################################################################
 # -- MAIN.
 ###############################################################################
+
+builtin . "${FZF_FS_CONF_DIR}/config.user" 2>/dev/null
+
+builtin . <(
+        Fzf::Fs::I
+        Fzf::Fs::I::KeyBinds
+)
 
 builtin typeset -f -x \
         "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}" \
