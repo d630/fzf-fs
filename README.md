@@ -205,12 +205,11 @@ tab     query completition
 
 ###### Normal mode
 
-Most keys will be ignored.
-
 ```
 /       Search mode
 :       Console mode
 ;       Search mode
+bspace  backward-delete-char
 C       GetKey C
 C1      Set normal_colorscheme_16
 CC      Set normal_color
@@ -306,6 +305,37 @@ zm      Toggle normal_mouse
 zr      Toggle normal_reverse
 zs      Toggle normal_hscroll
 zt      Set normal_tabstop
+```
+
+These default keys of fzf will be ignored:
+
+```
+alt-b
+alt-bspace
+alt-d
+alt-f
+btab
+ctrl-a
+ctrl-d
+ctrl-e
+ctrl-g
+ctrl-h
+ctrl-i
+ctrl-j
+ctrl-k
+ctrl-n
+ctrl-p
+ctrl-q
+ctrl-u
+ctrl-w
+ctrl-y
+del
+end
+esc
+home
+shift-left
+shift-right
+tab
 ```
 
 ###### Search mode
