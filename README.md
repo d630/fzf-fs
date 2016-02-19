@@ -152,10 +152,9 @@ Used in Subcommands.
 
 ```
 Fzf::Fs::U::CopyFunc
-Fzf::Fs::U::Get::Args
-Fzf::Fs::U::Parse::Line
+Fzf::Fs::U::Get::FName
+Fzf::Fs::U::Parse::Args
 Fzf::Fs::U::Set::Cursor
-Fzf::Fs::U::Set::FName
 Fzf::Fs::U::Set::Prompt
 Fzf::Fs::U::Set::Pwd
 Fzf::Fs::U::Spool

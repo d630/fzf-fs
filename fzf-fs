@@ -59,7 +59,7 @@ Fzf::Fs::C::Chdir ()
                 prompt=Chdir \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+        Fzf::Fs::U::Parse::Args "$@" || builtin return 1
 
         builtin cd -- "$tmp"
 
@@ -74,7 +74,7 @@ Fzf::Fs::C::Child ()
                 prompt=Child \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+        Fzf::Fs::U::Parse::Args "$@" || builtin return 1
 
         if
                 [[ -d $tmp ]]
@@ -91,7 +91,7 @@ Fzf::Fs::C::Edit ()
                 prompt=Editor \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+        Fzf::Fs::U::Parse::Args "$@" || builtin return 1
 
         Fzf::Fs::U::Set::Cursor 1
         Fzf::Fs::C::Editor "$tmp"
@@ -260,7 +260,7 @@ Fzf::Fs::C::Open ()
                 prompt=Opener \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@"
+        Fzf::Fs::U::Parse::Args "$@"
 
         Fzf::Fs::U::Set::Cursor 1
         Fzf::Fs::C::Opener "$tmp"
@@ -278,7 +278,7 @@ Fzf::Fs::C::Page ()
                 prompt=Pager \
                 tmp;
 
-        Fzf::Fs::U::Get::Args "$@" || builtin return 1
+        Fzf::Fs::U::Parse::Args "$@" || builtin return 1
 
         Fzf::Fs::U::Set::Cursor 1
         Fzf::Fs::C::Pager "$tmp"
@@ -884,7 +884,7 @@ Fzf::Fs::C::Shell ()
 
         builtin typeset -a command_quoted
 
-        Fzf::Fs::U::Get::Args "$@"
+        Fzf::Fs::U::Parse::Args "$@"
         builtin set -- ${tmp}
 
         while
@@ -1162,10 +1162,9 @@ builtin typeset -a +i -x FZF_FS_FUNCS="(
         O::Set
         O::Toggle
         U::CopyFunc
-        U::Get::Args
-        U::Parse::Line
+        U::Get::FName
+        U::Parse::Args
         U::Set::Cursor
-        U::Set::FName
         U::Set::Prompt
         U::Set::Pwd
         U::Spool
@@ -2571,60 +2570,57 @@ Fzf::Fs::O::Toggle ()
         FZF_DEFAULT_OPTS=$o
 }
 
-Fzf::Fs::U::Get::Args ()
+Fzf::Fs::U::Get::FName ()
+{
+        2>/dev/null \
+        command find -H "${1}/." \
+                ! -name . \
+                -prune \
+                -inum "$2" \
+                -exec basename '{}' \;
+}
+
+Fzf::Fs::U::Parse::Args ()
 {
         if
                 (( $# ))
         then
                 if
+                        [[ -e ./${1} ]]
+                then
+                        tmp=./${1}
+                elif
                         [[ -e $1 ]]
                 then
                         tmp=$1
                 else
-                        builtin typeset -a finfo
-                        Fzf::Fs::U::Parse::Line finfo "$1"
-                        Fzf::Fs::U::Set::FName finfo "$PWD" "$finfo"
+                        tmp=${1#${1%%[![:space:]]*}}
+                        tmp=${tmp%% *}
+                        tmp=$( Fzf::Fs::U::Get::FName "$PWD" "$tmp" )
                         if
-                                [[ -n ${finfo[1]} ]]
+                                [[ -n $tmp ]]
                         then
-                                tmp=${finfo[1]}
+                                tmp=$tmp
                         else
                                 tmp=$@
                         fi
                 fi
         else
-                        Fzf::Fs::U::Set::Cursor 1
-                        command tput sc
-                        command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
-                        if
-                                [[ -n $ZSH_VERSION ]]
-                        then
-                                builtin vared -p ":${prompt} " tmp
-                        else
-                                builtin read -re -p ":${prompt} " tmp
-                        fi
-                        command tput rc
-                        command tput ed
+                Fzf::Fs::U::Set::Cursor 1
+                command tput sc
+                command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+                if
+                        [[ -n $ZSH_VERSION ]]
+                then
+                        builtin vared -p ":${prompt} " tmp
+                else
+                        builtin read -re -p ":${prompt} " tmp
+                fi
+                command tput rc
+                command tput ed
         fi
 } </dev/tty >/dev/tty
 
-Fzf::Fs::U::Parse::Line ()
-{
-        builtin typeset i
-
-        i=${2#${2%%[![:space:]]*}}
-        i=${i%% *}
-
-        if
-                [[ $1 == : ]]
-        then
-                builtin printf '%d\n' "$i"
-        else
-                builtin typeset -n ref="$1"
-                ref+=( "$i" )
-                builtin unset -n ref
-        fi
-}
 
 Fzf::Fs::U::Set::Cursor ()
 {
@@ -2637,33 +2633,6 @@ Fzf::Fs::U::Set::Cursor ()
                         builtin printf '%s' "${_cursor_on}"
                 esac
         } >/dev/tty
-}
-
-Fzf::Fs::U::Set::FName ()
-{
-        if
-                [[ $1 == : ]]
-        then
-                2>/dev/null \
-                command find -H "${2}/." \
-                        ! -name . \
-                        -prune \
-                        -inum "$3" \
-                        -exec basename '{}' \;
-        else
-                builtin typeset -n ref="$1"
-                ref+=(
-                        "$(
-                                2>/dev/null \
-                                command find -H "${2}/." \
-                                        ! -name . \
-                                        -prune \
-                                        -inum "$3" \
-                                        -exec basename '{}' \;
-                        )"
-                )
-                builtin unset -n ref
-        fi
 }
 
 Fzf::Fs::U::Set::Prompt ()
