@@ -6,16 +6,17 @@ Main changes:
 - modes
 - keybindings now provided via bind and expect
 - no installer script anymore
-- removed compatibility of ksh/mksh. Support for: bash and zsh only
+- removed compatibility of ksh/mksh and zsh. Support for: bash only
 - use of submodule spath.sh
 - commandline options -d and -e
 - removed macros
 - different local config files
+- no use via source anymore
 - extensible (own modes, commands) and configurable (many environment variables on commandline or in config file; keybindings for most fzf executions)
 
 #### Testing
 
-A complete documentation will follow.
+A complete documentation will follow. Fzf-fs works best in terminals with disabled "alternate screen" (tput [sr]mcup).
 
 #### GIT
 

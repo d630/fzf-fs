@@ -328,13 +328,7 @@ Fzf::Fs::C::Parent ()
                 command tput sc
                 command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
 
-                if
-                        [[ -n "$ZSH_VERSION" ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
+                builtin read -re -p ":${prompt} " tmp
 
                 command tput rc
                 command tput ed
@@ -1475,10 +1469,6 @@ SET
                 FZF_FS_CONSOLE_TAC=$((FZF_FS_CONSOLE_TAC ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_CONSOLE_TAC=%d\n" "$FZF_FS_CONSOLE_TAC"
         ;;
-        ls_classify)
-                FZF_FS_LS_F=$((FZF_FS_LS_F ? 0 : 1))
-                Fzf::Fs::U::Spool "FZF_FS_LS_F=%d\n" "$FZF_FS_LS_F"
-        ;;
         consolek_black)
                 FZF_FS_CONSOLEK_BLACK=$((FZF_FS_CONSOLEK_BLACK ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_BLACK=%d\n" "$FZF_FS_CONSOLEK_BLACK"
@@ -1506,6 +1496,10 @@ SET
         consolek_tac)
                 FZF_FS_CONSOLEK_TAC=$((FZF_FS_CONSOLEK_TAC ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_TAC=%d\n" "$FZF_FS_CONSOLEK_TAC"
+        ;;
+        ls_classify)
+                FZF_FS_LS_F=$((FZF_FS_LS_F ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_LS_F=%d\n" "$FZF_FS_LS_F"
         ;;
         ls_color)
                 FZF_FS_LS_COLOR=$((FZF_FS_LS_COLOR ? 0 : 1))
@@ -2934,13 +2928,7 @@ Fzf::Fs::U::Parse::Args ()
                 Fzf::Fs::U::Set::Cursor 1
                 command tput sc
                 command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
-                if
-                        [[ -n $ZSH_VERSION ]]
-                then
-                        builtin vared -p ":${prompt} " tmp
-                else
-                        builtin read -re -p ":${prompt} " tmp
-                fi
+                builtin read -re -p ":${prompt} " tmp
                 command tput rc
                 command tput ed
         fi
