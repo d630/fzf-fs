@@ -110,33 +110,38 @@ Fzf::Fs::C::EMapKey ()
         if
                 (( _console_interactive ))
         then
-                builtin typeset tmp="$(
+                builtin typeset \
+                        action\
+                        mode;
+                builtin read -r mode action < <(
                         command fzf \
                                 --print-query \
                                 --prompt="EMapKey " \
                                 --query=". .:execute(.)" \
                         0<&-;
-                )"
-                case $tmp in
+                )
+                [[ -z $action ]] && builtin return 1
+                case $mode in
                 c*)
-                        bind_console+="${tmp:2}",
+                        bind_console+="${action}",
                 ;;
                 n*)
-                        bind_normal+="${tmp:2}",
+                        bind_normal+="${action}",
                 ;;
                 s*)
-                        bind_search+="${tmp:2}",
+                        bind_search+="${action}",
                 esac
         else
+                [[ -z $2 || -z $3 ]] && builtin return 1
                 case $1 in
                 c*)
-                        bind_console+="${2}:execute(${3:-builtin :})",
+                        bind_console+="${2}:execute(${3})",
                 ;;
                 n*)
-                        bind_normal+="${2}:execute(${3:-builtin :})",
+                        bind_normal+="${2}:execute(${3})",
                 ;;
                 s*)
-                        bind_search+="${2}:execute(${3:-builtin :})",
+                        bind_search+="${2}:execute(${3})",
                 esac
         fi
 }
@@ -148,25 +153,29 @@ Fzf::Fs::C::ExpectKey ()
         if
                 (( _console_interactive ))
         then
-                builtin typeset tmp="$(
+                builtin typeset \
+                        mode \
+                        key;
+                builtin read -r mode key < <(
                         command fzf \
                                 --print-query \
                                 --prompt="ExpectKey " \
                                 --query=". ." \
                         0<&-;
-                )"
-                case $tmp in
+                )
+                [[ -z $key ]] && builtin return 1
+                case $mode in
                 c*)
-                        expect_console+="${tmp:2}",
+                        expect_console+="${key}",
                 ;;
                 n*)
-                        expect_normal+="${tmp:2}",
+                        expect_normal+="${key}",
                 ;;
                 s*)
-                        expect_search+="${tmp:2}",
+                        expect_search+="${key}",
                 esac
         else
-                [[ -n $2 ]] || builtin return 1
+                [[ -z $2 ]] && builtin return 1
                 case $1 in
                 c*)
                         expect_console+="${2}",
@@ -222,33 +231,38 @@ Fzf::Fs::C::MapKey ()
         if
                 (( _console_interactive ))
         then
-                builtin typeset tmp="$(
+                builtin typeset \
+                        action \
+                        mode;
+                builtin read -r mode action < <(
                         command fzf \
                                 --print-query \
                                 --prompt="MapKey " \
                                 --query=". .:." \
                         0<&-;
-                )"
-                case $tmp in
+                )
+                [[ -z $action ]] && builtin return 1
+                case $mode in
                 c*)
-                        bind_console+="${tmp:2}",
+                        bind_console+="${action}",
                 ;;
                 n*)
-                        bind_normal+="${tmp:2}",
+                        bind_normal+="${action}",
                 ;;
                 s*)
-                        bind_search+="${tmp:2}",
+                        bind_search+="${action}",
                 esac
         else
+                [[ -z $2 || -z $3 ]] && builtin return 1
                 case $1 in
                 c)
-                        bind_console+="${2}:${3:-ignore}",
+                        bind_console+="${2}:${3}",
                 ;;
                 n)
-                        bind_normal+="${2}:${3:-ignore}",
+                        bind_normal+="${2}:${3}",
                 ;;
                 s)
-                        bind_search+="${2}:${3:-ignore}",
+                        bind_search+="${2}:${3}",
                 esac
         fi
 }
