@@ -71,6 +71,9 @@ Set             Set settings with string values (interactively in console):
                 console_margin
                 console_mode
                 console_tabstop
+                consolek_color
+                consolek_margin
+                consolek_tabstop
                 lc_collate
                 lc_collate_c
                 lc_collate_lang
@@ -96,7 +99,10 @@ Set             Set settings with string values (interactively in console):
                 normal_colorscheme_light
                 normal_margin
                 normal_mode
-                normal_tabstop
+                normal_tabstopA
+                normalk_color
+                normalk_margin
+                normalk_tabstop
                 search_case
                 search_color
                 search_colorscheme_16
@@ -109,6 +115,19 @@ Set             Set settings with string values (interactively in console):
                 search_mode
                 search_tabstop
                 search_tiebreak
+                searchk_color
+                searchk_margin
+                searchk_tabstop
+                set_case
+                set_color
+                set_margin
+                set_tabstop
+                set_tiebreak
+                tog_case
+                tog_color
+                tog_margin
+                tog_tabstop
+                tog_tiebreak
 Shell           Open shell/run command in shell
 Toggle          Toggle settings with integer values (interactively in console):
                 console_black
@@ -118,6 +137,13 @@ Toggle          Toggle settings with integer values (interactively in console):
                 console_mouse
                 console_reverse
                 console_tac
+                consolek_black
+                consolek_cycle
+                consolek_hscroll
+                consolek_inline
+                consolek_mouse
+                consolek_reverse
+                consolek_tac
                 ls_classify
                 ls_color
                 ls_dereference
@@ -136,6 +162,13 @@ Toggle          Toggle settings with integer values (interactively in console):
                 normal_mouse
                 normal_reverse
                 normal_tac
+                normalk_black
+                normalk_cycle
+                normalk_hscroll
+                normalk_inline
+                normalk_mouse
+                normalk_reverse
+                normalk_tac
                 search_black
                 search_cycle
                 search_exact
@@ -146,6 +179,33 @@ Toggle          Toggle settings with integer values (interactively in console):
                 search_reverse
                 search_sort
                 search_tac
+                searchk_black
+                searchk_cycle
+                searchk_hscroll
+                searchk_inline
+                searchk_mouse
+                searchk_reverse
+                searchk_tac
+                set_black
+                set_cycle
+                set_exact
+                set_extended
+                set_hscroll
+                set_inline
+                set_mouse
+                set_reverse
+                set_sort
+                set_tac
+                tog_black
+                tog_cycle
+                tog_exact
+                tog_extended
+                tog_hscroll
+                tog_inline
+                tog_mouse
+                tog_reverse
+                tog_sort
+                tog_tac
 ```
 
 ##### Utils functions
@@ -539,7 +599,6 @@ builtin typeset -i -x \
 - commands: help and version
 - provide searching in GetKey command
 - commandline option to use fzf-curr-position
-- give more settings for Set and Toggle (all environment variable)
 - update docs
 
 ##### Playlist

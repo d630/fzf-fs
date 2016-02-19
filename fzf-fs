@@ -427,6 +427,9 @@ console_hsize ${FZF_FS_CONSOLE_HSIZE:-null}
 console_margin ${FZF_FS_CONSOLE_MARGIN:-null}
 console_mode
 console_tabstop ${FZF_FS_CONSOLE_TABSTOP:-null}
+consolek_color ${FZF_FS_CONSOLEK_COLOR:-null}
+consolek_margin ${FZF_FS_CONSOLEK_MARGIN:-null}
+consolek_tabstop ${FZF_FS_CONSOLEK_TABSTOP:-null}
 lc_collate ${LC_COLLATE:-null}
 lc_collate_c
 lc_collate_lang
@@ -453,6 +456,9 @@ normal_colorscheme_light
 normal_margin ${FZF_FS_NORMAL_MARGIN:-null}
 normal_mode
 normal_tabstop ${FZF_FS_NORMAL_TABSTOP:-null}
+normalk_color ${FZF_FS_NORMALK_COLOR:-null}
+normalk_margin ${FZF_FS_NORMALK_MARGIN:-null}
+normalk_tabstop ${FZF_FS_NORMALK_TABSTOP:-null}
 search_case ${FZF_FS_SEARCH_CASE:-null}
 search_color ${FZF_FS_SEARCH_COLOR:-null}
 search_colorscheme_16
@@ -465,6 +471,19 @@ search_margin ${FZF_FS_SEARCH_MARGIN:-null}
 search_mode
 search_tabstop ${FZF_FS_SEARCH_TABSTOP:-null}
 search_tiebreak ${FZF_FS_SEARCH_TIEBREAK:-null}
+searchk_color ${FZF_FS_SEARCHK_COLOR:-null}
+searchk_margin ${FZF_FS_SEARCHK_MARGIN:-null}
+searchk_tabstop ${FZF_FS_SEARCHK_TABSTOP:-null}
+set_case ${FZF_FS_SET_CASE:-null}
+set_color ${FZF_FS_SET_COLOR:-null}
+set_margin ${FZF_FS_SET_MARGIN:-null}
+set_tabstop ${FZF_FS_SET_TABSTOP:-null}
+set_tiebreak ${FZF_FS_SET_TIEBREAK:-null}
+tog_case ${FZF_FS_TOG_CASE:-null}
+tog_color ${FZF_FS_TOG_COLOR:-null}
+tog_margin ${FZF_FS_TOG_MARGIN:-null}
+tog_tabstop ${FZF_FS_TOG_TABSTOP:-null}
+tog_tiebreak ${FZF_FS_TOG_TIEBREAK:-null}
 SET
                         } \
                         | command column -t \
@@ -572,6 +591,53 @@ SET
                 fi
                 FZF_FS_CONSOLE_TABSTOP=${FZF_FS_CONSOLE_TABSTOP:-8}
                 Fzf::Fs::U::Spool "FZF_FS_CONSOLE_TABSTOP=%d\n" "$FZF_FS_CONSOLE_TABSTOP"
+        ;;
+        consolek_color)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_CONSOLEK_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLEK_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_CONSOLEK_COLOR=$2
+                fi
+                FZF_FS_CONSOLEK_COLOR=${FZF_FS_CONSOLEK_COLOR:-bw}
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_COLOR='%s'\n" "$FZF_FS_CONSOLEK_COLOR"
+        ;;
+        consolek_margin)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_CONSOLEK_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLEK_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_CONSOLEK_MARGIN=$2
+                fi
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_MARGIN='%s'\n" "$FZF_FS_CONSOLEK_MARGIN"
+        ;;
+        consolek_tabstop)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_CONSOLEK_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLEK_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_CONSOLEK_TABSTOP=$2
+                fi
+                FZF_FS_CONSOLEK_TABSTOP=${FZF_FS_CONSOLEK_TABSTOP:-8}
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_TABSTOP=%d\n" "$FZF_FS_CONSOLEK_TABSTOP"
         ;;
         lc_collate)
                 if
@@ -751,6 +817,53 @@ SET
                 FZF_FS_NORMAL_TABSTOP=${FZF_FS_NORMAL_TABSTOP:-8}
                 Fzf::Fs::U::Spool "FZF_FS_NORMAL_TABSTOP=%d\n" "$FZF_FS_NORMAL_TABSTOP"
         ;;
+        normalk_color)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_NORMALK_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_NORMALK_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_NORMALK_COLOR=$2
+                fi
+                FZF_FS_NORMALK_COLOR=${FZF_FS_NORMALK_COLOR:-bw}
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_COLOR='%s'\n" "$FZF_FS_NORMALK_COLOR"
+        ;;
+        normalk_margin)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_NORMALK_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_NORMALK_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_NORMALK_MARGIN=$2
+                fi
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_MARGIN='%s'\n" "$FZF_FS_NORMALK_MARGIN"
+        ;;
+        normalk_tabstop)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_NORMALK_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_NORMALK_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_NORMALK_TABSTOP=$2
+                fi
+                FZF_FS_NORMALK_TABSTOP=${FZF_FS_NORMALK_TABSTOP:-8}
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_TABSTOP=%d\n" "$FZF_FS_NORMALK_TABSTOP"
+        ;;
         mode)
                 if
                         (( _console_interactive ))
@@ -892,6 +1005,207 @@ SET
                 fi
                 FZF_FS_SEARCH_TIEBREAK=${FZF_FS_SEARCH_TIEBREAK:-"length,index"}
                 Fzf::Fs::U::Spool "FZF_FS_SEARCH_TIEBREAK='%s'\n" "$FZF_FS_SEARCH_TIEBREAK"
+        ;;
+        searchk_color)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SEARCHK_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCHK_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SEARCHK_COLOR=$2
+                fi
+                FZF_FS_SEARCHK_COLOR=${FZF_FS_SEARCHK_COLOR:-bw}
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_COLOR='%s'\n" "$FZF_FS_SEARCHK_COLOR"
+        ;;
+        searchk_margin)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SEARCHK_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCHK_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SEARCHK_MARGIN=$2
+                fi
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_MARGIN='%s'\n" "$FZF_FS_SEARCHK_MARGIN"
+        ;;
+        searchk_tabstop)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SEARCHK_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCHK_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SEARCHK_TABSTOP=$2
+                fi
+                FZF_FS_SEARCHK_TABSTOP=${FZF_FS_SEARCHK_TABSTOP:-8}
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_TABSTOP=%d\n" "$FZF_FS_SEARCHK_TABSTOP"
+        ;;
+        set_case)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SET_CASE=$(
+                                builtin printf '%s\n' insensitive sensitive smart \
+                                | command fzf --prompt="FZF_FS_SET_CASE=";
+                        )
+                else
+                        FZF_FS_SET_CASE=$2
+                fi
+                FZF_FS_SET_CASE=${FZF_FS_SET_CASE:-smart}
+                Fzf::Fs::U::Spool "FZF_FS_SET_CASE='%s'\n" "$FZF_FS_SET_CASE"
+        ;;
+        set_color)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SET_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SET_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SET_COLOR=$2
+                fi
+                FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR:-bw}
+                Fzf::Fs::U::Spool "FZF_FS_SET_COLOR='%s'\n" "$FZF_FS_SET_COLOR"
+        ;;
+        set_margin)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SET_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SET_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SET_MARGIN=$2
+                fi
+                Fzf::Fs::U::Spool "FZF_FS_SET_MARGIN='%s'\n" "$FZF_FS_SET_MARGIN"
+        ;;
+        set_tabstop)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SET_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SET_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SET_TABSTOP=$2
+                fi
+                FZF_FS_SET_TABSTOP=${FZF_FS_SET_TABSTOP:-8}
+                Fzf::Fs::U::Spool "FZF_FS_SET_TABSTOP=%d\n" "$FZF_FS_SET_TABSTOP"
+        ;;
+        set_tiebreak)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_SET_TIEBREAK=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SET_TIEBREAK=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_SET_TIEBREAK=$2
+                fi
+                FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"length,index"}
+                Fzf::Fs::U::Spool "FZF_FS_SET_TIEBREAK='%s'\n" "$FZF_FS_SET_TIEBREAK"
+        ;;
+        tog_case)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_TOG_CASE=$(
+                                builtin printf '%s\n' insensitive sensitive smart \
+                                | command fzf --prompt="FZF_FS_TOG_CASE=";
+                        )
+                else
+                        FZF_FS_TOG_CASE=$2
+                fi
+                FZF_FS_TOG_CASE=${FZF_FS_TOG_CASE:-smart}
+                Fzf::Fs::U::Spool "FZF_FS_TOG_CASE='%s'\n" "$FZF_FS_TOG_CASE"
+        ;;
+        tog_color)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_TOG_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_TOG_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_TOG_COLOR=$2
+                fi
+                FZF_FS_TOG_COLOR=${FZF_FS_TOG_COLOR:-bw}
+                Fzf::Fs::U::Spool "FZF_FS_TOG_COLOR='%s'\n" "$FZF_FS_TOG_COLOR"
+        ;;
+        tog_margin)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_TOG_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_TOG_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_TOG_MARGIN=$2
+                fi
+                Fzf::Fs::U::Spool "FZF_FS_TOG_MARGIN='%s'\n" "$FZF_FS_TOG_MARGIN"
+        ;;
+        tog_tabstop)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_TOG_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_TOG_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_TOG_TABSTOP=$2
+                fi
+                FZF_FS_TOG_TABSTOP=${FZF_FS_TOG_TABSTOP:-8}
+                Fzf::Fs::U::Spool "FZF_FS_TOG_TABSTOP=%d\n" "$FZF_FS_TOG_TABSTOP"
+        ;;
+        tog_tiebreak)
+                if
+                        (( _console_interactive ))
+                then
+                        FZF_FS_TOG_TIEBREAK=$(
+                                command fzf \
+                                        --prompt="FZF_FS_TOG_TIEBREAK=" \
+                                        --print-query \
+                                0<&-;
+                        )
+                else
+                        FZF_FS_TOG_TIEBREAK=$2
+                fi
+                FZF_FS_TOG_TIEBREAK=${FZF_FS_TOG_TIEBREAK:-"length,index"}
+                Fzf::Fs::U::Spool "FZF_FS_TOG_TIEBREAK='%s'\n" "$FZF_FS_TOG_TIEBREAK"
         esac
 }
 
@@ -1055,6 +1369,13 @@ console_inline ${FZF_FS_CONSOLE_INLINE}
 console_mouse ${FZF_FS_CONSOLE_MOUSE}
 console_reverse ${FZF_FS_CONSOLE_REVERSE}
 console_tac ${FZF_FS_CONSOLE_TAC}
+consolek_black ${FZF_FS_CONSOLEK_BLACK}
+consolek_cycle ${FZF_FS_CONSOLEK_CYCLE}
+consolek_hscroll ${FZF_FS_CONSOLEK_HSCROLL}
+consolek_inline ${FZF_FS_CONSOLEK_INLINE}
+consolek_mouse ${FZF_FS_CONSOLEK_MOUSE}
+consolek_reverse ${FZF_FS_CONSOLEK_REVERSE}
+consolek_tac ${FZF_FS_CONSOLEK_TAC}
 ls_classify ${FZF_FS_LS_F}
 ls_color ${FZF_FS_LS_COLOR}
 ls_dereference ${FZF_FS_LS_L}
@@ -1073,6 +1394,13 @@ normal_inline ${FZF_FS_NORMAL_INLINE}
 normal_mouse ${FZF_FS_NORMAL_MOUSE}
 normal_reverse ${FZF_FS_NORMAL_REVERSE}
 normal_tac ${FZF_FS_NORMAL_TAC}
+normalk_black ${FZF_FS_NORMALK_BLACK}
+normalk_cycle ${FZF_FS_NORMALK_CYCLE}
+normalk_hscroll ${FZF_FS_NORMALK_HSCROLL}
+normalk_inline ${FZF_FS_NORMALK_INLINE}
+normalk_mouse ${FZF_FS_NORMALK_MOUSE}
+normalk_reverse ${FZF_FS_NORMALK_REVERSE}
+normalk_tac ${FZF_FS_NORMALK_TAC}
 search_black ${FZF_FS_SEARCH_BLACK}
 search_cycle ${FZF_FS_SEARCH_CYCLE}
 search_exact ${FZF_FS_SEARCH_EXACT}
@@ -1083,6 +1411,33 @@ search_mouse ${FZF_FS_SEARCH_MOUSE}
 search_reverse ${FZF_FS_SEARCH_REVERSE}
 search_sort ${FZF_FS_SEARCH_SORT}
 search_tac ${FZF_FS_SEARCH_TAC}
+searchk_black ${FZF_FS_SEARCHK_BLACK}
+searchk_cycle ${FZF_FS_SEARCHK_CYCLE}
+searchk_hscroll ${FZF_FS_SEARCHK_HSCROLL}
+searchk_inline ${FZF_FS_SEARCHK_INLINE}
+searchk_mouse ${FZF_FS_SEARCHK_MOUSE}
+searchk_reverse ${FZF_FS_SEARCHK_REVERSE}
+searchk_tac ${FZF_FS_SEARCHK_TAC}
+set_black ${FZF_FS_SET_BLACK}
+set_cycle ${FZF_FS_SET_CYCLE}
+set_exact ${FZF_FS_SET_EXACT}
+set_extended ${FZF_FS_SET_EXTENDED}
+set_hscroll ${FZF_FS_SET_HSCROLL}
+set_inline ${FZF_FS_SET_INLINE}
+set_mouse ${FZF_FS_SET_MOUSE}
+set_reverse ${FZF_FS_SET_REVERSE}
+set_sort ${FZF_FS_SET_SORT}
+set_tac ${FZF_FS_SET_TAC}
+tog_black ${FZF_FS_TOG_BLACK}
+tog_cycle ${FZF_FS_TOG_CYCLE}
+tog_exact ${FZF_FS_TOG_EXACT}
+tog_extended ${FZF_FS_TOG_EXTENDED}
+tog_hscroll ${FZF_FS_TOG_HSCROLL}
+tog_inline ${FZF_FS_TOG_INLINE}
+tog_mouse ${FZF_FS_TOG_MOUSE}
+tog_reverse ${FZF_FS_TOG_REVERSE}
+tog_sort ${FZF_FS_TOG_SORT}
+tog_tac ${FZF_FS_TOG_TAC}
 SET
                         } \
                         | command column -t \
@@ -1123,6 +1478,34 @@ SET
         ls_classify)
                 FZF_FS_LS_F=$((FZF_FS_LS_F ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_LS_F=%d\n" "$FZF_FS_LS_F"
+        ;;
+        consolek_black)
+                FZF_FS_CONSOLEK_BLACK=$((FZF_FS_CONSOLEK_BLACK ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_BLACK=%d\n" "$FZF_FS_CONSOLEK_BLACK"
+        ;;
+        consolek_cycle)
+                FZF_FS_CONSOLEK_CYCLE=$((FZF_FS_CONSOLEK_CYCLE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_CYCLE=%d\n" "$FZF_FS_CONSOLEK_CYCLE"
+        ;;
+        consolek_hscroll)
+                FZF_FS_CONSOLEK_HSCROLL=$((FZF_FS_CONSOLEK_HSCROLL ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_HSCROLL=%d\n" "$FZF_FS_CONSOLEK_HSCROLL"
+        ;;
+        consolek_inline)
+                FZF_FS_CONSOLEK_INLINE=$((FZF_FS_CONSOLEK_INLINE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_INLINE=%d\n" "$FZF_FS_CONSOLEK_INLINE"
+        ;;
+        consolek_mouse)
+                FZF_FS_CONSOLEK_MOUSE=$((FZF_FS_CONSOLEK_MOUSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_MOUSE=%d\n" "$FZF_FS_CONSOLEK_MOUSE"
+        ;;
+        consolek_reverse)
+                FZF_FS_CONSOLEK_REVERSE=$((FZF_FS_CONSOLEK_REVERSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_REVERSE=%d\n" "$FZF_FS_CONSOLEK_REVERSE"
+        ;;
+        consolek_tac)
+                FZF_FS_CONSOLEK_TAC=$((FZF_FS_CONSOLEK_TAC ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_CONSOLEK_TAC=%d\n" "$FZF_FS_CONSOLEK_TAC"
         ;;
         ls_color)
                 FZF_FS_LS_COLOR=$((FZF_FS_LS_COLOR ? 0 : 1))
@@ -1192,6 +1575,34 @@ SET
                 FZF_FS_NORMAL_TAC=$((FZF_FS_NORMAL_TAC ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_NORMAL_TAC=%d\n" "$FZF_FS_NORMAL_TAC"
         ;;
+        normalk_black)
+                FZF_FS_NORMALK_BLACK=$((FZF_FS_NORMALK_BLACK ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_BLACK=%d\n" "$FZF_FS_NORMALK_BLACK"
+        ;;
+        normalk_cycle)
+                FZF_FS_NORMALK_CYCLE=$((FZF_FS_NORMALK_CYCLE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_CYCLE=%d\n" "$FZF_FS_NORMALK_CYCLE"
+        ;;
+        normalk_hscroll)
+                FZF_FS_NORMALK_HSCROLL=$((FZF_FS_NORMALK_HSCROLL ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_HSCROLL=%d\n" "$FZF_FS_NORMALK_HSCROLL"
+        ;;
+        normalk_inline)
+                FZF_FS_NORMALK_INLINE=$((FZF_FS_NORMALK_INLINE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_INLINE=%d\n" "$FZF_FS_NORMALK_INLINE"
+        ;;
+        normalk_mouse)
+                FZF_FS_NORMALK_MOUSE=$((FZF_FS_NORMALK_MOUSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_MOUSE=%d\n" "$FZF_FS_NORMALK_MOUSE"
+        ;;
+        normalk_reverse)
+                FZF_FS_NORMALK_REVERSE=$((FZF_FS_NORMALK_REVERSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_REVERSE=%d\n" "$FZF_FS_NORMALK_REVERSE"
+        ;;
+        normalk_tac)
+                FZF_FS_NORMALK_TAC=$((FZF_FS_NORMALK_TAC ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_NORMALK_TAC=%d\n" "$FZF_FS_NORMALK_TAC"
+        ;;
         search_black)
                 FZF_FS_SEARCH_BLACK=$((FZF_FS_SEARCH_BLACK ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_SEARCH_BLACK=%d\n" "$FZF_FS_SEARCH_BLACK"
@@ -1231,6 +1642,114 @@ SET
         search_tac)
                 FZF_FS_SEARCH_TAC=$((FZF_FS_SEARCH_TAC ? 0 : 1))
                 Fzf::Fs::U::Spool "FZF_FS_SEARCH_TAC=%d\n" "$FZF_FS_SEARCH_TAC"
+        ;;
+        searchk_black)
+                FZF_FS_SEARCHK_BLACK=$((FZF_FS_SEARCHK_BLACK ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_BLACK=%d\n" "$FZF_FS_SEARCHK_BLACK"
+        ;;
+        searchk_cycle)
+                FZF_FS_SEARCHK_CYCLE=$((FZF_FS_SEARCHK_CYCLE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_CYCLE=%d\n" "$FZF_FS_SEARCHK_CYCLE"
+        ;;
+        searchk_hscroll)
+                FZF_FS_SEARCHK_HSCROLL=$((FZF_FS_SEARCHK_HSCROLL ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_HSCROLL=%d\n" "$FZF_FS_SEARCHK_HSCROLL"
+        ;;
+        searchk_inline)
+                FZF_FS_SEARCHK_INLINE=$((FZF_FS_SEARCHK_INLINE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_INLINE=%d\n" "$FZF_FS_SEARCHK_INLINE"
+        ;;
+        searchk_mouse)
+                FZF_FS_SEARCHK_MOUSE=$((FZF_FS_SEARCHK_MOUSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_MOUSE=%d\n" "$FZF_FS_SEARCHK_MOUSE"
+        ;;
+        searchk_reverse)
+                FZF_FS_SEARCHK_REVERSE=$((FZF_FS_SEARCHK_REVERSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_REVERSE=%d\n" "$FZF_FS_SEARCHK_REVERSE"
+        ;;
+        searchk_tac)
+                FZF_FS_SEARCHK_TAC=$((FZF_FS_SEARCHK_TAC ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SEARCHK_TAC=%d\n" "$FZF_FS_SEARCHK_TAC"
+        ;;
+        set_black)
+                FZF_FS_SET_BLACK=$((FZF_FS_SET_BLACK ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_BLACK=%d\n" "$FZF_FS_SET_BLACK"
+        ;;
+        set_cycle)
+                FZF_FS_SET_CYCLE=$((FZF_FS_SET_CYCLE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_CYCLE=%d\n" "$FZF_FS_SET_CYCLE"
+        ;;
+        set_exact)
+                FZF_FS_SET_EXACT=$((FZF_FS_SET_EXACT ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_EXACT=%d\n" "$FZF_FS_SET_EXACT"
+        ;;
+        set_extended)
+                FZF_FS_SET_EXTENDED=$((FZF_FS_SET_EXTENDED ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_EXTENDED=%d\n" "$FZF_FS_SET_EXTENDED"
+        ;;
+        set_hscroll)
+                FZF_FS_SET_HSCROLL=$((FZF_FS_SET_HSCROLL ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_HSCROLL=%d\n" "$FZF_FS_SET_HSCROLL"
+        ;;
+        set_inline)
+                FZF_FS_SET_INLINE=$((FZF_FS_SET_INLINE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_INLINE=%d\n" "$FZF_FS_SET_INLINE"
+        ;;
+        set_mouse)
+                FZF_FS_SET_MOUSE=$((FZF_FS_SET_MOUSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_MOUSE=%d\n" "$FZF_FS_SET_MOUSE"
+        ;;
+        set_reverse)
+                FZF_FS_SET_REVERSE=$((FZF_FS_SET_REVERSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_REVERSE=%d\n" "$FZF_FS_SET_REVERSE"
+        ;;
+        set_sort)
+                FZF_FS_SET_SORT=$((FZF_FS_SET_SORT ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_SORT=%d\n" "$FZF_FS_SET_SORT"
+        ;;
+        set_tac)
+                FZF_FS_SET_TAC=$((FZF_FS_SET_TAC ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_SET_TAC=%d\n" "$FZF_FS_SET_TAC"
+        ;;
+        tog_black)
+                FZF_FS_TOG_BLACK=$((FZF_FS_TOG_BLACK ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_BLACK=%d\n" "$FZF_FS_TOG_BLACK"
+        ;;
+        tog_cycle)
+                FZF_FS_TOG_CYCLE=$((FZF_FS_TOG_CYCLE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_CYCLE=%d\n" "$FZF_FS_TOG_CYCLE"
+        ;;
+        tog_exact)
+                FZF_FS_TOG_EXACT=$((FZF_FS_TOG_EXACT ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_EXACT=%d\n" "$FZF_FS_TOG_EXACT"
+        ;;
+        tog_extended)
+                FZF_FS_TOG_EXTENDED=$((FZF_FS_TOG_EXTENDED ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_EXTENDED=%d\n" "$FZF_FS_TOG_EXTENDED"
+        ;;
+        tog_hscroll)
+                FZF_FS_TOG_HSCROLL=$((FZF_FS_TOG_HSCROLL ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_HSCROLL=%d\n" "$FZF_FS_TOG_HSCROLL"
+        ;;
+        tog_inline)
+                FZF_FS_TOG_INLINE=$((FZF_FS_TOG_INLINE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_INLINE=%d\n" "$FZF_FS_TOG_INLINE"
+        ;;
+        tog_mouse)
+                FZF_FS_TOG_MOUSE=$((FZF_FS_TOG_MOUSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_MOUSE=%d\n" "$FZF_FS_TOG_MOUSE"
+        ;;
+        tog_reverse)
+                FZF_FS_TOG_REVERSE=$((FZF_FS_TOG_REVERSE ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_REVERSE=%d\n" "$FZF_FS_TOG_REVERSE"
+        ;;
+        tog_sort)
+                FZF_FS_TOG_SORT=$((FZF_FS_TOG_SORT ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_SORT=%d\n" "$FZF_FS_TOG_SORT"
+        ;;
+        tog_tac)
+                FZF_FS_TOG_TAC=$((FZF_FS_TOG_TAC ? 0 : 1))
+                Fzf::Fs::U::Spool "FZF_FS_TOG_TAC=%d\n" "$FZF_FS_TOG_TAC"
         esac
 }
 
