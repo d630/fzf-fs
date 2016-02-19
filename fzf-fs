@@ -186,8 +186,7 @@ Fzf::Fs::C::GetKey ()
 
         Fzf::Fs::U::Set::Cursor 0
 
-       builtin typeset keys
-
+        builtin typeset keys
 
         case $FZF_FS_MODE in
         console)
@@ -309,6 +308,7 @@ Fzf::Fs::C::Parent ()
                 else
                         builtin read -re -p ":${prompt} " tmp
                 fi
+
                 command tput rc
                 command tput ed
 
@@ -335,7 +335,6 @@ Fzf::Fs::C::PrintSettings ()
                 _console_interactive=1
                 builtin shift 1
         esac
-
 
         if
                 (( _console_interactive ))
@@ -453,7 +452,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_CONSOLE_COLOR=$(command fzf --prompt="FZF_FS_CONSOLE_COLOR=" --print-query 0<&-;)
+                        FZF_FS_CONSOLE_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLE_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_CONSOLE_COLOR=$2
                 fi
@@ -480,7 +484,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_CONSOLE_HISTORY=$(command fzf --prompt="FZF_FS_CONSOLE_HISTORY=" --print-query 0<&-)
+                        FZF_FS_CONSOLE_HISTORY=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLE_HISTORY=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_CONSOLE_HISTORY=$2
                 fi
@@ -490,7 +499,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_CONSOLE_HSIZE=$(command fzf --prompt="FZF_FS_CONSOLE_HSIZE=" --print-query 0<&-)
+                        FZF_FS_CONSOLE_HSIZE=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLE_HSIZE=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_CONSOLE_HSIZE=$2
                 fi
@@ -501,7 +515,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_CONSOLE_MARGIN=$(command fzf --prompt="FZF_FS_CONSOLE_MARGIN=" --print-query 0<&-)
+                        FZF_FS_CONSOLE_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLE_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_CONSOLE_MARGIN=$2
                 fi
@@ -515,7 +534,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_CONSOLE_TABSTOP=$(command fzf --prompt="FZF_FS_CONSOLE_TABSTOP=" --print-query 0<&-)
+                        FZF_FS_CONSOLE_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_CONSOLE_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_CONSOLE_TABSTOP=$2
                 fi
@@ -637,7 +661,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_NORMAL_COLOR=$(command fzf --prompt="FZF_FS_NORMAL_COLOR=" --print-query 0<&-)
+                        FZF_FS_NORMAL_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_NORMAL_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_NORMAL_COLOR=$2
                 fi
@@ -664,7 +693,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_NORMAL_MARGIN=$(command fzf --prompt="FZF_FS_NORMAL_MARGIN=" --print-query 0<&-)
+                        FZF_FS_NORMAL_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_NORMAL_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_NORMAL_MARGIN=$2
                 fi
@@ -678,7 +712,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_NORMAL_TABSTOP=$(command fzf --prompt="FZF_FS_NORMAL_TABSTOP=" --print-query 0<&-)
+                        FZF_FS_NORMAL_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_NORMAL_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_NORMAL_TABSTOP=$2
                 fi
@@ -717,7 +756,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_COLOR=$(command fzf --prompt="FZF_FS_SEARCH_COLOR=" --print-query 0<&-)
+                        FZF_FS_SEARCH_COLOR=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCH_COLOR=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_SEARCH_COLOR
                 fi
@@ -744,7 +788,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_HISTORY=$(command fzf --prompt="FZF_FS_SEARCH_HISTORY=" --print-query 0<&-)
+                        FZF_FS_SEARCH_HISTORY=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCH_HISTORY=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_SEARCH_HISTORY=$2
                 fi
@@ -754,7 +803,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_HSIZE=$(command fzf --prompt="FZF_FS_SEARCH_HSIZE=" --print-query 0<&-)
+                        FZF_FS_SEARCH_HSIZE=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCH_HSIZE=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_SEARCH_HSIZE=$2
                 fi
@@ -765,7 +819,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_MARGIN=$(command fzf --prompt="FZF_FS_SEARCH_MARGIN=" --print-query 0<&-)
+                        FZF_FS_SEARCH_MARGIN=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCH_MARGIN=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_SEARCH_MARGIN=$2
                 fi
@@ -779,7 +838,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_TABSTOP=$(command fzf --prompt="FZF_FS_SEARCH_TABSTOP=" --print-query 0<&-)
+                        FZF_FS_SEARCH_TABSTOP=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCH_TABSTOP=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_SEARCH_TABSTOP=$2
                 fi
@@ -790,7 +854,12 @@ SET
                 if
                         (( _console_interactive ))
                 then
-                        FZF_FS_SEARCH_TIEBREAK=$(command fzf --prompt="FZF_FS_SEARCH_TIEBREAK=" --print-query 0<&-)
+                        FZF_FS_SEARCH_TIEBREAK=$(
+                                command fzf \
+                                        --prompt="FZF_FS_SEARCH_TIEBREAK=" \
+                                        --print-query \
+                                0<&-;
+                        )
                 else
                         FZF_FS_SEARCH_TIEBREAK=$2
                 fi
@@ -806,7 +875,11 @@ Fzf::Fs::C::Sh ()
                 if
                         (( $# ))
                 then
-                        ( exec ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}" & )
+                        (
+                                exec ${TERMCMD} \
+                                        -e "${SHELL:-sh}" \
+                                        -c "${*};exec ${SHELL:-sh}" &
+                        )
                 else
                         ( exec ${TERMCMD} -e "${SHELL:-sh}" & )
                 fi
@@ -833,7 +906,9 @@ Fzf::Fs::C::Sh ()
                 if
                         (( $# ))
                 then
-                        command ${TERMCMD} -e "${SHELL:-sh}" -c "${*};exec ${SHELL:-sh}"
+                        command ${TERMCMD} \
+                                -e "${SHELL:-sh}" \
+                                -c "${*};exec ${SHELL:-sh}"
                 else
                         command ${TERMCMD} -e "${SHELL:-sh}"
                 fi
@@ -851,7 +926,8 @@ Fzf::Fs::C::Sh ()
                 if
                         (( $# ))
                 then
-                        "${SHELL:-sh}" -c "${*};builtin printf '%s\n' 'Press ENTER to continue';builtin read"
+                        "${SHELL:-sh}" \
+                                -c "${*};builtin printf '%s\n' 'Press ENTER to continue';builtin read"
                 else
                         "${SHELL:-sh}"
                 fi
@@ -882,7 +958,7 @@ Fzf::Fs::C::Shell ()
                 flag_t= \
                 flag_w=;
 
-        builtin typeset -a command_quoted
+        builtin typeset -a quoted
 
         Fzf::Fs::U::Parse::Args "$@"
         builtin set -- ${tmp}
@@ -909,11 +985,11 @@ Fzf::Fs::C::Shell ()
 
         for a
         do
-                command_quoted+=( "${a//\'/\'\\\'\'}" )
+                quoted+=( "${a//\'/\'\\\'\'}" )
         done
 
         Fzf::Fs::U::Set::Cursor 1
-        Fzf::Fs::C::Sh "${command_quoted[@]}"
+        Fzf::Fs::C::Sh "${quoted[@]}"
         Fzf::Fs::U::Set::Cursor 0
 }
 
@@ -1177,8 +1253,8 @@ Fzf::Fs::Exit ()
         builtin typeset syntax=\#
 
         builtin unset -f \
-                "${FZF_FS_COMMANDS[@]/$syntax/Fzf::Fs::C::}" \
-                "${FZF_FS_FUNCS[@]/$syntax/Fzf::Fs::}" \
+                "${FZF_FS_COMMANDS[@]/${syntax}/Fzf::Fs::C::}" \
+                "${FZF_FS_FUNCS[@]/${syntax}/Fzf::Fs::}" \
                 Spath::Do \
                 Spath::GetCols;
 
@@ -1310,8 +1386,6 @@ Fzf::Fs::F::Search ()
                         Fzf::Fs::C::Parent 1; # TODO
                 }
         fi
-
-
 }
 
 Fzf::Fs::F::SearchKeys ()
@@ -1506,29 +1580,47 @@ then
         case ${FZF_FS_OS:-$( command uname -s )} in
         Darwin | DragonFly | FreeBSD)
                 function Fzf::Fs::C::Ls () { command ls -G "$@" ; }
-                function Fzf::Fs::C::LsColor () { CLICOLOR_FORCE=1 command ls -G "$@" ; }
+                function Fzf::Fs::C::LsColor ()
+                {
+                        CLICOLOR_FORCE=1 command ls -G "$@"
+                }
         ;;
         OpenBSD)
                 if
                         >/dev/null builtin command -v colorls
                 then
                         function Fzf::Fs::C::Ls () { command colorls -G "$@" ; }
-                        function Fzf::Fs::C::LsColor () { CLICOLOR_FORCE=1 command colorls -G "$@" ; }
+                        function Fzf::Fs::C::LsColor ()
+                        {
+                                CLICOLOR_FORCE=1 command colorls -G "$@"
+                        }
                 else
                         if
                                 >/dev/null builtin command -v gls
                         then
-                                function Fzf::Fs::C::Ls () { command gls --color=auto "$@" ; }
-                                function Fzf::Fs::C::LsColor () { command gls --color=always "$@" ; }
+                                function Fzf::Fs::C::Ls ()
+                                {
+                                        command gls --color=auto "$@"
+                                }
+                                function Fzf::Fs::C::LsColor ()
+                                {
+                                        command gls --color=always "$@"
+                                }
                         else
                                 function Fzf::Fs::C::Ls () { command ls "$@" ; }
-                                function Fzf::Fs::C::LsColor () { command ls "$@" ; }
+                                function Fzf::Fs::C::LsColor ()
+                                {
+                                        command ls "$@"
+                                }
                         fi
                 fi
         ;;
         *)
                 function Fzf::Fs::C::Ls () { command ls --color=auto "$@" ; }
-                function Fzf::Fs::C::LsColor () { command ls --color=always "$@" ; }
+                function Fzf::Fs::C::LsColor ()
+                {
+                        command ls --color=always "$@"
+                }
         esac
 
 fi
@@ -1789,6 +1881,7 @@ bind_toggle+='shift-tab:toggle-out',
 bind_toggle+='space:toggle',
 bind_toggle+='tab:toggle-in',
 bind_toggle+='v:toggle-all',
+
 INIT
         builtin printf '%s' "$i"
 }
@@ -2184,7 +2277,12 @@ Fzf::Fs::Modes::Console ()
         builtin typeset -i -x _console_interactive=1
 
         builtin typeset -a \
-                files="( $(builtin printf '%s\n' "${FZF_FS_COMMANDS[@]}" | command sort) )" \
+                files="(
+                        $(
+                                builtin printf '%s\n' "${FZF_FS_COMMANDS[@]}" \
+                                | command sort;
+                        )
+                )" \
                 chars \
                 matches \
                 selection \
@@ -2621,7 +2719,6 @@ Fzf::Fs::U::Parse::Args ()
         fi
 } </dev/tty >/dev/tty
 
-
 Fzf::Fs::U::Set::Cursor ()
 {
         (( FZF_FS_SHOW_CURSOR )) || {
@@ -2642,7 +2739,7 @@ Fzf::Fs::U::Set::Prompt ()
         COLUMNS=$cols \
         SPATH_MARK=${SPATH_MARK:-" ... "} \
         SPATH_LENGTH=${SPATH_LENGTH:-$(( cols / 3 ))} \
-                Spath::Do "_prompt" "${PWD//$'\n'/?}"
+                Spath::Do "_prompt" "${PWD//$'\n'/?}";
 
         _prompt=${USER}@${HOSTNAME}:${_prompt}
         _prompt=${_prompt//\/\//\/}
@@ -2703,11 +2800,13 @@ Fzf::Fs::U::CopyFunc ()
         *)
                 builtin return 1
         esac
+
         builtin shift 1
 
         builtin test -n "$(builtin typeset -fp "${1:-1}" 2>/dev/null)" && {
                 builtin eval "${_/${1}/${2:-1}}" && tmp+=( $2 )
         }
+
         builtin unset -n tmp
 }
 
