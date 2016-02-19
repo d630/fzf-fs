@@ -9,6 +9,7 @@ Main changes:
 - removed compatibility of ksh/mksh. Support for: bash and zsh only
 - use of submodule spath.sh
 - commandline options -d and -e
+- removed macros
 - different local config files
 - extensible (own modes, commands) and configurable (many environment variables on commandline or in config file; keybindings for most fzf executions)
 
@@ -517,7 +518,6 @@ builtin typeset -x \
 ##### TO DO
 
 - commands: help and version
-- macros via macro.sh
 - provide searching in GetKey command
 - commandline option to use fzf-curr-position
 - give more settings for Set and Toggle (all environment variable)
