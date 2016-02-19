@@ -516,7 +516,7 @@ builtin typeset -x \
 
 ##### TO DO
 
-- commands: open_with, help and version
+- commands: help and version
 - macros via macro.sh
 - provide searching in GetKey command
 - commandline option to use fzf-curr-position
