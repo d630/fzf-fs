@@ -2406,23 +2406,15 @@ KEYS
 
 Fzf::Fs::Main ()
 {
-        builtin . "${FZF_FS_CONF_DIR}/keybinds.user" 2>/dev/null
-        builtin . "spath.sh" || {
-                        builtin printf '%s: Error: Could not source module: spath.sh\n' "${BASH_SOURCE[0]}" 1>&2
-                        builtin return 1
-        }
-
         [[ -d $FZF_FS_CONF_DIR && -d ${FZF_FS_SPOOL_FILE%/*} ]] || {
                 command mkdir -p \
                         "$FZF_FS_CONF_DIR" \
                         "${FZF_FS_SPOOL_FILE%/*}";
         }
 
-        [[ -f $FZF_FS_CONF_DIR/spool.user ]] && {
-                command cp "${FZF_FS_CONF_DIR}/spool.user" "$FZF_FS_SPOOL_FILE"
+        [[ -f $FZF_FS_CONF_DIR/spoolrc ]] && {
+                command cp "${FZF_FS_CONF_DIR}/spoolrc" "$FZF_FS_SPOOL_FILE"
         }
-
-        builtin . "${FZF_FS_CONF_DIR}/commands.user" 2>/dev/null
 
         exec 7>&-
         exec 8<&-
@@ -3034,12 +3026,19 @@ Fzf::Fs::U::Spool ()
 # -- MAIN.
 ###############################################################################
 
-builtin . "${FZF_FS_CONF_DIR}/config.user" 2>/dev/null
+builtin . "${FZF_FS_CONF_DIR}/configrc" 2>/dev/null
 
 builtin . <(
         Fzf::Fs::I
         Fzf::Fs::I::KeyBinds
 )
+
+builtin . "${FZF_FS_CONF_DIR}/keybindsrc" 2>/dev/null
+
+builtin . "spath.sh" || {
+        builtin printf '%s: Error: Could not source module: spath.sh\n' "${BASH_SOURCE[0]}" 1>&2
+        builtin exit 1 2>/dev/null
+}
 
 builtin typeset -f -x \
         "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}" \
