@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# Example keybindrc file
+
+# Copy commands
+Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::ExpectKey ExpectKey
+Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::EMapKey EMapKey
+Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::Child Child
+Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::Parent Parent
+
+ExpectKey normal L
+EMapKey normal L "( exec terminal.sh -e fzf-fs -e Child\ {} & )"
+
+ExpectKey normal H
+EMapKey normal H "( exec terminal.sh -e fzf-fs -e Parent\ 1 & )"
+
+# vim: set ts=8 sw=8 tw=0 et :
