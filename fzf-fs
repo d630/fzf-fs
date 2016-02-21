@@ -327,6 +327,7 @@ Fzf::Fs::C::Parent ()
 
                 command tput sc
                 command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+                command tput ed
                 builtin read -re -p ":${prompt} " tmp
                 command tput rc
                 command tput ed
@@ -2926,6 +2927,7 @@ Fzf::Fs::U::Parse::Args ()
                 Fzf::Fs::U::Set::Cursor 1
                 command tput sc
                 command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+                command tput ed
                 builtin read -re -p ":${prompt} " tmp
                 command tput rc
                 command tput ed
