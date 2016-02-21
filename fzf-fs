@@ -325,12 +325,17 @@ Fzf::Fs::C::Parent ()
 
                 Fzf::Fs::U::Set::Cursor 1
 
-                command tput sc
-                command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
-                command tput ed
+                command tput -S <<CAP
+sc
+cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+ed
+CAP
                 builtin read -re -p ":${prompt} " tmp
-                command tput rc
-                command tput ed
+
+                command tput -S <<CAP
+rc
+ed
+CAP
 
                 builtin set -- ${tmp}
         } </dev/tty >/dev/tty
@@ -2917,12 +2922,16 @@ Fzf::Fs::U::Parse::Args ()
                 fi
         else
                 Fzf::Fs::U::Set::Cursor 1
-                command tput sc
-                command tput cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
-                command tput ed
+                command tput -S <<CAP
+sc
+cup $(( ${LINES:-$(command tput lines)} - 2 )) 0
+ed
+CAP
                 builtin read -re -p ":${prompt} " tmp
-                command tput rc
-                command tput ed
+                command tput -S <<CAP
+rc
+ed
+CAP
         fi
 } </dev/tty >/dev/tty
 
