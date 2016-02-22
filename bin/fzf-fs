@@ -3050,10 +3050,10 @@ Fzf::Fs::U::CopyFunc ()
 {
         case $1 in
         c*)
-                typeset -n tmp=FZF_FS_FUNCS
+                typeset -n tmp=FZF_FS_COMMANDS
         ;;
         f*)
-                typeset -n tmp=FZF_FS_COMMANDS
+                typeset -n tmp=FZF_FS_FUNCS
         ;;
         *)
                 builtin return 1
