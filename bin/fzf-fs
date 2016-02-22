@@ -401,19 +401,17 @@ Fzf::Fs::C::PrintSettings ()
                 (( _console_interactive ))
         then
                 Fzf::Fs::U::Set::Cursor 0
-                builtin set \
-                | exec sed '
+                sed '
                         /^FZF_FS_/ !{d;b return};
                         s/=/{}/;
                         : return;
-                ' \
+                ' <(builtin set) \
                 | exec sort \
                 | exec column -t -s '{}' \
-                | 1>/dev/null exec fzf --header=PrintSettings --prompt="ENV ";
+                | exec fzf --header=PrintSettings --prompt="ENV " 1>/dev/null;
                 Fzf::Fs::U::Set::Cursor 1
         else
-                builtin set \
-                | exec grep '^FZF_FS_';
+                grep '^FZF_FS_' <(builtin set)
         fi
 }
 
