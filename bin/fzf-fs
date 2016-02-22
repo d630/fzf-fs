@@ -2247,14 +2247,14 @@ builtin typeset \
         bind_set= \
         expect_set=;
 
-bind_set+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,space:toggle,tab:toggle-in,v:toggle-all,"
+bind_set+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,ctrl-v:toggle,tab:toggle-in,f3:toggle-all,"
 
 
 builtin typeset \
         bind_tog= \
         expect_tog=;
 
-bind_tog+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,space:toggle,tab:toggle-in,v:toggle-all,"
+bind_tog+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,ctrl-v:toggle,tab:toggle-in,f3:toggle-all,"
 
 INIT
         builtin printf '%s' "$i"

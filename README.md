@@ -447,12 +447,12 @@ Fzf default bindings, but:
 btab        toggle-out
 ctrl-i      toggle-in
 ctrl-r      toggle-sort
+ctrl-v      toggle
 f1          select-all
 f2          deselect-all
+f3          toggle-all
 shift-tab   toggle-out
-space       toggle
 tab         toggle-in
-v           toggle-all
 ```
 
 ##### Environment
