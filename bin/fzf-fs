@@ -3115,7 +3115,7 @@ builtin typeset -f -x \
         "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}" \
         "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
 
-builtin trap 'Fzf::Fs::Exit' INT TERM QUIT EXIT
+builtin trap 'Fzf::Fs::Exit' TERM QUIT EXIT
 
 Fzf::Fs::Main "$@"
 
