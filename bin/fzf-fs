@@ -1868,18 +1868,20 @@ Fzf::Fs::F::Console ()
 Fzf::Fs::F::ConsoleKeys ()
 {
         builtin printf '%s\n' "$keys" \
-        | 1>/dev/null \
+        | {
+                1>/dev/null \
                 command fzf \
-                +i \
-                --ansi \
-                --bind="$bind_console" \
-                --exact \
-                --expect="$expect_console" \
-                --header-lines=2 \
-                --header=$1 \
-                --no-extended \
-                --no-sort \
-                --prompt="  ${_prompt} ";
+                        +i \
+                        --ansi \
+                        --bind="$bind_console" \
+                        --exact \
+                        --expect="$expect_console" \
+                        --header-lines=2 \
+                        --header=$1 \
+                        --no-extended \
+                        --no-sort \
+                        --prompt="  ${_prompt} ";
+        }
 }
 
 Fzf::Fs::F::Normal ()
@@ -1924,18 +1926,20 @@ Fzf::Fs::F::Normal ()
 Fzf::Fs::F::NormalKeys ()
 {
         builtin printf '%s\n' "$keys" \
-        | 1>/dev/null \
+        | {
+                1>/dev/null \
                 command fzf \
-                +i \
-                --ansi \
-                --bind="$bind_normal" \
-                --exact \
-                --expect="$expect_normal" \
-                --header-lines=2 \
-                --header=$1 \
-                --no-extended \
-                --no-sort \
-                --prompt="  ${_prompt} ";
+                        +i \
+                        --ansi \
+                        --bind="$bind_normal" \
+                        --exact \
+                        --expect="$expect_normal" \
+                        --header-lines=2 \
+                        --header=$1 \
+                        --no-extended \
+                        --no-sort \
+                        --prompt="  ${_prompt} ";
+        }
 }
 
 Fzf::Fs::F::Search ()
@@ -1976,18 +1980,20 @@ Fzf::Fs::F::Search ()
 Fzf::Fs::F::SearchKeys ()
 {
         builtin printf '%s\n' "$keys" \
-        | 1>/dev/null \
+        | {
+                1>/dev/null \
                 command fzf \
-                +i \
-                --ansi \
-                --bind="$bind_search" \
-                --exact \
-                --expect="$expect_search" \
-                --header=$1 \
-                --header-lines=2 \
-                --no-extended \
-                --no-sort \
-                --prompt="  ${_prompt} ";
+                        +i \
+                        --ansi \
+                        --bind="$bind_search" \
+                        --exact \
+                        --expect="$expect_search" \
+                        --header=$1 \
+                        --header-lines=2 \
+                        --no-extended \
+                        --no-sort \
+                        --prompt="  ${_prompt} ";
+        }
 }
 
 Fzf::Fs::F::Set ()
