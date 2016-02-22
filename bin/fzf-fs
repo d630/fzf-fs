@@ -2004,7 +2004,7 @@ Fzf::Fs::F::Toggle ()
 {
         command fzf \
                 --ansi \
-                --bind="${bind_toggle%,}" \
+                --bind="${bind_tog%,}" \
                 --header=Toggle \
                 --multi \
                 --prompt="Toggle ";
@@ -2248,9 +2248,9 @@ builtin typeset bind_set=
 bind_set+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,space:toggle,tab:toggle-in,v:toggle-all,"
 
 
-builtin typeset bind_toggle=
+builtin typeset bind_tog=
 
-bind_toggle+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,space:toggle,tab:toggle-in,v:toggle-all,"
+bind_tog+="btab:toggle-out,ctrl-i:toggle-in,ctrl-r:toggle-sort,f1:select-all,f2:deselect-all,shift-tab:toggle-out,space:toggle,tab:toggle-in,v:toggle-all,"
 
 INIT
         builtin printf '%s' "$i"
