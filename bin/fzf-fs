@@ -2969,10 +2969,6 @@ Fzf::Fs::U::Parse::Args ()
                 (( $# ))
         then
                 if
-                        [[ -e ./${1} ]]
-                then
-                        tmp=./${1}
-                elif
                         [[ -e $1 ]]
                 then
                         tmp=$1
