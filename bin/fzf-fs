@@ -377,7 +377,7 @@ CAP
         } </dev/tty >/dev/tty
 
         [[ -z ${1//[0-9]/} ]] && {
-                builtin typeset tmp="$(builtin printf '%*s' "${1:-1}" "")"
+                builtin printf -v tmp '%*s' "${1:-1}" ""
                 builtin cd -- "${tmp// /..\/}"
                 (( _console_interactive )) || {
                         Fzf::Fs::U::Spool "builtin cd -- '%s'\n" "${PWD//\'/\'\\\'\'}"
@@ -2528,7 +2528,8 @@ Fzf::Fs::Modes::Console ()
                 command \
                 k \
                 q \
-                query;
+                query \
+                tmp;
 
         builtin typeset -i count
         builtin typeset -i -x _console_interactive=1
@@ -2586,7 +2587,8 @@ Fzf::Fs::Modes::Console ()
                                                 chars[$i]=${strings[$i]:0:1}
                                         done
                                         if
-                                                [[ -z "$(builtin printf '%s' "${chars[@]//${chars[0]}/}")" ]]
+                                                builtin printf -v tmp '%s' "${chars[@]//${chars[0]}/}"
+                                                [[ -z $tmp ]]
                                         then
                                                 count+=1
                                                 for i in "${!strings[@]}"
