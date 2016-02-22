@@ -141,8 +141,14 @@ Fzf::Fs::C::EMapKey ()
                 n*)
                         bind_normal+="${action}",
                 ;;
-                s*)
+                sea*)
                         bind_search+="${action}",
+                ;;
+                set)
+                        bind_set+="${action}",
+                ;;
+                t*)
+                        bind_tog+="${action}",
                 esac
         else
                 [[ -z $2 || -z $3 ]] && builtin return 1
@@ -153,8 +159,14 @@ Fzf::Fs::C::EMapKey ()
                 n*)
                         bind_normal+="${2}:execute(${3})",
                 ;;
-                s*)
+                sea*)
                         bind_search+="${2}:execute(${3})",
+                ;;
+                set)
+                        bind_set+="${2}:execute(${3})",
+                ;;
+                t*)
+                        bind_tog+="${2}:execute(${3})",
                 esac
         fi
 }
@@ -184,8 +196,14 @@ Fzf::Fs::C::ExpectKey ()
                 n*)
                         expect_normal+="${key}",
                 ;;
-                s*)
+                sea*)
                         expect_search+="${key}",
+                ;;
+                set)
+                        expect_set+="${key}",
+                ;;
+                t*)
+                        expect_tog+="${key}",
                 esac
         else
                 [[ -z $2 ]] && builtin return 1
@@ -196,8 +214,14 @@ Fzf::Fs::C::ExpectKey ()
                 n*)
                         expect_normal+="${2}",
                 ;;
-                s*)
+                sea*)
                         expect_search+="${2}",
+                ;;
+                set)
+                        expect_set+="${2}",
+                ;;
+                t*)
+                        expect_tog+="${2}",
                 esac
         fi
 }
@@ -262,20 +286,32 @@ Fzf::Fs::C::MapKey ()
                 n*)
                         bind_normal+="${action}",
                 ;;
-                s*)
+                sea*)
                         bind_search+="${action}",
+                ;;
+                set)
+                        bind_set+="${action}",
+                ;;
+                t*)
+                        bind_tog+="${action}",
                 esac
         else
                 [[ -z $2 || -z $3 ]] && builtin return 1
                 case $1 in
-                c)
+                c*)
                         bind_console+="${2}:${3}",
                 ;;
-                n)
+                n*)
                         bind_normal+="${2}:${3}",
                 ;;
-                s)
+                sea*)
                         bind_search+="${2}:${3}",
+                ;;
+                set)
+                        bind_set+="${2}:${3}",
+                ;;
+                t*)
+                        bind_tog+="${2}:${3}",
                 esac
         fi
 }
