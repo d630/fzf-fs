@@ -508,11 +508,19 @@ searchk_margin ${FZF_FS_SEARCHK_MARGIN:-null}
 searchk_tabstop ${FZF_FS_SEARCHK_TABSTOP:-null}
 set_case ${FZF_FS_SET_CASE:-null}
 set_color ${FZF_FS_SET_COLOR:-null}
+set_colorscheme_16
+set_colorscheme_bw
+set_colorscheme_dark
+set_colorscheme_light
 set_margin ${FZF_FS_SET_MARGIN:-null}
 set_tabstop ${FZF_FS_SET_TABSTOP:-null}
 set_tiebreak ${FZF_FS_SET_TIEBREAK:-null}
 tog_case ${FZF_FS_TOG_CASE:-null}
 tog_color ${FZF_FS_TOG_COLOR:-null}
+tog_colorscheme_16
+tog_colorscheme_bw
+tog_colorscheme_dark
+tog_colorscheme_light
 tog_margin ${FZF_FS_TOG_MARGIN:-null}
 tog_tabstop ${FZF_FS_TOG_TABSTOP:-null}
 tog_tiebreak ${FZF_FS_TOG_TIEBREAK:-null}
@@ -1139,6 +1147,22 @@ SET
                 FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR:-bw}
                 Fzf::Fs::U::Spool "FZF_FS_SET_COLOR='%s'\n" "$FZF_FS_SET_COLOR"
         ;;
+        set_colorscheme_16)
+                FZF_FS_SET_COLOR=16
+                Fzf::Fs::U::Spool "FZF_FS_SET_COLOR=%d\n" "16"
+        ;;
+        set_colorscheme_bw)
+                FZF_FS_SET_COLOR=bw
+                Fzf::Fs::U::Spool "FZF_FS_SET_COLOR=%s\n" "bw"
+        ;;
+        set_colorscheme_dark)
+                FZF_FS_SET_COLOR=dark
+                Fzf::Fs::U::Spool "FZF_FS_SET_COLOR=%s\n" "dark"
+        ;;
+        set_colorscheme_light)
+                FZF_FS_SET_COLOR=light
+                Fzf::Fs::U::Spool "FZF_FS_SET_COLOR=%s\n" "light"
+        ;;
         set_margin)
                 if
                         (( _console_interactive ))
@@ -1217,6 +1241,22 @@ SET
                 FZF_FS_TOG_COLOR=${FZF_FS_TOG_COLOR:-bw}
                 Fzf::Fs::U::Spool "FZF_FS_TOG_COLOR='%s'\n" \
                         "$FZF_FS_TOG_COLOR";
+        ;;
+        tog_colorscheme_16)
+                FZF_FS_TOG_COLOR=16
+                Fzf::Fs::U::Spool "FZF_FS_TOG_COLOR=%d\n" "16"
+        ;;
+        tog_colorscheme_bw)
+                FZF_FS_TOG_COLOR=bw
+                Fzf::Fs::U::Spool "FZF_FS_TOG_COLOR=%s\n" "bw"
+        ;;
+        tog_colorscheme_dark)
+                FZF_FS_TOG_COLOR=dark
+                Fzf::Fs::U::Spool "FZF_FS_TOG_COLOR=%s\n" "dark"
+        ;;
+        tog_colorscheme_light)
+                FZF_FS_TOG_COLOR=light
+                Fzf::Fs::U::Spool "FZF_FS_TOG_COLOR=%s\n" "light"
         ;;
         tog_margin)
                 if
