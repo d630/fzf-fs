@@ -401,7 +401,7 @@ Fzf::Fs::C::PrintSettings ()
                 (( _console_interactive ))
         then
                 Fzf::Fs::U::Set::Cursor 0
-                sed '
+                command sed '
                         /^FZF_FS_/ !{d;b return};
                         s/=/{}/;
                         : return;
@@ -411,7 +411,7 @@ Fzf::Fs::C::PrintSettings ()
                 | exec fzf --header=PrintSettings --prompt="ENV " 1>/dev/null;
                 Fzf::Fs::U::Set::Cursor 1
         else
-                grep '^FZF_FS_' <(builtin set)
+                command grep '^FZF_FS_' <(builtin set)
         fi
 }
 
