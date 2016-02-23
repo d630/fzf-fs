@@ -58,7 +58,7 @@ builtin typeset -a +i -x FZF_FS_COMMANDS="(
         Page
         Pager
         Parent
-        PrintSettings
+        PrintConfig
         Quit
         Set
         Sh
@@ -385,7 +385,7 @@ CAP
         }
 }
 
-Fzf::Fs::C::PrintSettings ()
+Fzf::Fs::C::PrintConfig ()
 {
         case $1 in
         +i)
@@ -408,7 +408,7 @@ Fzf::Fs::C::PrintSettings ()
                 ' <(builtin set) \
                 | exec sort \
                 | exec column -t -s '{}' \
-                | exec fzf --header=PrintSettings --prompt="ENV " 1>/dev/null;
+                | exec fzf --header=PrintConfig --prompt="ENV " 1>/dev/null;
                 Fzf::Fs::U::Set::Cursor 1
         else
                 command grep '^FZF_FS_' <(builtin set)

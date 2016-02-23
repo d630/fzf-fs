@@ -59,7 +59,7 @@ MapKey          Map key on one of fzf's actions
 Open            Open X in opener
 Page            Open X in pager
 Parent          Go n directories up
-PrintSettings   Print out current environment (interactively in console)
+PrintConfig     Print out current environment (interactively in console)
 Quit            Quit fzf-fs
 Set             Set settings with string values (interactively in console):
                 console_color
