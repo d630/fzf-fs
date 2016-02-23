@@ -2214,7 +2214,8 @@ builtin typeset -i -x \
 if
         ! builtin typeset -fp Fzf::Fs::C::Ls Fzf::Fs::C::LsColor >/dev/null 2>&1
 then
-        case ${FZF_FS_OS:-$( command uname -s )} in
+        FZF_FS_OS=${FZF_FS_OS:-$( command uname -s )}
+        case $FZF_FS_OS in
         Darwin | DragonFly | FreeBSD)
                 function Fzf::Fs::C::Ls () { command ls -G "$@" ; }
                 function Fzf::Fs::C::LsColor ()
