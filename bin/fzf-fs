@@ -1903,12 +1903,14 @@ Fzf::Fs::Exit ()
 
         builtin unset -f \
                 "${FZF_FS_COMMANDS[@]/${syntax}/Fzf::Fs::C::}" \
+                "${FZF_FS_COPIES[@]}" \
                 "${FZF_FS_FUNCS[@]/${syntax}/Fzf::Fs::}" \
                 Spath::Do \
                 Spath::GetCols;
 
         builtin unset -v \
                 FZF_FS_COMMANDS \
+                FZF_FS_COPIES \
                 FZF_FS_FUNCS;
 
         exec 7>&-
@@ -3109,8 +3111,11 @@ Fzf::Fs::U::Set::Pwd ()
 Fzf::Fs::U::CopyFunc ()
 {
         case $1 in
-        c*)
+        comm*)
                 typeset -n tmp=FZF_FS_COMMANDS
+        ;;
+        cop*)
+                typeset -n tmp=FZF_FS_COPIES
         ;;
         f*)
                 typeset -n tmp=FZF_FS_FUNCS
@@ -3144,6 +3149,7 @@ builtin . <(
         Fzf::Fs::I::KeyBinds
 )
 
+builtin typeset -a +i -x FZF_FS_COPIES="()"
 builtin . "${FZF_FS_CONF_DIR}/keybindsrc" 2>/dev/null
 
 builtin . "spath.sh" || {
@@ -3153,6 +3159,7 @@ builtin . "spath.sh" || {
 
 builtin typeset -f -x \
         "${FZF_FS_COMMANDS[@]/#/Fzf::Fs::C::}" \
+        "${FZF_FS_COPIES[@]}" \
         "${FZF_FS_FUNCS[@]/#/Fzf::Fs::}";
 
 builtin trap 'Fzf::Fs::Exit' TERM QUIT EXIT

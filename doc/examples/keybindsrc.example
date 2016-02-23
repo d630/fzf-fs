@@ -2,16 +2,26 @@
 #
 # Example keybindrc file
 
-# Copy commands
-Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::ExpectKey ExpectKey
-Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::EMapKey EMapKey
-Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::Child Child
-Fzf::Fs::U::CopyFunc commands Fzf::Fs::C::Parent Parent
+# Copy commands and keep names simple
+Fzf::Fs::U::CopyFunc copy Fzf::Fs::U::CopyFunc CopyFunc && {
+        CopyFunc copy Fzf::Fs::C::Child Child
+        CopyFunc copy Fzf::Fs::C::EMapKey EMapKey
+        CopyFunc copy Fzf::Fs::C::Edit Edit
+        CopyFunc copy Fzf::Fs::C::ExpectKey ExpectKey
+        CopyFunc copy Fzf::Fs::C::Page Page
+        CopyFunc copy Fzf::Fs::C::Parent Parent
+        CopyFunc copy Fzf::Fs::C::Quit Quit
+        CopyFunc copy Fzf::Fs::C::Shell Shell
+}
 
-ExpectKey normal L
-EMapKey normal L "( exec terminal.sh -e fzf-fs -e Child\ {} & )"
-
-ExpectKey normal H
-EMapKey normal H "( exec terminal.sh -e fzf-fs -e Parent\ 1 & )"
+# Open Child, Edit, Page and Parent in TERMCMD. Use Quit after Edit and Page
+EMapKey normal alt-l \
+        "Shell -ft '/home/user1/src/fzf-fs/bin/fzf-fs -e Child\ {}'";
+EMapKey normal alt-e \
+        "Shell -ft '/home/user1/src/fzf-fs/bin/fzf-fs -e Edit\ {} -e Quit'";
+EMapKey normal alt-i \
+        "Shell -ft '/home/user1/src/fzf-fs/bin/fzf-fs -e Page\ {} -e Quit'";
+EMapKey normal alt-h \
+        "Shell -ft '/home/user1/src/fzf-fs/bin/fzf-fs -e Parent\ 1'";
 
 # vim: set ts=8 sw=8 tw=0 et :
