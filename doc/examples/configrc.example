@@ -2,62 +2,79 @@
 #
 # Example config.user file
 
+# Copy some commands and keep their names simple
+Fzf::Fs::U::CopyFunc copy Fzf::Fs::U::CopyFunc CopyFunc && {
+        CopyFunc copy Fzf::Fs::C::BindKey BindKey
+        CopyFunc copy Fzf::Fs::C::Child Child
+        CopyFunc copy Fzf::Fs::C::Edit Edit
+        CopyFunc copy Fzf::Fs::C::ExpectKey ExpectKey
+        CopyFunc copy Fzf::Fs::C::GetKey GetKey
+        CopyFunc copy Fzf::Fs::C::LegendKey LegendKey
+        CopyFunc copy Fzf::Fs::C::MapKey MapKey
+        CopyFunc copy Fzf::Fs::C::Page Page
+        CopyFunc copy Fzf::Fs::C::Parent Parent
+        CopyFunc copy Fzf::Fs::C::Quit Quit
+        CopyFunc copy Fzf::Fs::C::Set Set
+        CopyFunc copy Fzf::Fs::C::Shell Shell
+        CopyFunc copy Fzf::Fs::C::Toggle Toggle
+}
+
 # Start fzf-fs in a specific mode: console, normal or search
-FZF_FS_MODE=${FZF_FS_MODE:-normal}
+Set normal.mode
 
 # Don't run uname to get the kernel name of your system (needed for specifing
 # the ls version): Darwin|DragonFly|FreeBSD or OpenBSD or anything else
-FZF_FS_OS=${FZF_FS_OS:-Linux}
+Set os Linux
 
 # Default terminal emulator window (used in C::Shell)
 TERMCMD=${TERMCMD:-terminal.sh}
 
 # Specify the format of ls when long listing has been set: [glno] ...
-FZF_FS_LS_FORMAT=${FZF_FS_LS_FORMAT:-g}
+Set ls.lformat g
 
 # Sort mechanism of ls: atime, ctime, mtime, size or nothing (option -f)
-FZF_FS_LS_SORT=${FZF_FS_LS_SORT:-mtime}
+Set ls.sort.bname
 
 # Show specific time in long listing: atime, ctime or mtime
-FZF_FS_LS_TIME=${FZF_FS_LS_TIME:-mtime}
+Set ls.time.mtime
 
-# Enable colorisation (shows also the inode number)
-FZF_FS_LS_COLOR=${FZF_FS_LS_COLOR:-1}
+# Enable colorisation (shows also the hidden inode number)
+Set ls.color
 
 # Turn on long listing format
-FZF_FS_LS_LONG=${FZF_FS_LS_LONG:-0}
+Set ls.long 0
 
 # Show hidden files (option -a)
-FZF_FS_LS_HIDDEN=${FZF_FS_LS_HIDDEN:-1}
+Set ls.hidden
 
 # Print human readable sizes
-FZF_FS_LS_h=${FZF_FS_LS_h:-1}
+Set ls.h
 
 # Append / indicator to directories
-FZF_FS_LS_p=${FZF_FS_LS_p:-1}
+Set ls.p
 
 # Colorization of fzf
-FZF_FS_CONSOLEK_COLOR=${FZF_FS_CONSOLEK_COLOR:-dark}
-FZF_FS_CONSOLE_COLOR=${FZF_FS_CONSOLE_COLOR:-dark}
-FZF_FS_NORMALK_COLOR=${FZF_FS_NORMALK_COLOR:-dark}
-FZF_FS_NORMAL_COLOR=${FZF_FS_NORMAL_COLOR:-dark}
-FZF_FS_SEARCHK_COLOR=${FZF_FS_SEARCHK_COLOR:-dark}
-FZF_FS_SEARCH_COLOR=${FZF_FS_SEARCH_COLOR:-dark}
-FZF_FS_SET_COLOR=${FZF_FS_SET_COLOR:-dark}
-FZF_FS_TOG_COLOR=${FZF_FS_TOG_COLOR:-dark}
+Set console.theme.dark
+Set consolek.theme.dark
+Set normal.theme.dark
+Set normalk.theme.dark
+Set search.theme.dark
+Set searchk.theme.dark
+Set set.theme.dark
+Set tog.theme.dark
 
 # Specify some search options of fzf
-FZF_FS_SEARCH_CASE=${FZF_FS_SEARCH_CASE:-smart} # smart, insensi or sensi
-FZF_FS_SEARCH_EXACT=${FZF_FS_SEARCH_EXACT:-0}
-FZF_FS_SEARCH_EXTENDED=${FZF_FS_SEARCH_EXTENDED:-1}
-FZF_FS_SEARCH_TIEBREAK=${FZF_FS_SEARCH_TIEBREAK:-"length,index"}
-FZF_FS_SET_CASE=${FZF_FS_SET_CASE:-smart}
-FZF_FS_SET_EXACT=${FZF_FS_SET_EXACT:-0}
-FZF_FS_SET_EXTENDED=${FZF_FS_SET_EXTENDED:-1}
-FZF_FS_SET_TIEBREAK=${FZF_FS_SET_TIEBREAK:-"length,index"}
-FZF_FS_TOG_CASE=${FZF_FS_TOG_CASE:-smart}
-FZF_FS_TOG_EXACT=${FZF_FS_TOG_EXACT:-0}
-FZF_FS_TOG_EXTENDED=${FZF_FS_TOG_EXTENDED:-1}
-FZF_FS_TOG_TIEBREAK=${FZF_FS_TOG_TIEBREAK:-"length,index"}
+Set search.case smart
+Set search.fuzzy
+Set search.extended
+Set search.criteria "length,index"
+Set set.case smart
+Set set.fuzzy
+Set set.extended
+Set set.criteria "length,index"
+Set tog.case smart
+Set tog.fuzzy
+Set tog.extended
+Set tog.criteria "length,index"
 
 # vim: set ts=8 sw=8 tw=0 et :

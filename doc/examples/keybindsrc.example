@@ -2,26 +2,18 @@
 #
 # Example keybindrc file
 
-# Copy commands and keep names simple
-Fzf::Fs::U::CopyFunc copy Fzf::Fs::U::CopyFunc CopyFunc && {
-        CopyFunc copy Fzf::Fs::C::Child Child
-        CopyFunc copy Fzf::Fs::C::EMapKey EMapKey
-        CopyFunc copy Fzf::Fs::C::Edit Edit
-        CopyFunc copy Fzf::Fs::C::ExpectKey ExpectKey
-        CopyFunc copy Fzf::Fs::C::Page Page
-        CopyFunc copy Fzf::Fs::C::Parent Parent
-        CopyFunc copy Fzf::Fs::C::Quit Quit
-        CopyFunc copy Fzf::Fs::C::Shell Shell
-}
-
 # Open Child, Edit, Page and Parent in TERMCMD. Use Quit after Edit and Page
-EMapKey normal alt-l \
+ExpectKey normal alt-l
+ExpectKey normal alt-e
+ExpectKey normal alt-i
+ExpectKey normal alt-h
+MapKey normal alt-l \
         "Shell -ft 'fzf-fs -e Child\ {}'";
-EMapKey normal alt-e \
+MapKey normal alt-e \
         "Shell -ft 'fzf-fs -e Edit\ {} -e Quit'";
-EMapKey normal alt-i \
+MapKey normal alt-i \
         "Shell -ft 'fzf-fs -e Page\ {} -e Quit'";
-EMapKey normal alt-h \
+MapKey normal alt-h \
         "Shell -ft 'fzf-fs -e Parent\ 1'";
 
 # vim: set ts=8 sw=8 tw=0 et :
