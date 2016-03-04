@@ -1487,23 +1487,18 @@ Fzf::Fs::F::Normal ()
                         --exact \
                         --expect="${FzfFsBinds[normal.expect]%,}" \
                         --no-extended \
-                        --nth=.. \
-                        --prompt="  ${FzfFsVarsStr[prompt]} " \
-                        --with-nth=.. < <(
+                        --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                         Fzf::Fs::C::LsColor "${FzfFsVarsStr[ls.default.opts]}" "$PWD"
                 ) || Fzf::Fs::C::Parent 1; # TODO
         else
                 #1>/dev/null
                 command fzf \
                         +i \
-                        --ansi \
                         --bind="${FzfFsBinds[normal.bind]%,}" \
                         --exact \
                         --expect="${FzfFsBinds[normal.expect]%,}" \
                         --no-extended \
-                        --nth=.. \
-                        --prompt="  ${FzfFsVarsStr[prompt]} " \
-                        --with-nth=2.. < <(
+                        --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                         Fzf::Fs::C::Ls "${FzfFsVarsStr[ls.default.opts]}" "$PWD"
                 ) || Fzf::Fs::C::Parent 1; # TODO
         fi
@@ -1542,21 +1537,16 @@ Fzf::Fs::F::Search ()
                         --bind="${FzfFsBinds[search.bind]%,}" \
                         --expect="${FzfFsBinds[search.expect]%,}" \
                         --header="${FzfFsVarsStr[prompt]}" \
-                        --nth=.. \
-                        --prompt='/' \
-                        --with-nth=.. < <(
+                        --prompt='/' < <(
                         Fzf::Fs::C::LsColor "${FzfFsVarsStr[ls.default.opts]}" "$PWD"
                 ) || Fzf::Fs::C::Parent 1; # TODO
         else
                 #1>/dev/null
                 command fzf \
-                        --ansi \
                         --bind="${FzfFsBinds[search.bind]%,}" \
                         --expect="${FzfFsBinds[search.expect]%,}" \
                         --header="${FzfFsVarsStr[prompt]}" \
-                        --nth=.. \
-                        --prompt='/' \
-                        --with-nth=2.. < <(
+                        --prompt='/' < <(
                         Fzf::Fs::C::Ls "${FzfFsVarsStr[ls.default.opts]}" "$PWD"
                 ) || Fzf::Fs::C::Parent 1; # TODO
         fi
