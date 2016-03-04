@@ -2448,7 +2448,6 @@ CAP
 
 Fzf::Fs::U::Set::Cursor ()
 {
-        typeset -p FzfFsVarsStr >/tmp/FZF.
         (( ${FzfFsOptsInt[cursor]} )) || {
                 case $1 in
                 0)
