@@ -1456,15 +1456,11 @@ Fzf::Fs::F::Consolek ()
 {
         #1>/dev/null
         command fzf \
-                +i \
                 --ansi \
                 --bind="${FzfFsBinds[consolek.${1}.bind]%,}" \
-                --exact \
                 --expect="${FzfFsBinds[consolek.${1}.expect]%,}" \
                 --header-lines=2 \
                 --header=$1 \
-                --no-extended \
-                --no-sort \
                 --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                 command column -t <<LEG
 key command option
@@ -1481,23 +1477,17 @@ Fzf::Fs::F::Normal ()
         then
                 #1>/dev/null
                 command fzf \
-                        +i \
                         --ansi \
                         --bind="${FzfFsBinds[normal.bind]%,}" \
-                        --exact \
                         --expect="${FzfFsBinds[normal.expect]%,}" \
-                        --no-extended \
                         --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                         Fzf::Fs::C::LsColor "${FzfFsVarsStr[ls.default.opts]}" "$PWD"
                 ) || Fzf::Fs::C::Parent 1; # TODO
         else
                 #1>/dev/null
                 command fzf \
-                        +i \
                         --bind="${FzfFsBinds[normal.bind]%,}" \
-                        --exact \
                         --expect="${FzfFsBinds[normal.expect]%,}" \
-                        --no-extended \
                         --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                         Fzf::Fs::C::Ls "${FzfFsVarsStr[ls.default.opts]}" "$PWD"
                 ) || Fzf::Fs::C::Parent 1; # TODO
@@ -1508,15 +1498,11 @@ Fzf::Fs::F::Normalk ()
 {
         #1>/dev/null
         command fzf \
-                +i \
                 --ansi \
                 --bind="${FzfFsBinds[normalk.${1}.bind]%,}" \
-                --exact \
                 --expect="${FzfFsBinds[normalk.${1}.expect]%,}" \
                 --header-lines=2 \
                 --header=$1 \
-                --no-extended \
-                --no-sort \
                 --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                 command column -t <<LEG
 key command option
@@ -1556,15 +1542,11 @@ Fzf::Fs::F::Searchk ()
 {
         #1>/dev/null
         command fzf \
-                +i \
                 --ansi \
                 --bind="${FzfFsBinds[searchk.${1}.bind]%,}" \
-                --exact \
                 --expect="${FzfFsBinds[searchk.${1}.expect]%,}" \
                 --header=$1 \
                 --header-lines=2 \
-                --no-extended \
-                --no-sort \
                 --prompt="  ${FzfFsVarsStr[prompt]} " < <(
                 command column -t <<LEG
 key command option
